@@ -18,10 +18,6 @@ public class Vector2f {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY();
     }
 
-    /*public Vector2f vectorProduct(Vector2f v1, Vector2f v2) {
-
-    }*/
-
     public Vector2f(float x, float y) {
         this.x = x;
         this.y = y;
@@ -61,7 +57,8 @@ public class Vector2f {
 		return Math.abs(this.x - gotVector.x) < EPS && Math.abs(this.y - gotVector.y) < EPS;
 	}
 
-    public String getStringV() {
+    @Override
+    public String toString() {
         return '{' + x + ',' + y + "}";
     }
 

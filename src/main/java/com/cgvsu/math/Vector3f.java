@@ -74,7 +74,8 @@ public class Vector3f {
         this.z = z;
     }
 
-    public String getStringV() {
+    @Override
+    public String toString() {
         return '{' + x + ',' + y + ',' + z + "}";
     }
 

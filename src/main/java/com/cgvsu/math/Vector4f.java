@@ -66,7 +66,8 @@ public class Vector4f {
         this.w = w;
     }
 
-    public String getStringV() {
+    @Override
+    public String toString() {
         return '{' + x + ',' + y + ',' + z + ',' + w + "}";
     }
 
