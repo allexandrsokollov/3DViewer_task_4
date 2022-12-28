@@ -79,7 +79,7 @@ public class GuiController {
 
         try {
             String fileContent = Files.readString(fileName);
-            mesh = ObjReader.read(fileContent);
+            mesh = ObjReader.read(fileContent, true);
             // todo: обработка ошибок
         } catch (IOException exception) {
 
