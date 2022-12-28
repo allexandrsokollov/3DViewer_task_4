@@ -48,9 +48,18 @@ public class Vector2f {
         this.y = y;
     }
 
-    public boolean equals(Vector2f other) {
-        return Math.abs(x - other.x) < EPS && Math.abs(y - other.y) < EPS;
-    }
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != this.getClass()) {
+			return false;
+		}
+
+		Vector2f gotVector = (Vector2f) obj;
+		return Math.abs(this.x - gotVector.x) < EPS && Math.abs(this.y - gotVector.y) < EPS;
+	}
 
     public String getStringV() {
         return '{' + x + ',' + y + "}";

@@ -30,10 +30,19 @@ public class Vector3f {
         this.y = y;
         this.z = z;
     }
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || obj.getClass() != this.getClass()) {
+			return false;
+		}
 
-    public boolean equals(Vector3f other) {
-        return Math.abs(x - other.x) < EPS && Math.abs(y - other.y) < EPS && Math.abs(z - other.z) < EPS;
-    }
+		Vector3f gotVector = (Vector3f) obj;
+		return Math.abs(this.x - gotVector.x) < EPS && Math.abs(this.y - gotVector.y) < EPS
+				&& Math.abs(this.z - gotVector.z) < EPS;
+	}
 
     public float getX() {
         return x;
