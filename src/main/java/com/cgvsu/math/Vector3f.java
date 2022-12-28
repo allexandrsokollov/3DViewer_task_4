@@ -2,6 +2,7 @@ package com.cgvsu.math;
 
 public class Vector3f {
 
+
     public static final float EPS = 1e-7f;
     public float x, y, z;
 

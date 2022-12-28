@@ -1,6 +1,7 @@
 package com.cgvsu.math;
 
 public class Vector2f {
+
     public static final float EPS = 1e-7f;
 
     protected float x, y;
