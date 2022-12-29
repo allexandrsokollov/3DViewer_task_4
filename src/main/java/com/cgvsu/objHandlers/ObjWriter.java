@@ -12,12 +12,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class ObjWriter {
-	public static void createObjFile(String absoluteFilePath) {
-		String fileSeparator = System.getProperty("file.separator");
-		absoluteFilePath += fileSeparator + "file.obj";
-		File file = new File(absoluteFilePath);
-	}
-
 	public static void writeToFile(Model model, File file) throws IOException {
 		String str = "";
 

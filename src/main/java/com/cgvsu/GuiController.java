@@ -1,29 +1,34 @@
 package com.cgvsu;
 
+import com.cgvsu.model.Model;
+import com.cgvsu.objHandlers.ObjReader;
+import com.cgvsu.objHandlers.ObjWriter;
+import com.cgvsu.render_engine.Camera;
 import com.cgvsu.render_engine.RenderEngine;
-import javafx.fxml.FXML;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
+
+import javax.vecmath.Vector3f;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.io.IOException;
-import java.io.File;
-import javax.vecmath.Vector3f;
-
-import com.cgvsu.model.Model;
-import com.cgvsu.objHandlers.ObjReader;
-import com.cgvsu.render_engine.Camera;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GuiController {
 
     final private float TRANSLATION = 0.5F;
+	private Map<String, Model> loadedModels;
 
     @FXML
     AnchorPane anchorPane;
@@ -31,7 +36,8 @@ public class GuiController {
     @FXML
     private Canvas canvas;
 
-    private Model mesh = null;
+    private Model currentModel = null;
+	private String currentModelName = null;
 
     private final Camera camera = new Camera(
             new Vector3f(0, 0, 100),
@@ -43,8 +49,10 @@ public class GuiController {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
 
+		System.out.println("initialize called");
 		Timeline timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
+		loadedModels = new HashMap<>();
 
         KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
             double width = canvas.getWidth();
@@ -53,8 +61,8 @@ public class GuiController {
             canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
             camera.setAspectRatio((float) (width / height));
 
-            if (mesh != null) {
-                RenderEngine.render(canvas.getGraphicsContext2D(), camera, mesh, (int) width, (int) height);
+            if (currentModel != null) {
+                RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
             }
         });
 
@@ -74,6 +82,7 @@ public class GuiController {
         }
 
         Path fileName = Path.of(file.getAbsolutePath());
+		currentModelName = file.getName();
 
 
 		String fileContent;
@@ -82,16 +91,25 @@ public class GuiController {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		mesh = ObjReader.read(fileContent, true);
-
+		currentModel = ObjReader.read(fileContent, false);
     }
 
 	@FXML
 	public void saveModel() {
-		DirectoryChooser directoryChooser = new DirectoryChooser();
-		File selectedDirectory = directoryChooser.showDialog(new Stage());
-		System.out.println(selectedDirectory.getAbsolutePath());
-
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
+		fileChooser.setTitle("Save Model");
+		
+		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+		try {
+			ObjWriter.writeToFile(currentModel, file);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Notifications.create()
+				.text("File saved at:\n" + file.getAbsolutePath())
+				.position(Pos.CENTER)
+				.showInformation();
 	}
 
     @FXML

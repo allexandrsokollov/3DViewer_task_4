@@ -21,6 +21,7 @@ public class ObjViewer extends Application {
         viewport.prefWidthProperty().bind(scene.widthProperty());
         viewport.prefHeightProperty().bind(scene.heightProperty());
 
+
         stage.setTitle("3DViewer");
         stage.setScene(scene);
         stage.show();
