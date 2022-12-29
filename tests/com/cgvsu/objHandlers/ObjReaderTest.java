@@ -1,4 +1,4 @@
-package com.cgvsu.objreader;
+package com.cgvsu.objHandlers;
 
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
