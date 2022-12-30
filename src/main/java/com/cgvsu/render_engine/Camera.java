@@ -44,11 +44,11 @@ public class Camera {
     }
 
     public void movePosition(final Vector3f translation) {
-        this.position.sum(translation);
+        this.position.summarize(translation);
     }
 
     public void moveTarget(final Vector3f translation) {
-        this.target.sum(target);
+        this.target.summarize(target);
     }
 
     Matrix4 getViewMatrix() throws Exception {

@@ -24,22 +24,22 @@ public class GraphicConveyor {
     }
 
     public static Matrix4 lookAt(Vector3f eye, Vector3f target, Vector3f up) throws Exception {
-        Vector3f resultZ = Vector3f.sub(target, eye);
-        Vector3f resultX = Vector3f.vectorProduct(up, resultZ);
-        Vector3f resultY = Vector3f.vectorProduct(resultZ, resultX);;
+        Vector3f resultZ = Vector3f.getSubtracted(target, eye);
+        Vector3f resultX = Vector3f.getVectorProduct(up, resultZ);
+        Vector3f resultY = Vector3f.getVectorProduct(resultZ, resultX);;
 
 
 
-        resultX.normalization();
-        resultY.normalization();
-        resultZ.normalization();
+        resultX.normalize();
+        resultY.normalize();
+        resultZ.normalize();
 
         float[][] matrix = new float[][]{
 
                 {resultX.x, resultY.x, resultZ.x, 0},
                 {resultX.y, resultY.y, resultZ.y, 0},
                 {resultX.z, resultY.z, resultZ.z, 0},
-                {-resultX.scalarProduct(eye), -resultY.scalarProduct(eye), -resultZ.scalarProduct(eye), 1}};
+                {-resultX.getScalarProduct(eye), -resultY.getScalarProduct(eye), -resultZ.getScalarProduct(eye), 1}};
         return new Matrix4(matrix);
     }
 

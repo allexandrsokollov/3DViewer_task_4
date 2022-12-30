@@ -5,7 +5,7 @@ public class Vector4f {
     public static final float EPS = 1e-7f;
     public float x, y, z, w;
 
-    public static Vector4f normalization(final Vector4f v1) {
+    public static Vector4f getNormalizedVector(final Vector4f v1) {
         if (v1.length() - 0 < EPS) {
             return new Vector4f(0, 0, 0, 0);
         }
@@ -18,17 +18,17 @@ public class Vector4f {
         return new Vector4f(x, y, z, w);
     }
 
-    public static Vector4f sum(final Vector4f v1, final Vector4f v2) {
+    public static Vector4f getSummarized(final Vector4f v1, final Vector4f v2) {
         return new Vector4f(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ(),
                 v1.getW() + v2.getW());
     }
 
-    public static Vector4f sub(final Vector4f v1, final Vector4f v2) {
+    public static Vector4f getSubtracted(final Vector4f v1, final Vector4f v2) {
         return new Vector4f(v1.getX() - v2.getX(), v1.getY() - v2.getY(), v1.getZ() - v2.getZ(),
                 v1.getW() - v2.getW());
     }
 
-    public static Vector4f multiply(final Vector4f v1, final float n) {
+    public static Vector4f getMultiplyVector(final Vector4f v1, final float n) {
         final float x = v1.getX() * n;
         final float y = v1.getY() * n;
         final float z = v1.getZ() * n;
@@ -37,7 +37,7 @@ public class Vector4f {
         return new Vector4f(x, y, z, w);
     }
 
-    public static Vector4f divide(final Vector4f v1, final float n) throws Exception {
+    public static Vector4f getDividedVector(final Vector4f v1, final float n) throws Exception {
         if(n - 0 < EPS) {
             throw new Exception("На 0 делить нельзя");
         }
@@ -49,7 +49,7 @@ public class Vector4f {
         return new Vector4f(x, y, z, w);
     }
 
-    public static float scalarProduct(final Vector4f v1, final Vector4f v2) {
+    public static float getScalarProduct(final Vector4f v1, final Vector4f v2) {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY() + v1.getZ() * v2.getZ() +
                 v1.getW() * v2.getW();
     }
@@ -127,7 +127,7 @@ public class Vector4f {
         return (float) Math.sqrt(x * x + y * y + z * z + w * w);
     }
 
-    public void normalization() {
+    public void normalize() {
         if (length() - 0 < EPS) {
             this.x = 0;
             this.y = 0;
@@ -142,14 +142,14 @@ public class Vector4f {
         this.w *= invLength;
     }
 
-    public void sum(final Vector4f v2) {
+    public void summarize(final Vector4f v2) {
         this.x += v2.getX();
         this.y += v2.getY();
         this.z += v2.getZ();
         this.w += v2.getW();
     }
 
-    public void sub(final Vector4f v2) {
+    public void subtract(final Vector4f v2) {
         this.x -= v2.getX();
         this.y -= v2.getY();
         this.z -= v2.getZ();
@@ -174,7 +174,7 @@ public class Vector4f {
         this.w = this.w / n;
     }
 
-    public float scalarProduct(final Vector4f v2) {
+    public float getScalarProduct(final Vector4f v2) {
         return this.x * v2.getX() + this.y * v2.getY() + this.z * v2.getZ() + this.w * v2.getW();
     }
 }

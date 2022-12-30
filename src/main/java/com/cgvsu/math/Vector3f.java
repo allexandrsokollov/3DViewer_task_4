@@ -6,22 +6,22 @@ public class Vector3f {
     public static final float EPS = 1e-7f;
     public float x, y, z;
 
-    public static Vector3f vectorProduct(final Vector3f v1, final Vector3f v2) {
+    public static Vector3f getVectorProduct(final Vector3f v1, final Vector3f v2) {
         final float x  = v1.getY() * v2.getZ() - v2.getY() * v1.getZ();
         final float y  = v2.getX() * v1.getZ() - v2.getZ() * v1.getX();
         final float z  = v1.getX() * v2.getY() - v2.getX() * v1.getY();
         return new Vector3f(x, y, z);
     }
 
-    public static Vector3f sum(final Vector3f v1, final Vector3f v2) {
+    public static Vector3f getSummarized(final Vector3f v1, final Vector3f v2) {
         return new Vector3f(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ());
     }
 
-    public static Vector3f sub(final Vector3f v1, final Vector3f v2) {
+    public static Vector3f getSubtracted(final Vector3f v1, final Vector3f v2) {
         return new Vector3f(v1.getX() - v2.getX(), v1.getY() - v2.getY(), v1.getZ() - v2.getZ()) ;
     }
 
-    public static Vector3f multiply(final Vector3f v1,final float n) {
+    public static Vector3f getMultiplyVector(final Vector3f v1, final float n) {
         final float x = v1.getX() * n;
         final float y = v1.getY() * n;
         final float z = v1.getZ() * n;
@@ -29,7 +29,7 @@ public class Vector3f {
         return new Vector3f(x, y, z);
     }
 
-    public static Vector3f divide(final Vector3f v1, final float n) throws Exception {
+    public static Vector3f getDividedVector(final Vector3f v1, final float n) throws Exception {
         if (n - 0 < EPS) {
             throw new Exception("На 0 делить нельзя");
         }
@@ -40,11 +40,11 @@ public class Vector3f {
         return new Vector3f(x, y, z);
     }
 
-    public static float scalarProduct(final Vector3f v1, final Vector3f v2) {
+    public static float getScalarProduct(final Vector3f v1, final Vector3f v2) {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY() + v1.getZ() * v2.getZ();
     }
 
-    public static Vector3f normalization(final Vector3f v1) {
+    public static Vector3f getNormalizedVector(final Vector3f v1) {
         if (v1.length() - 0 < EPS) {
             return new Vector3f(0, 0, 0);
         }
@@ -118,7 +118,7 @@ public class Vector3f {
         return (float) Math.sqrt(x * x + y * y + z * z);
     }
 
-    public void normalization() {
+    public void normalize() {
         if (length() - 0 < EPS) {
             this.x = 0;
             this.y = 0;
@@ -131,13 +131,13 @@ public class Vector3f {
         this.z *= invLength;
     }
 
-    public void sum(final Vector3f v2) {
+    public void summarize(final Vector3f v2) {
         this.x += v2.getX();
         this.y += v2.getY();
         this.z += v2.getZ();
     }
 
-    public void sub(final Vector3f v2) {
+    public void subtract(final Vector3f v2) {
         this.x -= v2.getX();
         this.y -= v2.getY();
         this.z -= v2.getZ();
@@ -159,7 +159,7 @@ public class Vector3f {
         this.z = this.z / n;
     }
 
-    public float scalarProduct(final Vector3f v2) {
+    public float getScalarProduct(final Vector3f v2) {
         return this.getX() * v2.getX() + this.getY() * v2.getY() + this.getZ() * v2.getZ();
     }
 

@@ -6,26 +6,26 @@ public class Vector2f {
 
     protected float x, y;
 
-    public static Vector2f sum(final Vector2f v1, final Vector2f v2) {
+    public static Vector2f getSummarized(final Vector2f v1, final Vector2f v2) {
         return new Vector2f(v1.getX() + v2.getX(), v1.getY() + v2.getY());
     }
 
-    public static Vector2f sub(final Vector2f v1, final Vector2f v2) {
+    public static Vector2f getSubtracted(final Vector2f v1, final Vector2f v2) {
         return new Vector2f(v1.getX() - v2.getX(), v1.getY() - v2.getY()) ;
     }
 
-    public static float scalarProduct(final Vector2f v1, final Vector2f v2) {
+    public static float getScalarProduct(final Vector2f v1, final Vector2f v2) {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY();
     }
 
-    public static Vector2f multiply(final Vector2f v1, final float n) {
+    public static Vector2f getMultiplyVector(final Vector2f v1, final float n) {
         final float x = v1.getX() * n;
         final float y = v1.getY() * n;
 
         return new Vector2f(x, y);
     }
 
-    public static Vector2f divide(final Vector2f v1, final float n) throws Exception {
+    public static Vector2f getDividedVector(final Vector2f v1, final float n) throws Exception {
         if (n - 0 < EPS) {
             throw new Exception("На 0 делить нельзя");
         }
@@ -33,7 +33,7 @@ public class Vector2f {
         return new Vector2f(v1.getX() / n, v1.getY() / n);
     }
 
-    public static Vector2f normalization(final Vector2f v1) {
+    public static Vector2f getNormalizedVector(final Vector2f v1) {
         if (v1.length() - 0 < EPS) {
             return new Vector2f(0, 0);
         }
@@ -96,12 +96,12 @@ public class Vector2f {
         return (float) Math.sqrt(x * x + y * y);
     }
 
-    public void sum(final Vector2f v2) {
+    public void summarize(final Vector2f v2) {
         this.x += v2.getX();
         this.y += v2.getY();
     }
 
-    public void sub(final Vector2f v2) {
+    public void subtract(final Vector2f v2) {
         this.x -= v2.getX();
         this.y -= v2.getY();
     }
@@ -120,11 +120,11 @@ public class Vector2f {
         this.y = this.y / n;
     }
 
-    public float scalarProduct(final Vector2f v2) {
+    public float getScalarProduct(final Vector2f v2) {
         return this.getX() * v2.getX() + this.getY() * v2.getY();
     }
 
-    public void normalization() {
+    public void normalize() {
         if (length() - 0 < EPS) {
             this.x = 0;
             this.y = 0;

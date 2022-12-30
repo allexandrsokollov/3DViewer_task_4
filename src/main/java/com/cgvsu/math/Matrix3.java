@@ -17,7 +17,7 @@ public class Matrix3 {
         return matrix;
     }
 
-    public void sum(final Matrix3 matrix1) {
+    public void summarize(final Matrix3 matrix1) {
         for (int col = 0; col < matrix1.getMatrix()[0].length; col++) {
             for (int row = 0; row < matrix1.getMatrix().length; row++) {
                 matrix[row][col] += matrix1.getMatrix()[row][col];
@@ -25,7 +25,7 @@ public class Matrix3 {
         }
     }
 
-    public static Matrix3 sum(final Matrix3 matrix1, final Matrix3 matrix2) {
+    public static Matrix3 getSummarized(final Matrix3 matrix1, final Matrix3 matrix2) {
         Matrix3 matrixResult = new Matrix3();
         for (int col = 0; col < matrix1.getMatrix()[0].length; col++) {
             for (int row = 0; row < matrix1.getMatrix().length; row++) {
@@ -35,7 +35,7 @@ public class Matrix3 {
         return matrixResult;
     }
 
-    public void subtraction(final Matrix3 matrix1) {
+    public void subtract(final Matrix3 matrix1) {
         for (int col = 0; col < matrix1.getMatrix()[0].length; col++) {
             for (int row = 0; row < matrix1.getMatrix().length; row++) {
                 matrix[row][col] -= matrix1.getMatrix()[row][col];
@@ -43,7 +43,7 @@ public class Matrix3 {
         }
     }
 
-    public static Matrix3 subtraction(final Matrix3 matrix1, final Matrix3 matrix2) {
+    public static Matrix3 getSubtracted(final Matrix3 matrix1, final Matrix3 matrix2) {
         Matrix3 matrixResult = new Matrix3();
         for (int col = 0; col < matrix1.getMatrix()[0].length; col++) {
             for (int row = 0; row < matrix1.getMatrix().length; row++) {
@@ -53,7 +53,7 @@ public class Matrix3 {
         return matrixResult;
     }
 
-    public Vector3f multiply(final Vector3f vector) {
+    public Vector3f getMultiply(final Vector3f vector) {
         float[][] matrixResult = new float[3][1];
         float[][] vectorMatrix = new float[3][1];
         vectorMatrix[0][0] = vector.getX();
@@ -68,7 +68,7 @@ public class Matrix3 {
         return new Vector3f(matrixResult[0][0], matrixResult[1][0], matrixResult[2][0]);
     }
 
-    public static Vector3f multiply(final Matrix3 matrix, final Vector3f vector) {
+    public static Vector3f getMultiply(final Matrix3 matrix, final Vector3f vector) {
         float[][] matrixResult = new float[3][1];
         float[][] vectorMatrix = new float[3][1];
         vectorMatrix[0][0] = vector.getX();
@@ -93,9 +93,10 @@ public class Matrix3 {
             }
         }
         matrix = matrixResult;
+
     }
 
-    public static Matrix3 multiply(final Matrix3 matrix1, final Matrix3 matrix2) {
+    public static Matrix3 getMultiply(final Matrix3 matrix1, final Matrix3 matrix2) {
         Matrix3 matrixResult = new Matrix3();
         for (int row = 0; row < matrix1.getMatrix().length; row++) {
             for (int col = 0; col < matrix2.getMatrix()[0].length; col++) {
@@ -115,7 +116,7 @@ public class Matrix3 {
         }
     }
 
-    public static Matrix3 multiply(final Matrix3 matrix, final float n) {
+    public static Matrix3 getMultiply(final Matrix3 matrix, final float n) {
         Matrix3 matrixResult = new Matrix3();
         for (int row = 0; row < matrix.getMatrix().length; row++) {
             for (int col = 0; col < matrix.getMatrix()[0].length; col++) {
@@ -136,7 +137,7 @@ public class Matrix3 {
         matrix = matrixResult;
     }
 
-    public static Matrix3 transMatrix(final Matrix3 matrix1) {
+    public static Matrix3 getTransMatrix(final Matrix3 matrix1) {
         Matrix3 matrixResult = new Matrix3();
         for (int col = 0; col < matrix1.getMatrix()[0].length; col++) {
             for (int row = 0; row < matrix1.getMatrix().length; row++) {

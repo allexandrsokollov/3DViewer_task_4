@@ -31,17 +31,17 @@ class Vector3fTest {
     public void normTest() {
         Vector3f vector3f0 = new Vector3f(0, 0, 0);
         Vector3f vector3f1 = new Vector3f(1.5F, 1.5F, 1.5F);
-        Vector3f vector3f2 = Vector3f.normalization(vector3f1);
+        Vector3f vector3f2 = Vector3f.getNormalizedVector(vector3f1);
 
         Vector3f vector3f3 = new Vector3f(1.5F / vector3f1.length(), 1.5F / vector3f1.length(), 1.5F / vector3f1.length());
 
-        vector3f1.normalization();
+        vector3f1.normalize();
         assertEquals(vector3f3, vector3f2);
         assertEquals(vector3f3, vector3f1);
 
         Vector3f vector3f = vector3f0.copy();
-        Vector3f vector3fn0 = Vector3f.normalization(vector3f0);
-        vector3f0.normalization();
+        Vector3f vector3fn0 = Vector3f.getNormalizedVector(vector3f0);
+        vector3f0.normalize();
         assertEquals(vector3fn0, vector3f);
         assertEquals(vector3f0, vector3f);
     }
@@ -52,8 +52,8 @@ class Vector3fTest {
         Vector3f vector3f2 = new Vector3f(1.5F, 1.5F, 1.5F);
         Vector3f vector3f3 = new Vector3f(3.0F, 3.0F, 3.0F);
 
-        Vector3f vector3f = Vector3f.sum(vector3f1, vector3f2);
-        vector3f1.sum(vector3f2);
+        Vector3f vector3f = Vector3f.getSummarized(vector3f1, vector3f2);
+        vector3f1.summarize(vector3f2);
         assertEquals(vector3f3, vector3f);
         assertEquals(vector3f3, vector3f1);
 
@@ -65,8 +65,8 @@ class Vector3fTest {
         Vector3f vector3f2 = new Vector3f(1.5F, 1.5F, 1.5F);
         Vector3f vector3f3 = new Vector3f(0, 0, 0);
 
-        Vector3f vector3f = Vector3f.sub(vector3f1, vector3f2);
-        vector3f1.sub(vector3f2);
+        Vector3f vector3f = Vector3f.getSubtracted(vector3f1, vector3f2);
+        vector3f1.subtract(vector3f2);
         assertEquals(vector3f3, vector3f);
         assertEquals(vector3f3, vector3f1);
     }
@@ -77,7 +77,7 @@ class Vector3fTest {
         Vector3f vector3f = new Vector3f(3, 3, 3);
         float n = 2;
 
-        assertEquals(vector3f, Vector3f.multiply(vector3f1, n));
+        assertEquals(vector3f, Vector3f.getMultiplyVector(vector3f1, n));
         vector3f1.multiply(n);
         assertEquals(vector3f, vector3f1);
     }
@@ -88,13 +88,13 @@ class Vector3fTest {
         Vector3f vector3f = new Vector3f(0.5F, 0.5F, 0.5F);
         final float n = 3.0F;
 
-        assertEquals(vector3f, Vector3f.divide(vector3f1, n));
+        assertEquals(vector3f, Vector3f.getDividedVector(vector3f1, n));
         vector3f1.divide(n);
         assertEquals(vector3f, vector3f1);
 
 
         Exception exception = assertThrows(Exception.class, () -> {
-            Vector3f.divide(vector3f1, 0);
+            Vector3f.getDividedVector(vector3f1, 0);
         });
 
         String eS = "На 0 делить нельзя";
@@ -109,8 +109,8 @@ class Vector3fTest {
 
         float sc = 6.75F;
 
-        assertEquals(sc, vector3f1.scalarProduct(vector3f2));
-        assertEquals(sc, Vector3f.scalarProduct(vector3f1, vector3f2));
+        assertEquals(sc, vector3f1.getScalarProduct(vector3f2));
+        assertEquals(sc, Vector3f.getScalarProduct(vector3f1, vector3f2));
     }
 
     @Test
@@ -119,7 +119,7 @@ class Vector3fTest {
         Vector3f vector3f2 = new Vector3f(2F, 2F, 2F);
 
         Vector3f vector3f = new Vector3f(0, 0, 0);
-        assertEquals(vector3f, Vector3f.vectorProduct(vector3f1, vector3f2));
+        assertEquals(vector3f, Vector3f.getVectorProduct(vector3f1, vector3f2));
     }
 
 
