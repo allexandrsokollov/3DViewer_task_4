@@ -11,8 +11,8 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -28,6 +28,13 @@ import java.util.Map;
 public class GuiController {
 
     final private float TRANSLATION = 0.5F;
+	@FXML
+	public Menu modelsMenu;
+	@FXML
+	public ListView<String> listOfLoadedModelsNames;
+	@FXML
+	public MenuItem listViewContextDelete;
+
 	private Map<String, Model> loadedModels;
 
     @FXML
@@ -37,9 +44,8 @@ public class GuiController {
     private Canvas canvas;
 
     private Model currentModel = null;
-	private String currentModelName = null;
 
-    private final Camera camera = new Camera(
+	private final Camera camera = new Camera(
             new Vector3f(0, 0, 100),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
@@ -53,6 +59,7 @@ public class GuiController {
 		Timeline timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
 		loadedModels = new HashMap<>();
+
 
         KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
             double width = canvas.getWidth();
@@ -82,8 +89,13 @@ public class GuiController {
         }
 
         Path fileName = Path.of(file.getAbsolutePath());
-		currentModelName = file.getName();
+		String currentModelName = file.getName();
+		System.out.println("file name: " + currentModelName);
 
+		if (!loadedModels.containsKey(currentModelName)) {
+			modelsMenu.getItems().add(new MenuItem(currentModelName));
+			listOfLoadedModelsNames.getItems().add(currentModelName);
+		}
 
 		String fileContent;
 		try {
@@ -92,6 +104,7 @@ public class GuiController {
 			throw new RuntimeException(e);
 		}
 		currentModel = ObjReader.read(fileContent, false);
+		loadedModels.put(currentModelName, currentModel);
     }
 
 	@FXML
@@ -99,7 +112,7 @@ public class GuiController {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
 		fileChooser.setTitle("Save Model");
-		
+
 		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
 		try {
 			ObjWriter.writeToFile(currentModel, file);
@@ -111,6 +124,34 @@ public class GuiController {
 				.position(Pos.CENTER)
 				.showInformation();
 	}
+
+	@FXML
+	public void selectModel() {
+		String modelName = getStringWithoutSurroundingSquareBrackets(
+				listOfLoadedModelsNames.getSelectionModel().getSelectedItems().toString());
+
+		Model newModel = loadedModels.get(modelName);
+
+		if (newModel != null && !newModel.equals(currentModel)) {
+			currentModel = newModel;
+		}
+	}
+
+	public void deleteModelFromViewList() {
+		String modelName = getStringWithoutSurroundingSquareBrackets(
+				listOfLoadedModelsNames.getSelectionModel().getSelectedItems().toString());
+
+		int selectedIndex = listOfLoadedModelsNames.getSelectionModel().getSelectedIndex();
+		listOfLoadedModelsNames.getItems().remove(selectedIndex);
+		loadedModels.remove(modelName);
+	}
+
+	private String getStringWithoutSurroundingSquareBrackets(String initialString) {
+		initialString = initialString.substring(1);
+		int stringLength = initialString.length();
+		return initialString.substring(0, stringLength - 1);
+	}
+
 
     @FXML
     public void handleCameraForward() {
