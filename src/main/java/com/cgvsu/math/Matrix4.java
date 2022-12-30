@@ -1,14 +1,16 @@
 package com.cgvsu.math;
 
 public class Matrix4 {
-    private float[][] data;
+    private float[][] data = new float[4][4];
 
-    public Matrix4(float[][] matrix) {
+    public Matrix4(float[][] matrix) throws Exception {
+        if (matrix.length != 4 || matrix[0].length != 4) {
+            throw new Exception("Массив не 4 на 4");
+        }
         this.data = matrix;
     }
 
     public Matrix4() {
-        this.data = new float[4][4];
     }
 
     public float[][] getData() {
@@ -103,6 +105,24 @@ public class Matrix4 {
                 for (int i = 0; i < matrix2.getData().length; i++) {
                     matrixResult.getData()[row][col] += (matrix1.getData()[row][i] * matrix2.getData()[i][col]);
                 }
+            }
+        }
+        return matrixResult;
+    }
+
+    public void multiply(final float n) {
+        for (int row = 0; row < data.length; row++) {
+            for (int col = 0; col < data[0].length; col++) {
+                data[row][col] *= n;
+            }
+        }
+    }
+
+    public static Matrix4 multiply(final Matrix4 matrix, final float n) {
+        Matrix4 matrixResult = new Matrix4();
+        for (int row = 0; row < matrix.getData().length; row++) {
+            for (int col = 0; col < matrix.getData()[0].length; col++) {
+                matrixResult.getData()[row][col] = matrix.getData()[row][col] * n;
             }
         }
         return matrixResult;

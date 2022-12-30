@@ -1,13 +1,15 @@
 package com.cgvsu.math;
 
 public class Matrix3 {
-    private float[][] matrix;
+    private float[][] matrix = new float[3][3];
 
     public Matrix3() {
-        this.matrix = new float[3][3];
     }
 
-    public Matrix3(float[][] matrix) {
+    public Matrix3(float[][] matrix) throws Exception {
+        if (matrix.length != 3 || matrix[0].length != 3) {
+            throw new Exception("Массив не 3 на 3");
+        }
         this.matrix = matrix;
     }
 
@@ -51,7 +53,7 @@ public class Matrix3 {
         return matrixResult;
     }
 
-    public float[][] multiply(final Vector3f vector) {
+    public Vector3f multiply(final Vector3f vector) {
         float[][] matrixResult = new float[3][1];
         float[][] vectorMatrix = new float[3][1];
         vectorMatrix[0][0] = vector.getX();
@@ -63,10 +65,10 @@ public class Matrix3 {
                 matrixResult[row][0] += matrix[row][col] * vectorMatrix[col][0];
             }
         }
-        return matrixResult;
+        return new Vector3f(matrixResult[0][0], matrixResult[1][0], matrixResult[2][0]);
     }
 
-    public static float[][] multiply(final Matrix3 matrix, final Vector3f vector) {
+    public static Vector3f multiply(final Matrix3 matrix, final Vector3f vector) {
         float[][] matrixResult = new float[3][1];
         float[][] vectorMatrix = new float[3][1];
         vectorMatrix[0][0] = vector.getX();
@@ -78,7 +80,7 @@ public class Matrix3 {
                 matrixResult[row][0] += matrix.getMatrix()[row][col] * vectorMatrix[col][0];
             }
         }
-        return matrixResult;
+        return new Vector3f(matrixResult[0][0], matrixResult[1][0], matrixResult[2][0]);
     }
 
     public void multiply(final Matrix3 matrix1) {
@@ -104,6 +106,25 @@ public class Matrix3 {
         }
         return matrixResult;
     }
+
+    public void multiply(final float n) {
+        for (int row = 0; row < matrix.length; row++) {
+            for (int col = 0; col < matrix[0].length; col++) {
+                matrix[row][col] *= n;
+            }
+        }
+    }
+
+    public static Matrix3 multiply(final Matrix3 matrix, final float n) {
+        Matrix3 matrixResult = new Matrix3();
+        for (int row = 0; row < matrix.getMatrix().length; row++) {
+            for (int col = 0; col < matrix.getMatrix()[0].length; col++) {
+                matrixResult.getMatrix()[row][col] = matrix.getMatrix()[row][col] * n;
+            }
+        }
+        return matrixResult;
+    }
+
 
     public void transMatrix() {
         float[][] matrixResult = new float[3][3];

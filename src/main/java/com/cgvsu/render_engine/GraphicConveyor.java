@@ -1,5 +1,11 @@
 package com.cgvsu.render_engine;
-import javax.vecmath.*;
+
+
+
+import com.cgvsu.math.Vector3f;
+
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Point2f;
 
 public class GraphicConveyor {
 
@@ -17,23 +23,21 @@ public class GraphicConveyor {
     }
 
     public static Matrix4f lookAt(Vector3f eye, Vector3f target, Vector3f up) {
-        Vector3f resultX = new Vector3f();
-        Vector3f resultY = new Vector3f();
-        Vector3f resultZ = new Vector3f();
+        Vector3f resultZ = Vector3f.sub(target, eye);
+        Vector3f resultX = Vector3f.vectorProduct(up, resultZ);
+        Vector3f resultY = Vector3f.vectorProduct(resultZ, resultX);;
 
-        resultZ.sub(target, eye);
-        resultX.cross(up, resultZ);
-        resultY.cross(resultZ, resultX);
 
-        resultX.normalize();
-        resultY.normalize();
-        resultZ.normalize();
+
+        resultX.normalization();
+        resultY.normalization();
+        resultZ.normalization();
 
         float[] matrix = new float[]{
                 resultX.x, resultY.x, resultZ.x, 0,
                 resultX.y, resultY.y, resultZ.y, 0,
                 resultX.z, resultY.z, resultZ.z, 0,
-                -resultX.dot(eye), -resultY.dot(eye), -resultZ.dot(eye), 1};
+                -resultX.scalarProduct(eye), -resultY.scalarProduct(eye), -resultZ.scalarProduct(eye), 1};
         return new Matrix4f(matrix);
     }
 
