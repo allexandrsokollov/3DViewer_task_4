@@ -50,8 +50,8 @@ class Matrix3Test {
                 {0,0,0},
                 {2,2,2}
         });
-        Matrix3 mR = Matrix3.sub(m1, m2);
-        m1.sub(m2);
+        Matrix3 mR = Matrix3.subtraction(m1, m2);
+        m1.subtraction(m2);
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 assertEquals(m3.getMatrix()[row][col], mR.getMatrix()[row][col]);
@@ -168,7 +168,7 @@ class Matrix3Test {
                 {0,0,0},
                 {0,0,0}
         });
-        Matrix3 mR = Matrix3.zeroMatrix();
+        Matrix3 mR = Matrix3.getZeroMatrix();
         m1.setZero();
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -186,7 +186,7 @@ class Matrix3Test {
                 {0,1,0},
                 {0,0,1}
         });
-        Matrix3 mR = Matrix3.identityMatrix();
+        Matrix3 mR = Matrix3.getIdentityMatrix();
         m1.setIdentity();
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {

@@ -56,8 +56,8 @@ class Matrix4Test {
                 {1,1,1,1},
                 {3,3,3,3}
         });
-        Matrix4 mR = Matrix4.sub(m1, m2);
-        m1.sub(m2);
+        Matrix4 mR = Matrix4.subtraction(m1, m2);
+        m1.subtraction(m2);
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
                 assertEquals(m3.getData()[row][col], mR.getData()[row][col]);
@@ -183,7 +183,7 @@ class Matrix4Test {
                 {0,0,0,0},
                 {0,0,0,0}
         });
-        Matrix4 mR = Matrix4.zeroMatrix();
+        Matrix4 mR = Matrix4.getZeroMatrix();
         m1.setZero();
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
@@ -202,7 +202,7 @@ class Matrix4Test {
                 {0,0,1,0},
                 {0,0,0,1}
         });
-        Matrix4 mR = Matrix4.identityMatrix();
+        Matrix4 mR = Matrix4.getIdentityMatrix();
         m1.setIdentity();
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {

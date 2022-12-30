@@ -35,7 +35,7 @@ public class Matrix3 {
         return matrixResult;
     }
 
-    public void sub(final Matrix3 matrix1) {
+    public void subtraction(final Matrix3 matrix1) {
         for (int col = 0; col < matrix1.getMatrix()[0].length; col++) {
             for (int row = 0; row < matrix1.getMatrix().length; row++) {
                 matrix[row][col] -= matrix1.getMatrix()[row][col];
@@ -43,7 +43,7 @@ public class Matrix3 {
         }
     }
 
-    public static Matrix3 sub(final Matrix3 matrix1, final Matrix3 matrix2) {
+    public static Matrix3 subtraction(final Matrix3 matrix1, final Matrix3 matrix2) {
         Matrix3 matrixResult = new Matrix3();
         for (int col = 0; col < matrix1.getMatrix()[0].length; col++) {
             for (int row = 0; row < matrix1.getMatrix().length; row++) {
@@ -154,7 +154,7 @@ public class Matrix3 {
         }
     }
 
-    public static Matrix3 zeroMatrix() {
+    public static Matrix3 getZeroMatrix() {
         Matrix3 matrixResult = new Matrix3();
         for (int row = 0; row < matrixResult.getMatrix()[0].length; row++) {
             for (int col = 0; col < matrixResult.getMatrix().length; col++) {
@@ -176,7 +176,7 @@ public class Matrix3 {
         }
     }
 
-    public static Matrix3 identityMatrix() {
+    public static Matrix3 getIdentityMatrix() {
         Matrix3 matrixResult = new Matrix3();
         for (int row = 0; row < matrixResult.getMatrix()[0].length; row++) {
             for (int col = 0; col < matrixResult.getMatrix().length; col++) {
