@@ -47,13 +47,13 @@ class Vector4fTest {
     }
 
     @Test
-    public void sumTest() {
+    public void addTest() {
         Vector4f vector4f1 = new Vector4f(1.5F, 1.5F, 1.5F, 1.5F);
         Vector4f vector4f2 = new Vector4f(1.5F, 1.5F, 1.5F, 1.5F);
         Vector4f vector4f3 = new Vector4f(3.0F, 3.0F, 3.0F, 3.0F);
 
-        Vector4f vector4f = Vector4f.getSummarized(vector4f1, vector4f2);
-        vector4f1.summarize(vector4f2);
+        Vector4f vector4f = Vector4f.getAdded(vector4f1, vector4f2);
+        vector4f1.add(vector4f2);
         assertEquals(vector4f3, vector4f);
         assertEquals(vector4f3, vector4f1);
     }
@@ -76,7 +76,7 @@ class Vector4fTest {
         Vector4f vector4f = new Vector4f(3, 3, 3, 3);
         float n = 2;
 
-        assertEquals(vector4f, Vector4f.getMultiplyVector(vector4f1, n));
+        assertEquals(vector4f, Vector4f.getMultipliedVector(vector4f1, n));
         vector4f1.multiply(n);
         assertEquals(vector4f, vector4f1);
     }

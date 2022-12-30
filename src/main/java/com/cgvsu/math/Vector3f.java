@@ -17,11 +17,11 @@ public class Vector3f {
         return new Vector3f(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ());
     }
 
-    public static Vector3f getSubtracted(final Vector3f v1, final Vector3f v2) {
+    public static Vector3f getAdded(final Vector3f v1, final Vector3f v2) {
         return new Vector3f(v1.getX() - v2.getX(), v1.getY() - v2.getY(), v1.getZ() - v2.getZ()) ;
     }
 
-    public static Vector3f getMultiplyVector(final Vector3f v1, final float n) {
+    public static Vector3f getMultipliedVector(final Vector3f v1, final float n) {
         final float x = v1.getX() * n;
         final float y = v1.getY() * n;
         final float z = v1.getZ() * n;
@@ -131,7 +131,7 @@ public class Vector3f {
         this.z *= invLength;
     }
 
-    public void summarize(final Vector3f v2) {
+    public void add(final Vector3f v2) {
         this.x += v2.getX();
         this.y += v2.getY();
         this.z += v2.getZ();

@@ -18,7 +18,7 @@ public class Vector4f {
         return new Vector4f(x, y, z, w);
     }
 
-    public static Vector4f getSummarized(final Vector4f v1, final Vector4f v2) {
+    public static Vector4f getAdded(final Vector4f v1, final Vector4f v2) {
         return new Vector4f(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ(),
                 v1.getW() + v2.getW());
     }
@@ -28,7 +28,7 @@ public class Vector4f {
                 v1.getW() - v2.getW());
     }
 
-    public static Vector4f getMultiplyVector(final Vector4f v1, final float n) {
+    public static Vector4f getMultipliedVector(final Vector4f v1, final float n) {
         final float x = v1.getX() * n;
         final float y = v1.getY() * n;
         final float z = v1.getZ() * n;
@@ -142,7 +142,7 @@ public class Vector4f {
         this.w *= invLength;
     }
 
-    public void summarize(final Vector4f v2) {
+    public void add(final Vector4f v2) {
         this.x += v2.getX();
         this.y += v2.getY();
         this.z += v2.getZ();

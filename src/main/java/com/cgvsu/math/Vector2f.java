@@ -6,7 +6,7 @@ public class Vector2f {
 
     protected float x, y;
 
-    public static Vector2f getSummarized(final Vector2f v1, final Vector2f v2) {
+    public static Vector2f getAdded(final Vector2f v1, final Vector2f v2) {
         return new Vector2f(v1.getX() + v2.getX(), v1.getY() + v2.getY());
     }
 
@@ -18,7 +18,7 @@ public class Vector2f {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY();
     }
 
-    public static Vector2f getMultiplyVector(final Vector2f v1, final float n) {
+    public static Vector2f getMultipliedVector(final Vector2f v1, final float n) {
         final float x = v1.getX() * n;
         final float y = v1.getY() * n;
 
@@ -96,7 +96,7 @@ public class Vector2f {
         return (float) Math.sqrt(x * x + y * y);
     }
 
-    public void summarize(final Vector2f v2) {
+    public void add(final Vector2f v2) {
         this.x += v2.getX();
         this.y += v2.getY();
     }

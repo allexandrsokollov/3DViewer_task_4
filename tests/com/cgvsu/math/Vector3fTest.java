@@ -47,13 +47,13 @@ class Vector3fTest {
     }
 
     @Test
-    public void sumTest() {
+    public void addTest() {
         Vector3f vector3f1 = new Vector3f(1.5F, 1.5F, 1.5F);
         Vector3f vector3f2 = new Vector3f(1.5F, 1.5F, 1.5F);
         Vector3f vector3f3 = new Vector3f(3.0F, 3.0F, 3.0F);
 
         Vector3f vector3f = Vector3f.getSummarized(vector3f1, vector3f2);
-        vector3f1.summarize(vector3f2);
+        vector3f1.add(vector3f2);
         assertEquals(vector3f3, vector3f);
         assertEquals(vector3f3, vector3f1);
 
@@ -65,7 +65,7 @@ class Vector3fTest {
         Vector3f vector3f2 = new Vector3f(1.5F, 1.5F, 1.5F);
         Vector3f vector3f3 = new Vector3f(0, 0, 0);
 
-        Vector3f vector3f = Vector3f.getSubtracted(vector3f1, vector3f2);
+        Vector3f vector3f = Vector3f.getAdded(vector3f1, vector3f2);
         vector3f1.subtract(vector3f2);
         assertEquals(vector3f3, vector3f);
         assertEquals(vector3f3, vector3f1);
@@ -77,7 +77,7 @@ class Vector3fTest {
         Vector3f vector3f = new Vector3f(3, 3, 3);
         float n = 2;
 
-        assertEquals(vector3f, Vector3f.getMultiplyVector(vector3f1, n));
+        assertEquals(vector3f, Vector3f.getMultipliedVector(vector3f1, n));
         vector3f1.multiply(n);
         assertEquals(vector3f, vector3f1);
     }
