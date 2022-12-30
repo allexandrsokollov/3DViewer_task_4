@@ -14,7 +14,7 @@ public class Model {
 	public Model(final List<Vector3f> vertices, final List<Vector2f> textureVertices, final List<Vector3f> normals, final List<Polygon> polygons) {
 		this.vertices = vertices;
 		this.textureVertices = textureVertices;
-		this.normals = normals;
+		this.normals = normals; //можно вставить пересчёт нормалей
 		this.polygons = polygons;
 	}
 
@@ -97,5 +97,30 @@ public class Model {
 			}
 		}
 		return true;
+	}
+
+	public void triangulate() {
+		List<Polygon> triangulatedPolygons = new ArrayList<>();
+		for (Polygon polygon : polygons) {
+			triangulatedPolygons.addAll(triangulatePolygon(polygon));
+		}
+		polygons = triangulatedPolygons;
+	}
+
+	private List<Polygon> triangulatePolygon(Polygon polygon){
+		List<Integer> vertexIndices = polygon.getVertexIndices();
+		List<Polygon> triangulatedPolygons = new ArrayList<>();
+		if (vertexIndices.size() > 3) {
+			for (int i = 2; i < vertexIndices.size(); i++) {
+				Polygon triangle = new Polygon();
+				triangle.getVertexIndices().add(vertexIndices.get(0));
+				triangle.getVertexIndices().add(vertexIndices.get(i - 1));
+				triangle.getVertexIndices().add(vertexIndices.get(i));
+				triangulatedPolygons.add(triangle);
+			}
+		} else {
+			triangulatedPolygons.add(polygon);
+		}
+		return triangulatedPolygons;
 	}
 }
