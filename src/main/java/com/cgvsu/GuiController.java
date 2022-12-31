@@ -20,7 +20,6 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
-import javax.vecmath.Vector3f;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,8 +27,7 @@ import java.nio.file.Path;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.io.IOException;
-import java.io.File;
+
 
 
 
@@ -67,6 +65,7 @@ public class GuiController {
 		Timeline timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
 		loadedModels = new HashMap<>();
+		modelsMenu = new Menu();
 
 
         KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
@@ -156,6 +155,7 @@ public class GuiController {
 		int selectedIndex = listOfLoadedModelsNames.getSelectionModel().getSelectedIndex();
 		listOfLoadedModelsNames.getItems().remove(selectedIndex);
 		loadedModels.remove(modelName);
+		currentModel = null;
 	}
 
 	private String getStringWithoutSurroundingSquareBrackets(String initialString) {
