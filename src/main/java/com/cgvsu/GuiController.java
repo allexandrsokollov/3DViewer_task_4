@@ -1,9 +1,12 @@
 package com.cgvsu;
 
+
 import com.cgvsu.model.Model;
 import com.cgvsu.objHandlers.ObjReader;
 import com.cgvsu.objHandlers.ObjWriter;
 import com.cgvsu.render_engine.Camera;
+import com.cgvsu.math.Vector3f;
+
 import com.cgvsu.render_engine.RenderEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -22,8 +25,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.io.IOException;
+import java.io.File;
+
+
 
 public class GuiController {
 
@@ -45,7 +53,7 @@ public class GuiController {
 
     private Model currentModel = null;
 
-	private final Camera camera = new Camera(
+    private Camera camera = new Camera(
             new Vector3f(0, 0, 100),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
@@ -69,7 +77,11 @@ public class GuiController {
             camera.setAspectRatio((float) (width / height));
 
             if (currentModel != null) {
-                RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
+                try {
+                    RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
