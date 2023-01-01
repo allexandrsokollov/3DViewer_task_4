@@ -49,6 +49,8 @@ public class GuiController {
 
     private Model currentModel = null;
 
+	private String currentModelName = null;
+
     private Camera camera = new Camera(
             new Vector3f(0, 0, 100),
             new Vector3f(0, 0, 0),
@@ -103,7 +105,7 @@ public class GuiController {
         }
 
         Path fileName = Path.of(file.getAbsolutePath());
-		String currentModelName = file.getName();
+		currentModelName = file.getName();
 		System.out.println("file name: " + currentModelName);
 
 		if (! editedLoadedModels.containsKey(currentModelName)) {
@@ -128,25 +130,7 @@ public class GuiController {
 
 	@FXML
 	public void saveModel() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
-		fileChooser.setTitle("Save Model");
-
-		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
-		try {
-			ObjWriter.writeToFile(currentModel, file);
-		} catch (IOException e) {
-			Notifications.create()
-				.text(e.getMessage())
-				.position(Pos.CENTER)
-				.showError();
-			throw new RuntimeException(e);
-
-		}
-		Notifications.create()
-				.text("File saved at:\n" + file.getAbsolutePath())
-				.position(Pos.CENTER)
-				.showInformation();
+		saveEditedModel();
 	}
 
 	@FXML
@@ -177,8 +161,37 @@ public class GuiController {
 		return initialString.substring(0, stringLength - 1);
 	}
 
+	public void saveInitialModel() {
+		saveModel(initialLoadedModels.get(currentModelName));
+	}
 
-    @FXML
+	public void saveEditedModel() {
+		saveModel(editedLoadedModels.get(currentModelName));
+	}
+
+	private void saveModel(Model modelToSave) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
+		fileChooser.setTitle("Save Model");
+
+		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+		try {
+			ObjWriter.writeToFile(modelToSave, file);
+		} catch (IOException e) {
+			Notifications.create()
+					.text(e.getMessage())
+					.position(Pos.CENTER)
+					.showError();
+			throw new RuntimeException(e);
+
+		}
+		Notifications.create()
+				.text("File saved at:\n" + file.getAbsolutePath())
+				.position(Pos.CENTER)
+				.showInformation();
+	}
+
+	@FXML
     public void handleCameraForward() {
         camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
     }
@@ -207,4 +220,5 @@ public class GuiController {
     public void handleCameraDown() {
         camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
     }
+
 }
