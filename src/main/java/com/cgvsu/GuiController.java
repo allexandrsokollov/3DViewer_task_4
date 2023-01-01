@@ -28,9 +28,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-
 public class GuiController {
 
     final private float TRANSLATION = 0.5F;
@@ -41,7 +38,8 @@ public class GuiController {
 	@FXML
 	public MenuItem listViewContextDelete;
 
-	private Map<String, Model> loadedModels;
+	private Map<String, Model> editedLoadedModels;
+	private Map<String, Model> initialLoadedModels;
 
     @FXML
     AnchorPane anchorPane;
@@ -64,7 +62,8 @@ public class GuiController {
 		System.out.println("initialize called");
 		Timeline timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
-		loadedModels = new HashMap<>();
+		editedLoadedModels = new HashMap<>();
+		initialLoadedModels = new HashMap<>();
 		modelsMenu = new Menu();
 
 
@@ -107,7 +106,7 @@ public class GuiController {
 		String currentModelName = file.getName();
 		System.out.println("file name: " + currentModelName);
 
-		if (!loadedModels.containsKey(currentModelName)) {
+		if (! editedLoadedModels.containsKey(currentModelName)) {
 			modelsMenu.getItems().add(new MenuItem(currentModelName));
 			listOfLoadedModelsNames.getItems().add(currentModelName);
 		}
@@ -123,7 +122,8 @@ public class GuiController {
 			throw new RuntimeException(e);
 		}
 		currentModel = ObjReader.read(fileContent, false);
-		loadedModels.put(currentModelName, currentModel);
+		editedLoadedModels.put(currentModelName, currentModel);
+		initialLoadedModels.put(currentModelName, currentModel.getCopy());
     }
 
 	@FXML
@@ -154,7 +154,7 @@ public class GuiController {
 		String modelName = getStringWithoutSurroundingSquareBrackets(
 				listOfLoadedModelsNames.getSelectionModel().getSelectedItems().toString());
 
-		Model newModel = loadedModels.get(modelName);
+		Model newModel = editedLoadedModels.get(modelName);
 
 		if (newModel != null && !newModel.equals(currentModel)) {
 			currentModel = newModel;
@@ -167,7 +167,7 @@ public class GuiController {
 
 		int selectedIndex = listOfLoadedModelsNames.getSelectionModel().getSelectedIndex();
 		listOfLoadedModelsNames.getItems().remove(selectedIndex);
-		loadedModels.remove(modelName);
+		editedLoadedModels.remove(modelName);
 		currentModel = null;
 	}
 
