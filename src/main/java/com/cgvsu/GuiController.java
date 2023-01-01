@@ -79,6 +79,10 @@ public class GuiController {
                 try {
                     RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
                 } catch (Exception e) {
+					Notifications.create()
+							.text(e.getMessage())
+							.position(Pos.CENTER)
+							.showError();
                     throw new RuntimeException(e);
                 }
             }
@@ -112,6 +116,10 @@ public class GuiController {
 		try {
 			fileContent = Files.readString(fileName);
 		} catch (IOException e) {
+			Notifications.create()
+					.text(e.getMessage())
+					.position(Pos.CENTER)
+					.showError();
 			throw new RuntimeException(e);
 		}
 		currentModel = ObjReader.read(fileContent, false);
@@ -128,7 +136,12 @@ public class GuiController {
 		try {
 			ObjWriter.writeToFile(currentModel, file);
 		} catch (IOException e) {
+			Notifications.create()
+				.text(e.getMessage())
+				.position(Pos.CENTER)
+				.showError();
 			throw new RuntimeException(e);
+
 		}
 		Notifications.create()
 				.text("File saved at:\n" + file.getAbsolutePath())
