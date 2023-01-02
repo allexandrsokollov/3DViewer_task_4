@@ -85,7 +85,7 @@ public class Matrix4 {
         return new Vector4f(matrixResult[0][0], matrixResult[1][0], matrixResult[2][0], matrixResult[3][0]);
     }
 
-    public void getMultiplied(final Matrix4 matrix1) {
+    public void multiply(final Matrix4 matrix1) {
         float[][] matrixResult = new float[4][4];
 
         for (int row = 0; row < matrix.length; row++) {
