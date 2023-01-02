@@ -94,7 +94,7 @@ public class GuiController {
     }
 
     @FXML
-    private void onOpenModelMenuItemClick() {
+    private void onOpenModelMenuItemClick() throws Exception {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
         fileChooser.setTitle("Load Model");

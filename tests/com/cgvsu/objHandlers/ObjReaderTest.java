@@ -356,7 +356,12 @@ class ObjReaderTest {
                 new Polygon(Arrays.asList(0,1,2), Arrays.asList(1,2,1), Arrays.asList(1,1,0)),
                 new Polygon(Arrays.asList(4,3,2), Arrays.asList(2,1,1), Arrays.asList(0,0,10)),
                 new Polygon(Arrays.asList(1,2,4), Arrays.asList(1,1,2), Arrays.asList(1,2,2))));
-        Model model = new Model(vertices, textureVertices, normalVertices, polygons);
+        Model model = null;
+        try {
+            model = new Model(vertices, textureVertices, normalVertices, polygons);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         try {
             Assertions.assertTrue(model.checkConsistency());
         } catch (ReaderExceptions.FaceException exception) {
@@ -381,7 +386,12 @@ class ObjReaderTest {
                 new Polygon(Arrays.asList(0,1,2), Arrays.asList(1,1), Arrays.asList(1,1,0)),
                 new Polygon(Arrays.asList(4,3,2), Arrays.asList(2,1,1), new ArrayList<>()),
                 new Polygon(Arrays.asList(1,2,4), Arrays.asList(1,1,2), Arrays.asList(1,2,2))));
-        Model model = new Model(vertices, textureVertices, normalVertices, polygons);
+        Model model = null;
+        try {
+            model = new Model(vertices, textureVertices, normalVertices, polygons);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         try {
             Assertions.assertTrue(model.checkConsistency());
         } catch (ReaderExceptions.NotDefinedUniformFormatException exception) {
