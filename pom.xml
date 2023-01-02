@@ -7,11 +7,15 @@
     <groupId>com</groupId>
     <artifactId>cgvsu</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Simple3DViewer</name>
+    <name>3DViewer</name>
+	<packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.0</junit.version>
+		<org.openjfx.version>16</org.openjfx.version>
+		<maven.compiler.scource>19</maven.compiler.scource>
+		<maven.compiler.target>19</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -25,7 +29,7 @@
 		<dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>19</version>
+            <version>${org.openjfx.version}</version>
         </dependency>
         <dependency>
             <groupId>java3d</groupId>
@@ -47,12 +51,35 @@
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
-			<version>19</version>
+			<version>${org.openjfx.version}</version>
 		</dependency>
 	</dependencies>
 
     <build>
         <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.4.2</version>
+				<executions>
+					<execution>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>
+										com.cgvsu.ObjViewer
+									</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>jar-with-dependencies</descriptorRefs>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
