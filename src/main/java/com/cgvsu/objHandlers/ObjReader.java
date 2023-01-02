@@ -19,7 +19,7 @@ public class ObjReader {
 	private static final String OBJ_GROUP_TOKEN = "g";
 	private static final String OBJ_EMPTY_TOKEN = "";
 
-	public static Model read(final String fileContent, boolean writeInformationToConsole) {
+	public static Model read(final String fileContent, boolean writeInformationToConsole) throws Exception {
 
 		Model resultModel = new Model();
 		int lineInd = 0;
@@ -57,6 +57,9 @@ public class ObjReader {
 			}
 		}
 		resultModel.checkConsistency();
+		resultModel.triangulate();
+		resultModel.recalculateNormals();
+
 		return resultModel;
 	}
 

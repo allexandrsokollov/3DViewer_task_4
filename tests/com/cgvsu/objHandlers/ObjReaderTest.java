@@ -341,7 +341,7 @@ class ObjReaderTest {
     }
 
     @Test
-    public void testCheckConsistency01() {
+    public void testCheckConsistency01() throws Exception {
         List<Vector3f> vertices = new ArrayList<>(Arrays.asList(
                 new Vector3f(5f, 8f, 6f), new Vector3f(8f, 8f, 5f),
                 new Vector3f(7f, 8f, 5f), new Vector3f(7f, 5f, 5f),
@@ -356,7 +356,9 @@ class ObjReaderTest {
                 new Polygon(Arrays.asList(0,1,2), Arrays.asList(1,2,1), Arrays.asList(1,1,0)),
                 new Polygon(Arrays.asList(4,3,2), Arrays.asList(2,1,1), Arrays.asList(0,0,10)),
                 new Polygon(Arrays.asList(1,2,4), Arrays.asList(1,1,2), Arrays.asList(1,2,2))));
-        Model model = new Model(vertices, textureVertices, normalVertices, polygons);
+        Model model = null;
+        model = new Model(vertices, textureVertices, normalVertices, polygons);
+
         try {
             Assertions.assertTrue(model.checkConsistency());
         } catch (ReaderExceptions.FaceException exception) {
@@ -366,7 +368,7 @@ class ObjReaderTest {
     }
 
     @Test
-    public void testCheckConsistency02() {
+    public void testCheckConsistency02() throws Exception {
         List<Vector3f> vertices = new ArrayList<>(Arrays.asList(
                 new Vector3f(5f, 8f, 6f), new Vector3f(8f, 8f, 5f),
                 new Vector3f(7f, 8f, 5f), new Vector3f(7f, 5f, 5f),
@@ -381,7 +383,9 @@ class ObjReaderTest {
                 new Polygon(Arrays.asList(0,1,2), Arrays.asList(1,1), Arrays.asList(1,1,0)),
                 new Polygon(Arrays.asList(4,3,2), Arrays.asList(2,1,1), new ArrayList<>()),
                 new Polygon(Arrays.asList(1,2,4), Arrays.asList(1,1,2), Arrays.asList(1,2,2))));
-        Model model = new Model(vertices, textureVertices, normalVertices, polygons);
+        Model model = null;
+        model = new Model(vertices, textureVertices, normalVertices, polygons);
+
         try {
             Assertions.assertTrue(model.checkConsistency());
         } catch (ReaderExceptions.NotDefinedUniformFormatException exception) {
@@ -391,7 +395,7 @@ class ObjReaderTest {
     }
 
     @Test
-    public void testRead01() {
+    public void testRead01() throws Exception {
         List<Vector3f> vertices = new ArrayList<>(Arrays.asList(
                 new Vector3f(5f, 8f, 6f), new Vector3f(8f, 8f, 5f),
                 new Vector3f(7f, 8f, 5f), new Vector3f(7f, 5f, 5f),
