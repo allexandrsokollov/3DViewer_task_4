@@ -1,7 +1,7 @@
 package com.cgvsu.model;
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
-import com.cgvsu.objreader.ReaderExceptions;
+import com.cgvsu.objHandlers.ReaderExceptions;
 
 import java.util.*;
 
@@ -78,20 +78,20 @@ public class Model {
 				throw new ReaderExceptions.NotDefinedUniformFormatException(
 						"The unified format for specifying polygon descriptions is not defined.");
 			}
-			for (int j = 0; j < vertexIndices.size(); j++) {
-				if (vertexIndices.get(j) >= vertices.size()) {
+			for (Integer vertexIndex : vertexIndices) {
+				if (vertexIndex >= vertices.size()) {
 					throw new ReaderExceptions.FaceException(
 							"Polygon description is wrong.", i + 1);
 				}
 			}
-			for (int j = 0; j < textureVertexIndices.size(); j++) {
-				if (textureVertexIndices.get(j) >= textureVertices.size()) {
+			for (Integer textureVertexIndex : textureVertexIndices) {
+				if (textureVertexIndex >= textureVertices.size()) {
 					throw new ReaderExceptions.FaceException(
 							"Polygon description is wrong.", i + 1);
 				}
 			}
-			for (int j = 0; j < normalIndices.size(); j++) {
-				if (normalIndices.get(j) >= normals.size()) {
+			for (Integer normalIndex : normalIndices) {
+				if (normalIndex >= normals.size()) {
 					throw new ReaderExceptions.FaceException(
 							"Polygon description is wrong.", i + 1);
 				}

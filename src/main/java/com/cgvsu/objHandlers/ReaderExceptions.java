@@ -1,4 +1,4 @@
-package com.cgvsu.objreader;
+package com.cgvsu.objHandlers;
 
 public class ReaderExceptions {
     public static class ObjReaderException extends RuntimeException {

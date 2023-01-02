@@ -1,4 +1,4 @@
-package com.cgvsu.objreader;
+package com.cgvsu.objHandlers;
 
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
@@ -333,6 +333,7 @@ class ObjReaderTest {
             List<Integer> normalVerticesIndices = new ArrayList<>();
             ObjReader.parseOneFaceWord(wordsInLineWithoutToken, verticesIndices, textureVerticesIndices, normalVerticesIndices, 5);
 			Assertions.fail();
+
         } catch (ReaderExceptions.ObjReaderException exception) {
             String expectedError = "Error parsing OBJ file on line: 5. Failed to parse int value.";
             Assertions.assertEquals(expectedError, exception.getMessage());

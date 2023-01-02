@@ -1,4 +1,4 @@
-package com.cgvsu.objreader;
+package com.cgvsu.objHandlers;
 
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
@@ -132,9 +132,7 @@ public class ObjReader {
 				}
 			}
 			switch (someVertexDescription.length) {
-				case 1 -> {
-					onePolygonVertexIndices.add(someVertexDescription[0] - 1);
-				}
+				case 1 -> onePolygonVertexIndices.add(someVertexDescription[0] - 1);
 				case 2 -> {
 					onePolygonVertexIndices.add(someVertexDescription[0] - 1);
 					onePolygonTextureVertexIndices.add(someVertexDescription[1] - 1);

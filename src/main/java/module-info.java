@@ -3,8 +3,9 @@ module com.cgvsu {
     requires javafx.fxml;
     requires vecmath;
     requires java.desktop;
+	requires org.controlsfx.controls;
 
 
-    opens com.cgvsu to javafx.fxml;
+	opens com.cgvsu to javafx.fxml;
     exports com.cgvsu;
 }
