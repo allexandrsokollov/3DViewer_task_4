@@ -4,7 +4,7 @@ public class Vector2f {
 
     public static final float EPS = 1e-7f;
 
-    protected float x, y;
+    private float x, y;
 
     public static Vector2f getAdded(final Vector2f v1, final Vector2f v2) {
         return new Vector2f(v1.getX() + v2.getX(), v1.getY() + v2.getY());

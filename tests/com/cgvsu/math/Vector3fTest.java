@@ -52,7 +52,7 @@ class Vector3fTest {
         Vector3f vector3f2 = new Vector3f(1.5F, 1.5F, 1.5F);
         Vector3f vector3f3 = new Vector3f(3.0F, 3.0F, 3.0F);
 
-        Vector3f vector3f = Vector3f.getSummarized(vector3f1, vector3f2);
+        Vector3f vector3f = Vector3f.getAdded(vector3f1, vector3f2);
         vector3f1.add(vector3f2);
         assertEquals(vector3f3, vector3f);
         assertEquals(vector3f3, vector3f1);
@@ -65,7 +65,7 @@ class Vector3fTest {
         Vector3f vector3f2 = new Vector3f(1.5F, 1.5F, 1.5F);
         Vector3f vector3f3 = new Vector3f(0, 0, 0);
 
-        Vector3f vector3f = Vector3f.getAdded(vector3f1, vector3f2);
+        Vector3f vector3f = Vector3f.getSubtracted(vector3f1, vector3f2);
         vector3f1.subtract(vector3f2);
         assertEquals(vector3f3, vector3f);
         assertEquals(vector3f3, vector3f1);

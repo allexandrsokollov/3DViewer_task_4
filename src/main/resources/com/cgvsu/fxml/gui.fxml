@@ -57,7 +57,7 @@
         </Menu>
     </MenuBar>
 
-    <Canvas fx:id="canvas" height="870" width="1600" AnchorPane.topAnchor="30.0" />
+    <Canvas fx:id="canvas" height="500" width="500" AnchorPane.topAnchor="30.0" />
    <ListView id="l" fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutX="6.0" layoutY="33.0" onMouseClicked="#selectModel" prefHeight="849.0" prefWidth="165.0">
       <contextMenu>
          <ContextMenu>

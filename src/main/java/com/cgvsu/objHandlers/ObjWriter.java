@@ -32,9 +32,9 @@ public class ObjWriter {
 	protected static String writeVertexes(List<Vector3f> v){
 		StringBuilder str = new StringBuilder();
 		for (Vector3f vector3f : v) {
-			final String vx = String.format("%.4f", vector3f.x).replace(',', '.');
-			final String vy = String.format("%.4f", vector3f.y).replace(',', '.');
-			final String vz = String.format("%.4f", vector3f.z).replace(',', '.');
+			final String vx = String.format("%.4f", vector3f.getX()).replace(',', '.');
+			final String vy = String.format("%.4f", vector3f.getY()).replace(',', '.');
+			final String vz = String.format("%.4f", vector3f.getZ()).replace(',', '.');
 			str.append("v  ").append(vx).append(" ").append(vy).append(" ").append(vz).append("\n");
 		}
 		str.append("# ").append(v.size()).append(" vertices");
@@ -59,9 +59,9 @@ public class ObjWriter {
 	protected static String writeNormals(List<Vector3f> vn){
 		StringBuilder str = new StringBuilder();
 		for (Vector3f vector3f : vn) {
-			final String vx = String.format("%.4f", vector3f.x).replace(',', '.');
-			final String vy = String.format("%.4f", vector3f.y).replace(',', '.');
-			final String vz = String.format("%.4f", vector3f.z).replace(',', '.');
+			final String vx = String.format("%.4f", vector3f.getX()).replace(',', '.');
+			final String vy = String.format("%.4f", vector3f.getY()).replace(',', '.');
+			final String vz = String.format("%.4f", vector3f.getZ()).replace(',', '.');
 			str.append("vn  ").append(vx).append(" ").append(vy).append(" ").append(vz).append("\n");
 		}
 		str.append("# ").append(vn.size()).append(" normals");
