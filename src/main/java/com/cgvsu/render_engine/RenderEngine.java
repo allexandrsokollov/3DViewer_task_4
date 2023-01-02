@@ -19,7 +19,7 @@ public class RenderEngine {
             final Model mesh,
             final int width,
             final int height) throws Exception {
-        Matrix4 modelMatrix = getModelMatrix(new Vector3f(10,10,10), new Vector3f(0,0,0), new Vector3f(1,1,1));
+        Matrix4 modelMatrix = getModelMatrix(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(1,1,1));
         Matrix4 viewMatrix = camera.getViewMatrix();
         Matrix4 projectionMatrix = camera.getProjectionMatrix();
 
