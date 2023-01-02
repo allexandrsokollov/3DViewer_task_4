@@ -17,7 +17,7 @@
                 <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator>
             </MenuItem>
-			<MenuItem mnemonicParsing="false" onAction="#saveModel" text="Save Model">
+			<MenuItem mnemonicParsing="false" onAction="#saveModel" text="Save Edited Model">
 				<accelerator>
 					<KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 				</accelerator>
@@ -57,13 +57,19 @@
         </Menu>
     </MenuBar>
 
-    <Canvas fx:id="canvas" height="870" width="1600" AnchorPane.topAnchor="30.0" />
+    <Canvas fx:id="canvas" height="500" width="500" AnchorPane.topAnchor="30.0" />
    <ListView id="l" fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutX="6.0" layoutY="33.0" onMouseClicked="#selectModel" prefHeight="849.0" prefWidth="165.0">
       <contextMenu>
          <ContextMenu>
            <items>
              <MenuItem id="ListViewContextDelete" fx:id="listViewContextDelete" mnemonicParsing="false" onAction="#deleteModelFromViewList" text="Delete" />
            </items>
+			 <items>
+				 <MenuItem id="ListViewContextDelete"  mnemonicParsing="false" onAction="#saveInitialModel" text="Save initial Model" />
+			 </items>
+			 <items>
+				 <MenuItem id="ListViewContextDelete" mnemonicParsing="false" onAction="#saveEditedModel" text="Save edited Model" />
+			 </items>
          </ContextMenu>
       </contextMenu></ListView>
 </AnchorPane>

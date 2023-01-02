@@ -4,7 +4,7 @@ public class Vector3f {
 
 
     public static final float EPS = 1e-7f;
-    public float x, y, z;
+    private float x, y, z;
 
     public static Vector3f getVectorProduct(final Vector3f v1, final Vector3f v2) {
         final float x  = v1.getY() * v2.getZ() - v2.getY() * v1.getZ();
@@ -13,11 +13,11 @@ public class Vector3f {
         return new Vector3f(x, y, z);
     }
 
-    public static Vector3f getSummarized(final Vector3f v1, final Vector3f v2) {
+    public static Vector3f getAdded(final Vector3f v1, final Vector3f v2) {
         return new Vector3f(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ());
     }
 
-    public static Vector3f getAdded(final Vector3f v1, final Vector3f v2) {
+    public static Vector3f getSubtracted(final Vector3f v1, final Vector3f v2) {
         return new Vector3f(v1.getX() - v2.getX(), v1.getY() - v2.getY(), v1.getZ() - v2.getZ()) ;
     }
 

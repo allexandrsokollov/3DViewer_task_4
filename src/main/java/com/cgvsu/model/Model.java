@@ -26,6 +26,14 @@ public class Model {
 		polygons = new ArrayList<>();
 	}
 
+	public Model getCopy() {
+		return new Model(
+				this.vertices,
+				this.textureVertices,
+				this.normals,
+				this.polygons);
+	}
+
 	public List<Vector3f> getVertices() {
 		return vertices;
 	}

@@ -3,7 +3,7 @@ package com.cgvsu.math;
 public class Vector4f {
 
     public static final float EPS = 1e-7f;
-    public float x, y, z, w;
+    private float x, y, z, w;
 
     public static Vector4f getNormalizedVector(final Vector4f v1) {
         if (v1.length() - 0 < EPS) {
