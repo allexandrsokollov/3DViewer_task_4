@@ -124,7 +124,7 @@ class Matrix4Test {
                 {30, 30, 30, 30},
                 {40, 40, 40, 40}
         });
-        m1.getMultiplied(m2);
+        m1.multiply(m2);
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
                 assertEquals(mR.getMatrix()[row][col], m1.getMatrix()[row][col]);

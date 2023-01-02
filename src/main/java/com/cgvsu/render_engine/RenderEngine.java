@@ -19,13 +19,13 @@ public class RenderEngine {
             final Model mesh,
             final int width,
             final int height) throws Exception {
-        Matrix4 modelMatrix = rotateScaleTranslate();
+        Matrix4 modelMatrix = getModelMatrix(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(1,1,1));
         Matrix4 viewMatrix = camera.getViewMatrix();
         Matrix4 projectionMatrix = camera.getProjectionMatrix();
 
         Matrix4 modelViewProjectionMatrix = new Matrix4(modelMatrix.getMatrix());
-        modelViewProjectionMatrix.getMultiplied(viewMatrix);
-        modelViewProjectionMatrix.getMultiplied(projectionMatrix);
+        modelViewProjectionMatrix.multiply(viewMatrix);
+        modelViewProjectionMatrix.multiply(projectionMatrix);
 
         final int nPolygons = mesh.getPolygons().size();
         for (int polygonInd = 0; polygonInd < nPolygons; ++polygonInd) {
