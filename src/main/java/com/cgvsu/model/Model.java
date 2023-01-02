@@ -17,8 +17,7 @@ public class Model {
 		this.vertices = vertices;
 		this.textureVertices = textureVertices;
 		this.polygons = polygons;
-		this.normals = normals;
-		//this.normals = new ArrayList<>();
+		this.normals = new ArrayList<>();
 		recalculateNormals();
 		triangulate();
 	}
@@ -62,12 +61,14 @@ public class Model {
 		this.textureVertices = vertices;
 	}
 
-	public void setNormals(final List<Vector3f> vertices) {
-		this.normals = vertices;
+	public void setNormals() throws Exception {
+		recalculateNormals();
 	}
 
-	public void setPolygons(final List<Polygon> vertices) {
-		this.polygons = vertices;
+	public void setPolygons(final List<Polygon> polygons) throws Exception {
+		this.polygons = polygons;
+		recalculateNormals();
+		triangulate();
 	}
 
 	public boolean checkConsistency() {
