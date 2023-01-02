@@ -4,7 +4,6 @@ package com.cgvsu.render_engine;
 
 import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector3f;
-import com.cgvsu.math.Vector4f;
 
 import javax.vecmath.Point2f;
 
@@ -106,7 +105,7 @@ public class GraphicConveyor {
     public static Matrix4 lookAt(Vector3f eye, Vector3f target, Vector3f up) throws Exception {
         Vector3f resultZ = Vector3f.getSubtracted(target, eye);
         Vector3f resultX = Vector3f.getVectorProduct(up, resultZ);
-        Vector3f resultY = Vector3f.getVectorProduct(resultZ, resultX);;
+        Vector3f resultY = Vector3f.getVectorProduct(resultZ, resultX);
 
 
 
@@ -129,34 +128,39 @@ public class GraphicConveyor {
             final float nearPlane,
             final float farPlane) {
         Matrix4 result = new Matrix4();
+        result.setIdentity();
         float tangentMinusOnDegree = (float) (1.0F / (Math.tan(fov * 0.5F)));
         result.getMatrix()[0][0] = tangentMinusOnDegree / aspectRatio;
         result.getMatrix()[1][1] = tangentMinusOnDegree;
-        result.getMatrix()[2][2] = (farPlane + nearPlane) / (farPlane - nearPlane);
+        result.getMatrix()[2][2] = 2* (farPlane + nearPlane) / (farPlane - nearPlane);
         result.getMatrix()[2][3] = 1.0F;
         result.getMatrix()[3][2] = 2 * (nearPlane * farPlane) / (nearPlane - farPlane);
         return result;
     }
 
     public static Vector3f multiplyMatrix4ByVector3(final Matrix4 matrix, final Vector3f vertex) {
-        final float x = (vertex.getX() * matrix.getMatrix()[0][0]) + (vertex.getY() * matrix.getMatrix()[1][0])
+        /*final float x = (vertex.getX() * matrix.getMatrix()[0][0]) + (vertex.getY() * matrix.getMatrix()[1][0])
                 + (vertex.getZ() * matrix.getMatrix()[2][0]) + matrix.getMatrix()[3][0];
         final float y = (vertex.getX() * matrix.getMatrix()[0][1]) + (vertex.getY() * matrix.getMatrix()[1][1])
                 + (vertex.getZ() * matrix.getMatrix()[2][1]) + matrix.getMatrix()[3][1];
         final float z = (vertex.getX() * matrix.getMatrix()[0][2]) + (vertex.getY() * matrix.getMatrix()[1][2])
                 + (vertex.getZ() * matrix.getMatrix()[2][2]) + matrix.getMatrix()[3][2];
         final float w = (vertex.getX() * matrix.getMatrix()[0][3]) + (vertex.getY() * matrix.getMatrix()[1][3])
-                + (vertex.getZ() * matrix.getMatrix()[2][3]) + matrix.getMatrix()[3][3];;
-        return new Vector3f(x / w, y / w, z / w);
-    }
+                + (vertex.getZ() * matrix.getMatrix()[2][3]) + matrix.getMatrix()[3][3];*/
+        float[][] matrixResult = new float[4][1];
+        float[][] vectorMatrix = new float[4][1];
+        vectorMatrix[0][0] = vertex.getX();
+        vectorMatrix[1][0] = vertex.getY();
+        vectorMatrix[2][0] = vertex.getZ();
+        vectorMatrix[3][0] = 1;
 
-    public static Vector3f vector4fToVector3f(Vector4f vector4f) {
-        final float w = vector4f.getW();
-        final float x = vector4f.getX() ;
-        final float y = vector4f.getY() ;
-        final float z = vector4f.getZ() ;
-
-        return new Vector3f(x, y, z);
+        for (int row = 0; row < matrix.getMatrix().length; row++) {
+            for (int col = 0; col < matrix.getMatrix()[0].length; col++) {
+                matrixResult[row][0] += matrix.getMatrix()[row][col] * vectorMatrix[col][0];
+            }
+        }
+        return new Vector3f(matrixResult[0][0]/ matrixResult[3][0]
+                , matrixResult[1][0]/ matrixResult[3][0], matrixResult[2][0]/ matrixResult[3][0]);
     }
 
     public static Point2f vertexToPoint(final Vector3f vertex, final int width, final int height) {
