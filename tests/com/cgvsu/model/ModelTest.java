@@ -10,7 +10,7 @@ import java.util.List;
 class ModelTest {
 
 	@Test
-	void getCopyTest() {
+	void getCopyTest() throws Exception {
 		Model initial = new Model(List.of(
 				new Vector3f(1, 1, 1)),
 				List.of(new Vector2f(1 ,1)),
@@ -25,7 +25,7 @@ class ModelTest {
 						List.of(1, 1, 1), List.of(1, 1, 1), List.of(1, 1, 1))));
 		Model copied = initial.getCopy();
 
-		initial.setNormals(List.of(new Vector3f(2,2,2)));
+		initial.setNormals();
 
 		Assertions.assertEquals(expected.getNormals(), copied.getNormals());
 	}
