@@ -28,9 +28,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-
 public class GuiController {
 
     final private float TRANSLATION = 0.5F;
@@ -41,7 +38,8 @@ public class GuiController {
 	@FXML
 	public MenuItem listViewContextDelete;
 
-	private Map<String, Model> loadedModels;
+	private Map<String, Model> editedLoadedModels;
+	private Map<String, Model> initialLoadedModels;
 
     @FXML
     AnchorPane anchorPane;
@@ -50,6 +48,8 @@ public class GuiController {
     private Canvas canvas;
 
     private Model currentModel = null;
+
+	private String currentModelName = null;
 
     private Camera camera = new Camera(
             new Vector3f(0, 0, 100),
@@ -64,7 +64,8 @@ public class GuiController {
 		System.out.println("initialize called");
 		Timeline timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
-		loadedModels = new HashMap<>();
+		editedLoadedModels = new HashMap<>();
+		initialLoadedModels = new HashMap<>();
 		modelsMenu = new Menu();
 
 
@@ -79,6 +80,10 @@ public class GuiController {
                 try {
                     RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
                 } catch (Exception e) {
+					Notifications.create()
+							.text(e.getMessage())
+							.position(Pos.CENTER)
+							.showError();
                     throw new RuntimeException(e);
                 }
             }
@@ -100,10 +105,10 @@ public class GuiController {
         }
 
         Path fileName = Path.of(file.getAbsolutePath());
-		String currentModelName = file.getName();
+		currentModelName = file.getName();
 		System.out.println("file name: " + currentModelName);
 
-		if (!loadedModels.containsKey(currentModelName)) {
+		if (! editedLoadedModels.containsKey(currentModelName)) {
 			modelsMenu.getItems().add(new MenuItem(currentModelName));
 			listOfLoadedModelsNames.getItems().add(currentModelName);
 		}
@@ -112,28 +117,20 @@ public class GuiController {
 		try {
 			fileContent = Files.readString(fileName);
 		} catch (IOException e) {
+			Notifications.create()
+					.text(e.getMessage())
+					.position(Pos.CENTER)
+					.showError();
 			throw new RuntimeException(e);
 		}
 		currentModel = ObjReader.read(fileContent, false);
-		loadedModels.put(currentModelName, currentModel);
+		editedLoadedModels.put(currentModelName, currentModel);
+		initialLoadedModels.put(currentModelName, currentModel.getCopy());
     }
 
 	@FXML
 	public void saveModel() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
-		fileChooser.setTitle("Save Model");
-
-		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
-		try {
-			ObjWriter.writeToFile(currentModel, file);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		Notifications.create()
-				.text("File saved at:\n" + file.getAbsolutePath())
-				.position(Pos.CENTER)
-				.showInformation();
+		saveEditedModel();
 	}
 
 	@FXML
@@ -141,7 +138,7 @@ public class GuiController {
 		String modelName = getStringWithoutSurroundingSquareBrackets(
 				listOfLoadedModelsNames.getSelectionModel().getSelectedItems().toString());
 
-		Model newModel = loadedModels.get(modelName);
+		Model newModel = editedLoadedModels.get(modelName);
 
 		if (newModel != null && !newModel.equals(currentModel)) {
 			currentModel = newModel;
@@ -154,7 +151,7 @@ public class GuiController {
 
 		int selectedIndex = listOfLoadedModelsNames.getSelectionModel().getSelectedIndex();
 		listOfLoadedModelsNames.getItems().remove(selectedIndex);
-		loadedModels.remove(modelName);
+		editedLoadedModels.remove(modelName);
 		currentModel = null;
 	}
 
@@ -164,8 +161,37 @@ public class GuiController {
 		return initialString.substring(0, stringLength - 1);
 	}
 
+	public void saveInitialModel() {
+		saveModel(initialLoadedModels.get(currentModelName));
+	}
 
-    @FXML
+	public void saveEditedModel() {
+		saveModel(editedLoadedModels.get(currentModelName));
+	}
+
+	private void saveModel(Model modelToSave) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
+		fileChooser.setTitle("Save Model");
+
+		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+		try {
+			ObjWriter.writeToFile(modelToSave, file);
+		} catch (IOException e) {
+			Notifications.create()
+					.text(e.getMessage())
+					.position(Pos.CENTER)
+					.showError();
+			throw new RuntimeException(e);
+
+		}
+		Notifications.create()
+				.text("File saved at:\n" + file.getAbsolutePath())
+				.position(Pos.CENTER)
+				.showInformation();
+	}
+
+	@FXML
     public void handleCameraForward() {
         camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
     }
@@ -194,4 +220,5 @@ public class GuiController {
     public void handleCameraDown() {
         camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
     }
+
 }

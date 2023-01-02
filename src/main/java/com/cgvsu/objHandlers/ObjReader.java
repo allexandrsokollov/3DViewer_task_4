@@ -60,7 +60,7 @@ public class ObjReader {
 		return resultModel;
 	}
 
-	// Всем методам кроме основного я поставил модификатор доступа protected, чтобы обращаться к ним в тестах
+
 	public static Vector3f parseVertex(final List<String> listOfWordsWithoutToken, final int lineInd) {
 		if (listOfWordsWithoutToken.size() != 3)
 			throw new ReaderExceptions.ObjReaderException("Wrong number of vertex arguments.", lineInd);
