@@ -14,8 +14,9 @@ public class Model {
 	public Model(final List<Vector3f> vertices, final List<Vector2f> textureVertices, final List<Vector3f> normals, final List<Polygon> polygons) {
 		this.vertices = vertices;
 		this.textureVertices = textureVertices;
-		this.normals = normals; //можно вставить пересчёт нормалей
+		this.normals = normals;
 		this.polygons = polygons;
+		triangulate();
 	}
 
 	public Model() {
