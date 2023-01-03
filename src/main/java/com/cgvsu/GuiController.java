@@ -16,10 +16,13 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,7 +43,11 @@ public class GuiController {
 	@FXML
 	public MenuItem listViewContextDelete;
 	@FXML
-	public Spinner<Double> moveXCoordinateValue;
+	public Spinner<Double> spinnerMoveX;
+	@FXML
+	public Spinner<Double> spinnerMoveY;
+	@FXML
+	public Spinner<Double> spinnerMoveZ;
 
 	private Map<String, Model> editedLoadedModels;
 	private Map<String, Model> initialLoadedModels;
@@ -66,16 +73,15 @@ public class GuiController {
         anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
         anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
 
-		System.out.println("initialize called");
 		Timeline timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
 		editedLoadedModels = new HashMap<>();
 		initialLoadedModels = new HashMap<>();
 		activeModels = new HashMap<>();
 
-		moveXCoordinateValue = new Spinner<>();
-		SpinnerValueFactory<Double> moveXCoordinatesSpinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-100,100, 0, 0.5);
-		moveXCoordinateValue.setValueFactory(moveXCoordinatesSpinnerFactory);
+		spinnerMoveX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
+		spinnerMoveY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
+		spinnerMoveZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
 
 		modelsMenu = new Menu();
 
@@ -91,10 +97,7 @@ public class GuiController {
 
             if (currentModel != null) {
                 try {
-					for (Map.Entry<String, Model> entry : activeModels.entrySet()) {
-						RenderEngine.render(canvas.getGraphicsContext2D(), camera, entry.getValue(), (int) width, (int) height);
-					}
-
+					RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
                 } catch (Exception e) {
 					Notifications.create()
 							.text(e.getMessage())
@@ -161,7 +164,7 @@ public class GuiController {
 			currentModel = newModel;
 		}
 
-		activeModels.put(modelName, newModel);
+		//activeModels.put(modelName, newModel);
 	}
 
 	public void deleteModelFromViewList() {
@@ -210,18 +213,55 @@ public class GuiController {
 				.showInformation();
 	}
 
-	public void moveXCoordinate() {
-		try {
-			Matrix4 modelMatrix = getModelMatrix(new Vector3f(10,0,0), new Vector3f(0,0,0), new Vector3f(1,1,1));
-			currentModel.makeTransformation(modelMatrix);
-		} catch (Exception e) {
-			Notifications.create()
-					.text(e.getMessage())
-					.position(Pos.CENTER)
-					.showError();
-			throw new RuntimeException(e);
+	public void moveXCoordinate(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(spinnerMoveX.getValue().floatValue(), 0, 0),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
 		}
+		canvas.requestFocus();
+	}
 
+	public void moveYCoordinate(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, spinnerMoveY.getValue().floatValue(), 0),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
+	}
+
+	public void moveZCoordinate(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
 	}
 
 	@FXML
