@@ -338,7 +338,6 @@ public class GuiController {
 	public void rotateZ(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по Z)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
 						new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()), new Vector3f(1, 1, 1));
 				currentModel.makeTransformation(modelMatrix);
@@ -373,7 +372,6 @@ public class GuiController {
 	public void rotateX(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по X)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
 						new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0), new Vector3f(1, 1, 1));
 				currentModel.makeTransformation(modelMatrix);
