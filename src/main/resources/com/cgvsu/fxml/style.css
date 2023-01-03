@@ -1,7 +1,38 @@
 .fontStyle {
     -fx-text-fill: #cacdd3;
     -fx-font-size: 14;
+    -fx-min-height: 30;
+    -fx-max-height: 30;
+    -fx-min-width: 70;
     -fx-background-color: #2B2E34;
+    -fx-end-margin: 0;
+    -fx-start-margin: 0;
+}
+
+.fontStyle #menuFile:hover,
+.fontStyle #menuCamera:hover {
+    -fx-background-color: #3F4145;
+    -fx-min-width: 40;
+    -fx-border-radius: 2;
+}
+
+.fontStyle #menuFile:hover .label,
+.fontStyle #menuCamera:hover .label {
+    -fx-background-color: #3F4145;
+}
+
+.fontStyle #menuFile:hover #menuContextItem,
+.fontStyle #menuCamera:hover #menuContextItem,
+.fontStyle #menuFile:hover #menuContextItem .label,
+.fontStyle #menuCamera:hover #menuContextItem .label {
+    -fx-background-color: #2B2E34;
+}
+
+.fontStyle #menuFile #menuContextItem:hover,
+.fontStyle #menuCamera #menuContextItem:hover,
+.fontStyle #menuFile #menuContextItem:hover .label,
+.fontStyle #menuCamera #menuContextItem:hover .label {
+    -fx-background-color: #3F4145;
 }
 
 .menu-bar .menu-bar {
@@ -77,13 +108,13 @@
 
 .spinner .increment-arrow-button,
 .spinner .decrement-arrow-button {
-    -fx-background-color: #4B5467;
-    -fx-text-fill: #34373E;
+    -fx-background-color: #2B2E34;
+    -fx-text-fill: #cacdd3;
     -fx-font-size: 12;
 }
 .spinner .increment-arrow-button:hover,
 .spinner .decrement-arrow-button:hover {
-    -fx-background-color: #cacdd3;
+    -fx-background-color: #4B5467;
 }
 .spinner .increment-arrow-button:hover:pressed,
 .spinner .decrement-arrow-button:hover:pressed,
@@ -94,4 +125,8 @@
 .spinner .increment-arrow-button .increment-arrow,
 .spinner .decrement-arrow-button .decrement-arrow {
     -fx-background-color: #cacdd3;
+}
+
+.spinner {
+    -fx-background-color: #2B2E34;
 }
