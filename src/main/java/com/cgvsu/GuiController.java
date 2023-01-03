@@ -287,9 +287,8 @@ public class GuiController {
 	public void scaleZ(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут масштабирование по Z)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, spinnerScaleZ.getValue().floatValue()));
 				currentModel.makeTransformation(modelMatrix);
 			} catch (Exception e) {
 				Notifications.create()
@@ -305,9 +304,8 @@ public class GuiController {
 	public void scaleY(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут масштабирование по Y)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+						new Vector3f(0, 0, 0), new Vector3f(1, spinnerScaleY.getValue().floatValue(), 1));
 				currentModel.makeTransformation(modelMatrix);
 			} catch (Exception e) {
 				Notifications.create()
@@ -323,9 +321,8 @@ public class GuiController {
 	public void scaleX(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут масштабирование по X)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+						new Vector3f(0, 0, 0), new Vector3f(spinnerScaleX.getValue().floatValue(), 1, 1));
 				currentModel.makeTransformation(modelMatrix);
 			} catch (Exception e) {
 				Notifications.create()
@@ -341,9 +338,8 @@ public class GuiController {
 	public void rotateZ(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по Z)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+						new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()), new Vector3f(1, 1, 1));
 				currentModel.makeTransformation(modelMatrix);
 			} catch (Exception e) {
 				Notifications.create()
@@ -359,9 +355,8 @@ public class GuiController {
 	public void rotateY(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по Y)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+						new Vector3f(0, spinnerRotateY.getValue().floatValue(), 0), new Vector3f(1, 1, 1));
 				currentModel.makeTransformation(modelMatrix);
 			} catch (Exception e) {
 				Notifications.create()
@@ -377,9 +372,8 @@ public class GuiController {
 	public void rotateX(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
-				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по X)
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+						new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0), new Vector3f(1, 1, 1));
 				currentModel.makeTransformation(modelMatrix);
 			} catch (Exception e) {
 				Notifications.create()
