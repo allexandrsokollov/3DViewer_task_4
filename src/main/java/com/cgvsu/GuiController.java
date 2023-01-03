@@ -18,6 +18,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -387,32 +388,36 @@ public class GuiController {
 	}
 
 	@FXML
-    public void handleCameraForward() {
+    public void handleCameraForward() throws Exception {
         camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
     }
 
     @FXML
-    public void handleCameraBackward() {
+    public void handleCameraBackward() throws Exception {
         camera.movePosition(new Vector3f(0, 0, TRANSLATION));
     }
 
     @FXML
-    public void handleCameraLeft() {
+    public void handleCameraLeft() throws Exception {
         camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
     }
 
     @FXML
-    public void handleCameraRight() {
+    public void handleCameraRight() throws Exception {
         camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
     }
 
     @FXML
-    public void handleCameraUp() {
+    public void handleCameraUp() throws Exception {
         camera.movePosition(new Vector3f(0, TRANSLATION, 0));
     }
 
     @FXML
-    public void handleCameraDown() {
+    public void handleCameraDown() throws Exception {
         camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
     }
+
+	public void  rotateCamera(MouseEvent event) {
+
+	}
 }
