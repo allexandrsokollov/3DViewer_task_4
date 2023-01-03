@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="883.0" prefWidth="1108.0" style="-fx-background-color: #13151A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
-    <MenuBar prefHeight="30.0" prefWidth="176.0" styleClass="fontStyle" stylesheets="@style.css">
+    <MenuBar prefHeight="30.0" prefWidth="190.0" styleClass="fontStyle" stylesheets="@style.css">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" style="font-size: 20px;" text="Load Model">
             <accelerator>
@@ -70,8 +70,8 @@
         </Menu>
     </MenuBar>
 
-    <Canvas fx:id="canvas" height="849.0" layoutX="179.0" layoutY="34.0" width="929.0" AnchorPane.topAnchor="34.0" />
-   <ListView fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutY="30.0" onMouseClicked="#selectModel" prefHeight="377.0" prefWidth="176.0" stylesheets="@style.css">
+    <Canvas fx:id="canvas" height="875.0" layoutX="190.0" layoutY="6.0" width="929.0" AnchorPane.topAnchor="6.0" />
+   <ListView fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutY="30.0" onMouseClicked="#selectModel" prefHeight="641.0" prefWidth="190.0" stylesheets="@style.css">
       <contextMenu>
          <ContextMenu autoFix="false" styleClass="contextMenu">
            <items>
@@ -85,26 +85,62 @@
 			 </items>
          </ContextMenu>
       </contextMenu></ListView>
-   <Pane id="controlPane" layoutY="407.0" prefHeight="200.0" prefWidth="176.0" style="-fx-border-radius: 15; -fx-background-color: #2B2E34;">
+   <Pane id="controlPane" layoutY="672.0" prefHeight="211.0" prefWidth="190.0" style="-fx-border-radius: 15; -fx-background-color: #2B2E34;">
       <children>
-         <Label layoutX="8.0" layoutY="13.0" styleClass="fontStyle" stylesheets="@style.css" text="X Shift" textFill="#cacdd3">
+         <Label layoutX="10.0" layoutY="13.0" styleClass="fontStyle" stylesheets="@style.css" text="X Shift" textFill="#cacdd3">
             <font>
                <Font name="Arial Bold" size="14.0" />
             </font>
          </Label>
-         <Spinner fx:id="spinnerMoveX" focusTraversable="false" layoutX="61.0" layoutY="10.0" onKeyPressed="#moveXCoordinate" prefHeight="20.0" prefWidth="101.0" stylesheets="@style.css" />
-         <Label layoutX="8.0" layoutY="43.0" styleClass="fontStyle" stylesheets="@style.css" text="Y Shift" textFill="#cacdd3">
+         <Spinner fx:id="spinnerMoveX" focusTraversable="false" layoutX="5.0" layoutY="42.0" onKeyPressed="#moveXCoordinate" prefHeight="25.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="75.0" layoutY="13.0" styleClass="fontStyle" stylesheets="@style.css" text="Y Shift" textFill="#cacdd3">
             <font>
                <Font name="Arial Bold" size="14.0" />
             </font>
          </Label>
-         <Spinner fx:id="spinnerMoveY" focusTraversable="false" layoutX="61.0" layoutY="40.0" onKeyPressed="#moveYCoordinate" prefHeight="20.0" prefWidth="101.0" stylesheets="@style.css" />
-         <Label layoutX="8.0" layoutY="73.0" styleClass="fontStyle" stylesheets="@style.css" text="Z Shift" textFill="#cacdd3">
+         <Spinner fx:id="spinnerMoveY" focusTraversable="false" layoutX="70.0" layoutY="42.0" onKeyPressed="#moveYCoordinate" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="140.0" layoutY="13.0" styleClass="fontStyle" stylesheets="@style.css" text="Z Shift" textFill="#cacdd3">
             <font>
                <Font name="Arial Bold" size="14.0" />
             </font>
          </Label>
-         <Spinner fx:id="spinnerMoveZ" focusTraversable="false" layoutX="61.0" layoutY="70.0" onKeyPressed="#moveZCoordinate" prefHeight="20.0" prefWidth="101.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerMoveZ" focusTraversable="false" layoutX="135.0" layoutY="42.0" onKeyPressed="#moveZCoordinate" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="7.0" layoutY="80.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale X" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="72.0" layoutY="80.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Y" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="138.0" layoutY="80.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Z" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Spinner fx:id="spinnerScaleX" focusTraversable="false" layoutX="5.0" layoutY="106.0" onKeyPressed="#scaleX" prefHeight="25.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerScaleY" focusTraversable="false" layoutX="70.0" layoutY="106.0" onKeyPressed="#scaleY" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerScaleZ" focusTraversable="false" layoutX="135.0" layoutY="106.0" onKeyPressed="#scaleZ" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="4.0" layoutY="149.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate X" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="69.0" layoutY="149.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Y" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="134.0" layoutY="149.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Z" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Spinner fx:id="spinnerRotateX" focusTraversable="false" layoutX="5.0" layoutY="175.0" onKeyPressed="#rotateX" prefHeight="25.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerRotateY" focusTraversable="false" layoutX="70.0" layoutY="175.0" onKeyPressed="#rotateY" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerRotateZ" focusTraversable="false" layoutX="135.0" layoutY="175.0" onKeyPressed="#rotateZ" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
       </children>
    </Pane>
 </AnchorPane>

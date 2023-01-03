@@ -48,6 +48,18 @@ public class GuiController {
 	public Spinner<Double> spinnerMoveY;
 	@FXML
 	public Spinner<Double> spinnerMoveZ;
+	@FXML
+	public Spinner<Double> spinnerScaleX;
+	@FXML
+	public Spinner<Double> spinnerScaleY;
+	@FXML
+	public Spinner<Double> spinnerScaleZ;
+	@FXML
+	public Spinner<Double> spinnerRotateX;
+	@FXML
+	public Spinner<Double> spinnerRotateY;
+	@FXML
+	public Spinner<Double> spinnerRotateZ;
 
 	private Map<String, Model> editedLoadedModels;
 	private Map<String, Model> initialLoadedModels;
@@ -82,6 +94,14 @@ public class GuiController {
 		spinnerMoveX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
 		spinnerMoveY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
 		spinnerMoveZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
+
+		spinnerScaleX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-10,10, 0.0, 0.1));
+		spinnerScaleY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-10,10, 0.0, 0.1));
+		spinnerScaleZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-10,10, 0.0, 0.1));
+
+		spinnerRotateX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
+		spinnerRotateY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
+		spinnerRotateZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
 
 		modelsMenu = new Menu();
 
@@ -251,6 +271,114 @@ public class GuiController {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			try {
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
+	}
+
+	public void scaleZ(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				//todo поменяй тут матрицу и масштрабирование заработает (тут масштабирование по Z)
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
+	}
+
+	public void scaleY(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				//todo поменяй тут матрицу и масштрабирование заработает (тут масштабирование по Y)
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
+	}
+
+	public void scaleX(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				//todo поменяй тут матрицу и масштрабирование заработает (тут масштабирование по X)
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
+	}
+
+	public void rotateZ(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по Z)
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
+	}
+
+	public void rotateY(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по Y)
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				Notifications.create()
+						.text(e.getMessage())
+						.position(Pos.CENTER)
+						.showError();
+				throw new RuntimeException(e);
+			}
+		}
+		canvas.requestFocus();
+	}
+
+	public void rotateX(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				//todo поменяй тут матрицу и масштрабирование заработает (тут поворот по X)
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
 						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
 				currentModel.makeTransformation(modelMatrix);
 			} catch (Exception e) {
