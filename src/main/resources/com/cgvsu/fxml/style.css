@@ -1,0 +1,97 @@
+.fontStyle {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #2B2E34;
+}
+
+.menu-bar .menu-bar {
+    -fx-background-color: #2B2E34;
+}
+.menu-bar .menu {
+    -fx-background-color: #2B2E34;
+}
+.menu-bar  .menu-button:hover {
+    -fx-background-color: #2B2E34;
+}
+.menu-bar .label {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #2B2E34;
+}
+
+.menu-bar {
+    -fx-background-color: #2B2E34;
+}
+.menu-bar .menu-item {
+    -fx-background-color: #2B2E34;
+    -fx-border-width: 0;
+}
+.context-menu {
+    -fx-background-color: #2B2E34;
+}
+
+.context-menu .list-view {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #2B2E34;
+}
+.list-view {
+    -fx-background-color: #2B2E34;
+}
+
+.list-cell {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #2B2E34;
+}
+.list-cell:odd {
+     -fx-text-fill: #cacdd3;
+     -fx-font-size: 14;
+     -fx-background-color: #3F4145;
+ }
+
+.list-cell:selected {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #4B5467;
+}
+
+#listViewContextDelete .menu-item {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #4B5467;
+}
+
+#listViewContextDelete .menu-item:focused {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #4B5467;
+}
+
+.list-cell:selected .context-menu {
+    -fx-text-fill: #cacdd3;
+    -fx-font-size: 14;
+    -fx-background-color: #4B5467;
+}
+
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #4B5467;
+    -fx-text-fill: #34373E;
+    -fx-font-size: 12;
+}
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #cacdd3;
+}
+.spinner .increment-arrow-button:hover:pressed,
+.spinner .decrement-arrow-button:hover:pressed,
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed {
+    -fx-background-color:  #cacdd3;
+}
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: #cacdd3;
+}

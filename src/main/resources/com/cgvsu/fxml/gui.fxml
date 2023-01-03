@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
-    <MenuBar>
+<AnchorPane fx:id="anchorPane" prefHeight="883.0" prefWidth="1108.0" style="-fx-background-color: #13151A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
+    <MenuBar prefHeight="30.0" prefWidth="190.0" styleClass="fontStyle" stylesheets="@style.css">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" text="Load Model">
+            <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" style="font-size: 20px;" text="Load Model">
             <accelerator>
                 <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator>
@@ -22,6 +27,10 @@
 					<KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 				</accelerator>
 			</MenuItem>
+         <styleClass>
+            <String fx:value="menu" />
+            <String fx:value="menu" />
+         </styleClass>
         </Menu>
         <Menu mnemonicParsing="false" text="Camera Options">
             <MenuItem mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
@@ -54,22 +63,84 @@
                     <KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="UP" />
                 </accelerator>
             </MenuItem>
+         <styleClass>
+            <String fx:value="menu" />
+            <String fx:value="menu" />
+         </styleClass>
         </Menu>
     </MenuBar>
 
-    <Canvas fx:id="canvas" height="500" width="500" AnchorPane.topAnchor="30.0" />
-   <ListView id="l" fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutX="6.0" layoutY="33.0" onMouseClicked="#selectModel" prefHeight="849.0" prefWidth="165.0">
+    <Canvas fx:id="canvas" height="875.0" layoutX="190.0" layoutY="6.0" width="929.0" AnchorPane.topAnchor="6.0" />
+   <ListView fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutY="30.0" onMouseClicked="#selectModel" prefHeight="641.0" prefWidth="190.0" stylesheets="@style.css">
       <contextMenu>
-         <ContextMenu>
+         <ContextMenu autoFix="false" styleClass="contextMenu">
            <items>
              <MenuItem id="ListViewContextDelete" fx:id="listViewContextDelete" mnemonicParsing="false" onAction="#deleteModelFromViewList" text="Delete" />
            </items>
 			 <items>
-				 <MenuItem id="ListViewContextDelete"  mnemonicParsing="false" onAction="#saveInitialModel" text="Save initial Model" />
+				 <MenuItem id="ListViewContextDelete" mnemonicParsing="false" onAction="#saveInitialModel" text="Save initial Model" />
 			 </items>
 			 <items>
 				 <MenuItem id="ListViewContextDelete" mnemonicParsing="false" onAction="#saveEditedModel" text="Save edited Model" />
 			 </items>
          </ContextMenu>
       </contextMenu></ListView>
+   <Pane id="controlPane" layoutY="672.0" prefHeight="211.0" prefWidth="190.0" style="-fx-border-radius: 15; -fx-background-color: #2B2E34;">
+      <children>
+         <Label layoutX="10.0" layoutY="13.0" styleClass="fontStyle" stylesheets="@style.css" text="X Shift" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Spinner fx:id="spinnerMoveX" focusTraversable="false" layoutX="5.0" layoutY="42.0" onKeyPressed="#moveXCoordinate" prefHeight="25.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="75.0" layoutY="13.0" styleClass="fontStyle" stylesheets="@style.css" text="Y Shift" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Spinner fx:id="spinnerMoveY" focusTraversable="false" layoutX="70.0" layoutY="42.0" onKeyPressed="#moveYCoordinate" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="140.0" layoutY="13.0" styleClass="fontStyle" stylesheets="@style.css" text="Z Shift" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Spinner fx:id="spinnerMoveZ" focusTraversable="false" layoutX="135.0" layoutY="42.0" onKeyPressed="#moveZCoordinate" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="7.0" layoutY="80.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale X" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="72.0" layoutY="80.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Y" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="138.0" layoutY="80.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Z" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Spinner fx:id="spinnerScaleX" focusTraversable="false" layoutX="5.0" layoutY="106.0" onKeyPressed="#scaleX" prefHeight="25.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerScaleY" focusTraversable="false" layoutX="70.0" layoutY="106.0" onKeyPressed="#scaleY" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerScaleZ" focusTraversable="false" layoutX="135.0" layoutY="106.0" onKeyPressed="#scaleZ" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Label layoutX="4.0" layoutY="149.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate X" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="69.0" layoutY="149.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Y" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Label layoutX="134.0" layoutY="149.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Z" textFill="#cacdd3">
+            <font>
+               <Font name="Arial Bold" size="14.0" />
+            </font>
+         </Label>
+         <Spinner fx:id="spinnerRotateX" focusTraversable="false" layoutX="5.0" layoutY="175.0" onKeyPressed="#rotateX" prefHeight="25.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerRotateY" focusTraversable="false" layoutX="70.0" layoutY="175.0" onKeyPressed="#rotateY" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+         <Spinner fx:id="spinnerRotateZ" focusTraversable="false" layoutX="135.0" layoutY="175.0" onKeyPressed="#rotateZ" prefHeight="20.0" prefWidth="50.0" stylesheets="@style.css" />
+      </children>
+   </Pane>
 </AnchorPane>

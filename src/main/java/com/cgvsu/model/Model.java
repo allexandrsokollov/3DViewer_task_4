@@ -1,7 +1,9 @@
 package com.cgvsu.model;
+import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
 import com.cgvsu.objHandlers.ReaderExceptions;
+import com.cgvsu.render_engine.GraphicConveyor;
 
 import java.util.*;
 
@@ -18,6 +20,7 @@ public class Model {
 		this.textureVertices = textureVertices;
 		this.polygons = polygons;
 		this.normals = new ArrayList<>();
+		//todo триангулировать текстурные координаты
 		recalculateNormals();
 		triangulate();
 	}
@@ -35,6 +38,11 @@ public class Model {
 				this.textureVertices,
 				this.normals,
 				this.polygons);
+	}
+
+	public void makeTransformation(Matrix4 modelMatrix) {
+		modelMatrix.transpose();
+		vertices.replaceAll(vertex -> GraphicConveyor.multiplyMatrix4ByVector3(modelMatrix, vertex));
 	}
 
 	public List<Vector3f> getVertices() {
