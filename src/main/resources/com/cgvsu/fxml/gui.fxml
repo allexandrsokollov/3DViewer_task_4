@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
+<AnchorPane fx:id="anchorPane" prefHeight="883.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" text="Load Model">
@@ -57,19 +59,22 @@
         </Menu>
     </MenuBar>
 
-    <Canvas fx:id="canvas" height="500" width="500" AnchorPane.topAnchor="30.0" />
-   <ListView id="l" fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutX="6.0" layoutY="33.0" onMouseClicked="#selectModel" prefHeight="849.0" prefWidth="165.0">
+    <Canvas fx:id="canvas" height="849.0" layoutX="171.0" layoutY="34.0" width="685.0" AnchorPane.topAnchor="34.0" />
+   <ListView id="l" fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutX="6.0" layoutY="33.0" onMouseClicked="#selectModel" prefHeight="377.0" prefWidth="165.0">
       <contextMenu>
          <ContextMenu>
            <items>
              <MenuItem id="ListViewContextDelete" fx:id="listViewContextDelete" mnemonicParsing="false" onAction="#deleteModelFromViewList" text="Delete" />
            </items>
 			 <items>
-				 <MenuItem id="ListViewContextDelete"  mnemonicParsing="false" onAction="#saveInitialModel" text="Save initial Model" />
+				 <MenuItem id="ListViewContextDelete" mnemonicParsing="false" onAction="#saveInitialModel" text="Save initial Model" />
 			 </items>
 			 <items>
 				 <MenuItem id="ListViewContextDelete" mnemonicParsing="false" onAction="#saveEditedModel" text="Save edited Model" />
 			 </items>
          </ContextMenu>
       </contextMenu></ListView>
+   <Button focusTraversable="false" layoutX="6.0" layoutY="429.0" mnemonicParsing="false" onAction="#moveXCoordinate" text="Move X" />
+   <Spinner id="moveXCoordinateValue" fx:id="moveXCoordinateValue" editable="true" layoutX="80.0" layoutY="429.0"
+			onKeyPressed="#moveXCoordinate" prefHeight="25.0" prefWidth="91.0"/>
 </AnchorPane>

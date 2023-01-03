@@ -11,12 +11,12 @@ public class ReaderExceptions {
             super("Error, not universal format: " + errorMessage);
         }
     }
-    public static class FaceException extends  RuntimeException {
+    public static class FaceException extends RuntimeException {
         public FaceException(final String errorMessage, final int ordinalNumberOfFace) {
             super("Some face incorrect, not exists vertex: " + ordinalNumberOfFace + ". " + errorMessage);
         }
     }
-    public static class WrongFileException extends  RuntimeException {
+    public static class WrongFileException extends RuntimeException {
         public WrongFileException(final String errorMessage) {
             super("Error, wrong file: " + errorMessage);
         }

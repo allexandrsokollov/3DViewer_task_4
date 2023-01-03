@@ -1,6 +1,7 @@
 package com.cgvsu;
 
 
+import com.cgvsu.math.Matrix4;
 import com.cgvsu.model.Model;
 import com.cgvsu.objHandlers.ObjReader;
 import com.cgvsu.objHandlers.ObjWriter;
@@ -19,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,6 +27,8 @@ import java.nio.file.Path;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.cgvsu.render_engine.GraphicConveyor.getModelMatrix;
 
 public class GuiController {
 
@@ -37,9 +39,12 @@ public class GuiController {
 	public ListView<String> listOfLoadedModelsNames;
 	@FXML
 	public MenuItem listViewContextDelete;
+	@FXML
+	public Spinner<Double> moveXCoordinateValue;
 
 	private Map<String, Model> editedLoadedModels;
 	private Map<String, Model> initialLoadedModels;
+	private Map<String, Model> activeModels;
 
     @FXML
     AnchorPane anchorPane;
@@ -66,7 +71,15 @@ public class GuiController {
         timeline.setCycleCount(Animation.INDEFINITE);
 		editedLoadedModels = new HashMap<>();
 		initialLoadedModels = new HashMap<>();
+		activeModels = new HashMap<>();
+
+		moveXCoordinateValue = new Spinner<>();
+		SpinnerValueFactory<Double> moveXCoordinatesSpinnerFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(-100,100, 0, 0.5);
+		moveXCoordinateValue.setValueFactory(moveXCoordinatesSpinnerFactory);
+
 		modelsMenu = new Menu();
+
+		listOfLoadedModelsNames.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 
         KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
@@ -78,7 +91,10 @@ public class GuiController {
 
             if (currentModel != null) {
                 try {
-                    RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
+					for (Map.Entry<String, Model> entry : activeModels.entrySet()) {
+						RenderEngine.render(canvas.getGraphicsContext2D(), camera, entry.getValue(), (int) width, (int) height);
+					}
+
                 } catch (Exception e) {
 					Notifications.create()
 							.text(e.getMessage())
@@ -144,6 +160,8 @@ public class GuiController {
 		if (newModel != null && !newModel.equals(currentModel)) {
 			currentModel = newModel;
 		}
+
+		activeModels.put(modelName, newModel);
 	}
 
 	public void deleteModelFromViewList() {
@@ -192,6 +210,20 @@ public class GuiController {
 				.showInformation();
 	}
 
+	public void moveXCoordinate() {
+		try {
+			Matrix4 modelMatrix = getModelMatrix(new Vector3f(10,0,0), new Vector3f(0,0,0), new Vector3f(1,1,1));
+			currentModel.makeTransformation(modelMatrix);
+		} catch (Exception e) {
+			Notifications.create()
+					.text(e.getMessage())
+					.position(Pos.CENTER)
+					.showError();
+			throw new RuntimeException(e);
+		}
+
+	}
+
 	@FXML
     public void handleCameraForward() {
         camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
@@ -221,5 +253,4 @@ public class GuiController {
     public void handleCameraDown() {
         camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
     }
-
 }
