@@ -222,154 +222,120 @@ public class GuiController {
 	}
 
 	public void moveXCoordinate(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			moveModel(new Vector3f(spinnerMoveX.getValue().floatValue(), 0, 0));
-		}
-		canvas.requestFocus();
+		moveModel(new Vector3f(spinnerMoveX.getValue().floatValue(), 0, 0), keyEvent);
 	}
 
 	public void moveYCoordinate(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			moveModel(new Vector3f(0, spinnerMoveY.getValue().floatValue(), 0));
-		}
-		canvas.requestFocus();
+		moveModel(new Vector3f(0, spinnerMoveY.getValue().floatValue(), 0), keyEvent);
 	}
 
 	public void moveZCoordinate(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			moveModel(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()));
-		}
-		canvas.requestFocus();
+		moveModel(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()), keyEvent);
 	}
 
-	private void moveModel(Vector3f shiftVector) {
-		try {
-			Matrix4 modelMatrix = getModelMatrix(shiftVector,
-					new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-			currentModel.makeTransformation(modelMatrix);
-		} catch (Exception e) {
-			showExceptionNotification(e);
+	private void moveModel(Vector3f shiftVector, KeyEvent event) {
+		if (event.getCode().equals(KeyCode.ENTER)) {
+			try {
+				Matrix4 modelMatrix = getModelMatrix(shiftVector,
+						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				showExceptionNotification(e);
+			}
 		}
+		canvas.requestFocus();
 	}
 
 	public void scaleZ(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			scaleModel(new Vector3f(1, 1, spinnerScaleZ.getValue().floatValue()));
-		}
-		canvas.requestFocus();
+		scaleModel(new Vector3f(1, 1, spinnerScaleZ.getValue().floatValue()), keyEvent);
 	}
 
 	public void scaleY(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			scaleModel(new Vector3f(1, spinnerScaleY.getValue().floatValue(), 1));
-		}
-		canvas.requestFocus();
+		scaleModel(new Vector3f(1, spinnerScaleY.getValue().floatValue(), 1), keyEvent);
 	}
 
 	public void scaleX(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			scaleModel(new Vector3f(spinnerScaleX.getValue().floatValue(), 1, 1));
-		}
-		canvas.requestFocus();
+		scaleModel(new Vector3f(spinnerScaleX.getValue().floatValue(), 1, 1), keyEvent);
 	}
 
-	private void scaleModel(Vector3f scaleVector) {
-		try {
-			Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-					new Vector3f(0, 0, 0), scaleVector);
-			currentModel.makeTransformation(modelMatrix);
-		} catch (Exception e) {
-			showExceptionNotification(e);
+	private void scaleModel(Vector3f scaleVector, KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+						new Vector3f(0, 0, 0), scaleVector);
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				showExceptionNotification(e);
+			}
 		}
+		canvas.requestFocus();
 	}
 
 	public void rotateZ(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			rotateModel(new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()));
-		}
-		canvas.requestFocus();
+		rotateModel(new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()), keyEvent);
 	}
 
 	public void rotateY(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			rotateModel(new Vector3f(0, spinnerRotateY.getValue().floatValue(), 0));
-		}
-		canvas.requestFocus();
+		rotateModel(new Vector3f(0, spinnerRotateY.getValue().floatValue(), 0), keyEvent);
 	}
 
 	public void rotateX(KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			rotateModel(new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0));
-		}
-		canvas.requestFocus();
+		rotateModel(new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0), keyEvent);
 	}
 
-	private void rotateModel(Vector3f rotateVector) {
-		try {
-			Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-					rotateVector, new Vector3f(1, 1, 1));
-			currentModel.makeTransformation(modelMatrix);
-		} catch (Exception e) {
-			showExceptionNotification(e);
+	private void rotateModel(Vector3f rotateVector, KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+			try {
+				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+						rotateVector, new Vector3f(1, 1, 1));
+				currentModel.makeTransformation(modelMatrix);
+			} catch (Exception e) {
+				showExceptionNotification(e);
+			}
 		}
+		canvas.requestFocus();
 	}
 
 	@FXML
     public void handleCameraForward() {
-		try {
-			camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
-		} catch (Exception e) {
-			showExceptionNotification(e);
-		}
+		moveCameraPosition(new Vector3f(0, 0, -TRANSLATION));
 	}
 
     @FXML
     public void handleCameraBackward() {
-		try {
-			camera.movePosition(new Vector3f(0, 0, TRANSLATION));
-		} catch (Exception e) {
-			showExceptionNotification(e);
-		}
+		moveCameraPosition(new Vector3f(0, 0, TRANSLATION));
 	}
 
     @FXML
     public void handleCameraLeft() {
-		try {
-			camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
-		} catch (Exception e) {
-			showExceptionNotification(e);
-		}
+		moveCameraPosition(new Vector3f(TRANSLATION, 0, 0));
 	}
 
     @FXML
     public void handleCameraRight() {
-		try {
-			camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
-		} catch (Exception e) {
-			showExceptionNotification(e);
-		}
+		moveCameraPosition(new Vector3f(-TRANSLATION, 0, 0));
 	}
 
     @FXML
     public void handleCameraUp() {
-		try {
-			camera.movePosition(new Vector3f(0, TRANSLATION, 0));
-		} catch (Exception e) {
-			showExceptionNotification(e);
-		}
+		moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
 	}
 
     @FXML
     public void handleCameraDown() {
-		try {
-			camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
-		} catch (Exception e) {
-			showExceptionNotification(e);
-		}
+		moveCameraPosition(new Vector3f(0, -TRANSLATION, 0));
 	}
 
 	public void  rotateCamera(MouseEvent event) {
 
+	}
+
+	private void moveCameraPosition(Vector3f translationVector) {
+		try {
+			camera.movePosition(translationVector);
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
 	}
 
 	private void showExceptionNotification(Exception e) {
