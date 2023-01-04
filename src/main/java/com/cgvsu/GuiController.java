@@ -1,6 +1,5 @@
 package com.cgvsu;
 
-
 import com.cgvsu.math.Matrix4;
 import com.cgvsu.model.Model;
 import com.cgvsu.objHandlers.ObjReader;
