@@ -3,7 +3,7 @@ package com.cgvsu.render_engine;
 import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector3f;
 
-
+import static com.cgvsu.render_engine.GraphicConveyor.getModelMatrix;
 
 
 public class Camera {
@@ -43,8 +43,13 @@ public class Camera {
         return target;
     }
 
-    public void movePosition(final Vector3f translation) {
-        this.position.add(translation);
+    public void movePosition(final Vector3f translation) throws Exception {
+        Matrix4 modelMatrix = GraphicConveyor.getModelMatrix(translation, new Vector3f(0,0,0), new Vector3f(1,1,1));
+        modelMatrix.transpose();
+
+        this.position = GraphicConveyor.multiplyMatrix4ByVector3(modelMatrix, position);
+        this.target = GraphicConveyor.multiplyMatrix4ByVector3(modelMatrix, target);
+        //this.position.add(translation);
     }
 
     public void moveTarget(final Vector3f translation) {
