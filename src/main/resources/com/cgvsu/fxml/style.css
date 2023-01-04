@@ -12,7 +12,6 @@
 .fontStyle #menuFile:hover,
 .fontStyle #menuCamera:hover {
     -fx-background-color: #3F4145;
-    -fx-min-width: 40;
     -fx-border-radius: 2;
 }
 
@@ -33,6 +32,12 @@
 .fontStyle #menuFile #menuContextItem:hover .label,
 .fontStyle #menuCamera #menuContextItem:hover .label {
     -fx-background-color: #3F4145;
+}
+
+.button {
+    -fx-background-color: #4B5467;
+    -fx-font-size: 14;
+    -fx-text-fill: #cacdd3;
 }
 
 .menu-bar .menu-bar {
