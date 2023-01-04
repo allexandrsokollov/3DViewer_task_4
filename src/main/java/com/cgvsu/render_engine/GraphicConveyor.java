@@ -6,6 +6,7 @@ import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector3f;
 
 import javax.vecmath.Point2f;
+import java.util.Arrays;
 
 public class GraphicConveyor {
 
@@ -36,7 +37,8 @@ public class GraphicConveyor {
         return matrixRotation;
     }
 
-    private static Matrix4 getRotationMatrixX(float xAngle) {
+    private static Matrix4 getRotationMatrixX(double xAngle) {
+        xAngle = Math.toRadians(xAngle);
         Matrix4 matrixRotationX = new Matrix4();
         matrixRotationX.setIdentity();
 
@@ -45,10 +47,12 @@ public class GraphicConveyor {
         matrixRotationX.getMatrix()[2][1] = (float) Math.sin(xAngle);
         matrixRotationX.getMatrix()[1][2] = (float) (-Math.sin(xAngle));
 
+
         return matrixRotationX;
     }
 
-    private static Matrix4 getRotationMatrixY(float yAngle) {
+    private static Matrix4 getRotationMatrixY(double yAngle) {
+        yAngle = Math.toRadians(yAngle);
         Matrix4 matrixRotationY = new Matrix4();
         matrixRotationY.setIdentity();
 
@@ -60,7 +64,8 @@ public class GraphicConveyor {
         return matrixRotationY;
     }
 
-    private static Matrix4 getRotationMatrixZ(float zAngle) {
+    private static Matrix4 getRotationMatrixZ(double zAngle) {
+        zAngle = Math.toRadians(zAngle);
         Matrix4 matrixRotationZ = new Matrix4();
         matrixRotationZ.setIdentity();
 
@@ -94,6 +99,9 @@ public class GraphicConveyor {
         modelMatrix.multiply(translationMatrix);
         modelMatrix.multiply(rotationMatrix);
         modelMatrix.multiply(scaleMatrix);
+
+
+
 
         return modelMatrix;
     }
@@ -138,15 +146,7 @@ public class GraphicConveyor {
         return result;
     }
 
-    public static Vector3f multiplyMatrix4ByVector3(final Matrix4 matrix, final Vector3f vertex) {
-        /*final float x = (vertex.getX() * matrix.getMatrix()[0][0]) + (vertex.getY() * matrix.getMatrix()[1][0])
-                + (vertex.getZ() * matrix.getMatrix()[2][0]) + matrix.getMatrix()[3][0];
-        final float y = (vertex.getX() * matrix.getMatrix()[0][1]) + (vertex.getY() * matrix.getMatrix()[1][1])
-                + (vertex.getZ() * matrix.getMatrix()[2][1]) + matrix.getMatrix()[3][1];
-        final float z = (vertex.getX() * matrix.getMatrix()[0][2]) + (vertex.getY() * matrix.getMatrix()[1][2])
-                + (vertex.getZ() * matrix.getMatrix()[2][2]) + matrix.getMatrix()[3][2];
-        final float w = (vertex.getX() * matrix.getMatrix()[0][3]) + (vertex.getY() * matrix.getMatrix()[1][3])
-                + (vertex.getZ() * matrix.getMatrix()[2][3]) + matrix.getMatrix()[3][3];*/
+    public static Vector3f multiplyMatrix4ByVector3(final Matrix4 matrix, final Vector3f vertex) throws Exception{
         float[][] matrixResult = new float[4][1];
         float[][] vectorMatrix = new float[4][1];
         vectorMatrix[0][0] = vertex.getX();
@@ -158,6 +158,9 @@ public class GraphicConveyor {
             for (int col = 0; col < matrix.getMatrix()[0].length; col++) {
                 matrixResult[row][0] += matrix.getMatrix()[row][col] * vectorMatrix[col][0];
             }
+        }
+        if (matrixResult[3][0] == 0) {
+            throw new Exception("Multiplication with this matrix is impossible!");
         }
         return new Vector3f(matrixResult[0][0]/ matrixResult[3][0]
                 , matrixResult[1][0]/ matrixResult[3][0], matrixResult[2][0]/ matrixResult[3][0]);

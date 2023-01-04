@@ -107,6 +107,9 @@ public class Vector3f {
 
     @Override
     public String toString() {
+        String x = Float.toString(this.x);
+        String y = Float.toString(this.y);
+        String z = Float.toString(this.z);
         return '{' + x + ',' + y + ',' + z + "}";
     }
 
