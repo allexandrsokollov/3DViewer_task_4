@@ -11,6 +11,7 @@ import com.cgvsu.render_engine.RenderEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -60,9 +61,12 @@ public class GuiController {
 	public Spinner<Double> spinnerRotateY;
 	@FXML
 	public Spinner<Double> spinnerRotateZ;
+	@FXML
+	public Button buttonApplyTransformation;
 
 	private Map<String, Model> editedLoadedModels;
 	private Map<String, Model> initialLoadedModels;
+
 	private Map<String, Model> activeModels;
 
     @FXML
@@ -343,5 +347,9 @@ public class GuiController {
 				.text(e.getMessage())
 				.position(Pos.CENTER)
 				.showError();
+	}
+
+	public void applyTransformation() {
+		System.out.println("button pressed");
 	}
 }
