@@ -120,11 +120,7 @@ public class GuiController {
                 try {
 					RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
                 } catch (Exception e) {
-					Notifications.create()
-							.text(e.getMessage())
-							.position(Pos.CENTER)
-							.showError();
-                    throw new RuntimeException(e);
+					showExceptionNotification(e);
                 }
             }
         });
@@ -157,16 +153,12 @@ public class GuiController {
 		String fileContent;
 		try {
 			fileContent = Files.readString(fileName);
+			currentModel = ObjReader.read(fileContent, false);
+			editedLoadedModels.put(currentModelName, currentModel);
+			initialLoadedModels.put(currentModelName, currentModel.getCopy());
 		} catch (IOException e) {
-			Notifications.create()
-					.text(e.getMessage())
-					.position(Pos.CENTER)
-					.showError();
-			throw new RuntimeException(e);
+			showExceptionNotification(e);
 		}
-		currentModel = ObjReader.read(fileContent, false);
-		editedLoadedModels.put(currentModelName, currentModel);
-		initialLoadedModels.put(currentModelName, currentModel.getCopy());
     }
 
 	@FXML
@@ -221,11 +213,7 @@ public class GuiController {
 		try {
 			ObjWriter.writeToFile(modelToSave, file);
 		} catch (IOException e) {
-			Notifications.create()
-					.text(e.getMessage())
-					.position(Pos.CENTER)
-					.showError();
-			throw new RuntimeException(e);
+			showExceptionNotification(e);
 
 		}
 		Notifications.create()
@@ -236,188 +224,159 @@ public class GuiController {
 
 	public void moveXCoordinate(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(spinnerMoveX.getValue().floatValue(), 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			moveModel(new Vector3f(spinnerMoveX.getValue().floatValue(), 0, 0));
 		}
 		canvas.requestFocus();
 	}
 
 	public void moveYCoordinate(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, spinnerMoveY.getValue().floatValue(), 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			moveModel(new Vector3f(0, spinnerMoveY.getValue().floatValue(), 0));
 		}
 		canvas.requestFocus();
 	}
 
 	public void moveZCoordinate(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			moveModel(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()));
 		}
 		canvas.requestFocus();
 	}
 
+	private void moveModel(Vector3f shiftVector) {
+		try {
+			Matrix4 modelMatrix = getModelMatrix(shiftVector,
+					new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+			currentModel.makeTransformation(modelMatrix);
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
+
 	public void scaleZ(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, spinnerScaleZ.getValue().floatValue()));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			scaleModel(new Vector3f(1, 1, spinnerScaleZ.getValue().floatValue()));
 		}
 		canvas.requestFocus();
 	}
 
 	public void scaleY(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(1, spinnerScaleY.getValue().floatValue(), 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			scaleModel(new Vector3f(1, spinnerScaleY.getValue().floatValue(), 1));
 		}
 		canvas.requestFocus();
 	}
 
 	public void scaleX(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), new Vector3f(spinnerScaleX.getValue().floatValue(), 1, 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			scaleModel(new Vector3f(spinnerScaleX.getValue().floatValue(), 1, 1));
 		}
 		canvas.requestFocus();
 	}
 
+	private void scaleModel(Vector3f scaleVector) {
+		try {
+			Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+					new Vector3f(0, 0, 0), scaleVector);
+			currentModel.makeTransformation(modelMatrix);
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
+
 	public void rotateZ(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()), new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			rotateModel(new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()));
 		}
 		canvas.requestFocus();
 	}
 
 	public void rotateY(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, spinnerRotateY.getValue().floatValue(), 0), new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			rotateModel(new Vector3f(0, spinnerRotateY.getValue().floatValue(), 0));
 		}
 		canvas.requestFocus();
 	}
 
 	public void rotateX(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0), new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
-			} catch (Exception e) {
-				Notifications.create()
-						.text(e.getMessage())
-						.position(Pos.CENTER)
-						.showError();
-				throw new RuntimeException(e);
-			}
+			rotateModel(new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0));
 		}
 		canvas.requestFocus();
 	}
 
+	private void rotateModel(Vector3f rotateVector) {
+		try {
+			Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
+					rotateVector, new Vector3f(1, 1, 1));
+			currentModel.makeTransformation(modelMatrix);
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
+
 	@FXML
-    public void handleCameraForward() throws Exception {
-        camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
-    }
+    public void handleCameraForward() {
+		try {
+			camera.movePosition(new Vector3f(0, 0, -TRANSLATION));
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
 
     @FXML
-    public void handleCameraBackward() throws Exception {
-        camera.movePosition(new Vector3f(0, 0, TRANSLATION));
-    }
+    public void handleCameraBackward() {
+		try {
+			camera.movePosition(new Vector3f(0, 0, TRANSLATION));
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
 
     @FXML
-    public void handleCameraLeft() throws Exception {
-        camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
-    }
+    public void handleCameraLeft() {
+		try {
+			camera.movePosition(new Vector3f(TRANSLATION, 0, 0));
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
 
     @FXML
-    public void handleCameraRight() throws Exception {
-        camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
-    }
+    public void handleCameraRight() {
+		try {
+			camera.movePosition(new Vector3f(-TRANSLATION, 0, 0));
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
 
     @FXML
-    public void handleCameraUp() throws Exception {
-        camera.movePosition(new Vector3f(0, TRANSLATION, 0));
-    }
+    public void handleCameraUp() {
+		try {
+			camera.movePosition(new Vector3f(0, TRANSLATION, 0));
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
 
     @FXML
-    public void handleCameraDown() throws Exception {
-        camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
-    }
+    public void handleCameraDown() {
+		try {
+			camera.movePosition(new Vector3f(0, -TRANSLATION, 0));
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+	}
 
 	public void  rotateCamera(MouseEvent event) {
 
+	}
+
+	private void showExceptionNotification(Exception e) {
+		Notifications.create()
+				.text(e.getMessage())
+				.position(Pos.CENTER)
+				.showError();
 	}
 }
