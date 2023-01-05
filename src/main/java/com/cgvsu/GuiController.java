@@ -8,10 +8,10 @@ import com.cgvsu.render_engine.Camera;
 import com.cgvsu.math.Vector3f;
 
 import com.cgvsu.render_engine.RenderEngine;
+import com.cgvsu.render_engine.Scene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.cgvsu.render_engine.GraphicConveyor.getModelMatrix;
 
@@ -63,21 +63,11 @@ public class GuiController {
 	public Spinner<Double> spinnerRotateZ;
 	@FXML
 	public Button buttonApplyTransformation;
-
-	private Map<String, Model> editedLoadedModels;
-	private Map<String, Model> initialLoadedModels;
-
-	private Map<String, Model> activeModels;
-
     @FXML
     AnchorPane anchorPane;
-
     @FXML
     private Canvas canvas;
-
-    private Model currentModel = null;
-
-	private String currentModelName = null;
+	private Scene scene;
 
     private Camera camera = new Camera(
             new Vector3f(0, 0, 100),
@@ -86,31 +76,15 @@ public class GuiController {
 
 	@FXML
     private void initialize() {
-        anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
-        anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
+		initFXMLComponents();
 
 		Timeline timeline = new Timeline();
-        timeline.setCycleCount(Animation.INDEFINITE);
-		editedLoadedModels = new HashMap<>();
-		initialLoadedModels = new HashMap<>();
-		activeModels = new HashMap<>();
+		timeline.setCycleCount(Animation.INDEFINITE);
 
-		spinnerMoveX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
-		spinnerMoveY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
-		spinnerMoveZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
-
-		spinnerScaleX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-10,10, 0.0, 0.1));
-		spinnerScaleY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-10,10, 0.0, 0.1));
-		spinnerScaleZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-10,10, 0.0, 0.1));
-
-		spinnerRotateX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
-		spinnerRotateY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
-		spinnerRotateZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
-
-		modelsMenu = new Menu();
-
-		listOfLoadedModelsNames.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
+		scene = new Scene();
+		scene.setInitialLoadedModels(new LinkedList<>());
+		scene.setEditedLoadedModels(new LinkedList<>());
+		scene.setActiveModels(new LinkedList<>());
 
         KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
             double width = canvas.getWidth();
@@ -119,9 +93,11 @@ public class GuiController {
             canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
             camera.setAspectRatio((float) (width / height));
 
-            if (currentModel != null) {
+            if (!scene.getActiveModels().isEmpty()) {
                 try {
-					RenderEngine.render(canvas.getGraphicsContext2D(), camera, currentModel, (int) width, (int) height);
+					for (Model model : scene.getActiveModels()) {
+						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model, (int) width, (int) height);
+					}
                 } catch (Exception e) {
 					showExceptionNotification(e);
                 }
@@ -130,10 +106,11 @@ public class GuiController {
 
         timeline.getKeyFrames().add(frame);
         timeline.play();
+		canvas.requestFocus();
     }
 
     @FXML
-    private void onOpenModelMenuItemClick() throws Exception {
+    private void onOpenModelMenuItemClick() {
         FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialDirectory(new File("objModels"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Model (*.obj)", "*.obj"));
@@ -144,24 +121,26 @@ public class GuiController {
             return;
         }
 
-        Path fileName = Path.of(file.getAbsolutePath());
-		currentModelName = file.getName();
-		System.out.println("file name: " + currentModelName);
+        Path filePath = Path.of(file.getAbsolutePath());
+		String fileName = file.getName();
 
-		if (! editedLoadedModels.containsKey(currentModelName)) {
-			modelsMenu.getItems().add(new MenuItem(currentModelName));
-			listOfLoadedModelsNames.getItems().add(currentModelName);
-		}
-
-		String fileContent;
 		try {
-			fileContent = Files.readString(fileName);
-			currentModel = ObjReader.read(fileContent, false);
-			editedLoadedModels.put(currentModelName, currentModel);
-			initialLoadedModels.put(currentModelName, currentModel.getCopy());
-		} catch (IOException e) {
+			Model loadedModel = ObjReader.read(Files.readString(filePath), false);
+			scene.getEditedLoadedModels().add(loadedModel);
+			scene.getInitialLoadedModels().add(loadedModel.getCopy());
+		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
+
+		String tempName = fileName;
+		int counter = 1;
+		while (scene.getModelNames().contains(tempName)) {
+			tempName = fileName;
+			tempName = tempName + " (" + counter++ + ")";
+		}
+
+		listOfLoadedModelsNames.getItems().add(tempName);
+		scene.getModelNames().add(tempName);
     }
 
 	@FXML
@@ -171,40 +150,37 @@ public class GuiController {
 
 	@FXML
 	public void selectModel() {
-		String modelName = getStringWithoutSurroundingSquareBrackets(
-				listOfLoadedModelsNames.getSelectionModel().getSelectedItems().toString());
-
-		Model newModel = editedLoadedModels.get(modelName);
-
-		if (newModel != null && !newModel.equals(currentModel)) {
-			currentModel = newModel;
+		List<Model> selectedModels = new LinkedList<>();
+		for (Integer index : listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()) {
+			selectedModels.add(scene.getEditedLoadedModels().get(index));
 		}
-
-		//activeModels.put(modelName, newModel);
+		scene.setActiveModels(selectedModels);
 	}
 
 	public void deleteModelFromViewList() {
-		String modelName = getStringWithoutSurroundingSquareBrackets(
-				listOfLoadedModelsNames.getSelectionModel().getSelectedItems().toString());
+		List<Integer> modelIndexesToRemove = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices());
+		listOfLoadedModelsNames.getItems().removeAll(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 
-		int selectedIndex = listOfLoadedModelsNames.getSelectionModel().getSelectedIndex();
-		listOfLoadedModelsNames.getItems().remove(selectedIndex);
-		editedLoadedModels.remove(modelName);
-		currentModel = null;
+		int decrement = 0;
+		for (int index : modelIndexesToRemove) {
+			scene.getEditedLoadedModels().remove(index - decrement);
+			scene.getInitialLoadedModels().remove(index - decrement++);
+		}
 	}
-
-	private String getStringWithoutSurroundingSquareBrackets(String initialString) {
-		initialString = initialString.substring(1);
-		int stringLength = initialString.length();
-		return initialString.substring(0, stringLength - 1);
-	}
-
 	public void saveInitialModel() {
-		saveModel(initialLoadedModels.get(currentModelName));
+		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
+			showMessageNotification("Chose one Model to Save!");
+		} else {
+			saveModel(scene.getInitialLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+		}
 	}
 
 	public void saveEditedModel() {
-		saveModel(editedLoadedModels.get(currentModelName));
+		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
+			showMessageNotification("Chose one Model to Save!");
+		} else {
+			saveModel(scene.getEditedLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+		}
 	}
 
 	private void saveModel(Model modelToSave) {
@@ -219,10 +195,7 @@ public class GuiController {
 			showExceptionNotification(e);
 
 		}
-		Notifications.create()
-				.text("File saved at:\n" + file.getAbsolutePath())
-				.position(Pos.CENTER)
-				.showInformation();
+		showMessageNotification("File saved at:\n" + file.getAbsolutePath());
 	}
 
 	public void moveXCoordinate(KeyEvent keyEvent) {
@@ -242,7 +215,9 @@ public class GuiController {
 			try {
 				Matrix4 modelMatrix = getModelMatrix(shiftVector,
 						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
+				for (Model secectedModel : scene.getActiveModels()) {
+					secectedModel.makeTransformation(modelMatrix);
+				}
 			} catch (Exception e) {
 				showExceptionNotification(e);
 			}
@@ -267,7 +242,9 @@ public class GuiController {
 			try {
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
 						new Vector3f(0, 0, 0), scaleVector);
-				currentModel.makeTransformation(modelMatrix);
+				for (Model secectedModel : scene.getActiveModels()) {
+					secectedModel.makeTransformation(modelMatrix);
+				}
 			} catch (Exception e) {
 				showExceptionNotification(e);
 			}
@@ -292,7 +269,9 @@ public class GuiController {
 			try {
 				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
 						rotateVector, new Vector3f(1, 1, 1));
-				currentModel.makeTransformation(modelMatrix);
+				for (Model secectedModel : scene.getActiveModels()) {
+					secectedModel.makeTransformation(modelMatrix);
+				}
 			} catch (Exception e) {
 				showExceptionNotification(e);
 			}
@@ -349,6 +328,13 @@ public class GuiController {
 				.showError();
 	}
 
+	private void showMessageNotification(String message) {
+		Notifications.create()
+				.text(message)
+				.position(Pos.CENTER)
+				.showError();
+	}
+
 	public void applyTransformation() {
 		final float xT = spinnerMoveX.getValue().floatValue();
 		final float yT = spinnerMoveY.getValue().floatValue();
@@ -372,5 +358,25 @@ public class GuiController {
 		}
 
 
+	}
+
+	private void initFXMLComponents() {
+		anchorPane.prefWidthProperty().addListener((ov, oldValue, newValue) -> canvas.setWidth(newValue.doubleValue()));
+		anchorPane.prefHeightProperty().addListener((ov, oldValue, newValue) -> canvas.setHeight(newValue.doubleValue()));
+
+		spinnerMoveX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
+		spinnerMoveY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
+		spinnerMoveZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100.0,100.0, 0.0, 0.5));
+
+		spinnerScaleX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1,10, 1, 0.1));
+		spinnerScaleY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1,10, 1, 0.1));
+		spinnerScaleZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1,10, 1, 0.1));
+
+		spinnerRotateX.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
+		spinnerRotateY.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
+		spinnerRotateZ.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-360,360, 0.0, 1));
+
+		modelsMenu = new Menu();
+		listOfLoadedModelsNames.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 	}
 }
