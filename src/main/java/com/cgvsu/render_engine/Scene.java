@@ -1,6 +1,7 @@
 package com.cgvsu.render_engine;
 
 import com.cgvsu.model.Model;
+import com.cgvsu.model.ModifiedModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,33 +9,29 @@ import java.util.List;
 
 public class Scene {
 
-	private List<Model> editedLoadedModels;
-	private List<Model> initialLoadedModels;
-	private List<Model> activeModels;
+	private List<ModifiedModel> models;
+	private List<ModifiedModel> activeModels;
+	private final List<String> modelNames;
 
-	private List<String> modelNames = new LinkedList<>();
-
-	public List<Model> getEditedLoadedModels() {
-		return editedLoadedModels;
+	public Scene() {
+		models = new LinkedList<>();
+		activeModels = new LinkedList<>();
+		modelNames = new LinkedList<>();
 	}
 
-	public void setEditedLoadedModels(List<Model> editedLoadedModels) {
-		this.editedLoadedModels = editedLoadedModels;
+	public List<ModifiedModel> getModels() {
+		return models;
 	}
 
-	public List<Model> getInitialLoadedModels() {
-		return initialLoadedModels;
+	public void setModels(List<ModifiedModel> models) {
+		this.models = models;
 	}
 
-	public void setInitialLoadedModels(List<Model> initialLoadedModels) {
-		this.initialLoadedModels = initialLoadedModels;
-	}
-
-	public List<Model> getActiveModels() {
+	public List<ModifiedModel> getActiveModels() {
 		return activeModels;
 	}
 
-	public void setActiveModels(List<Model> activeModels) {
+	public void setActiveModels(List<ModifiedModel> activeModels) {
 		this.activeModels = activeModels;
 	}
 

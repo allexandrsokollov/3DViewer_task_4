@@ -2,6 +2,7 @@ package com.cgvsu;
 
 import com.cgvsu.math.Matrix4;
 import com.cgvsu.model.Model;
+import com.cgvsu.model.ModifiedModel;
 import com.cgvsu.objHandlers.ObjReader;
 import com.cgvsu.objHandlers.ObjWriter;
 import com.cgvsu.render_engine.Camera;
@@ -20,6 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -82,9 +84,6 @@ public class GuiController {
 		timeline.setCycleCount(Animation.INDEFINITE);
 
 		scene = new Scene();
-		scene.setInitialLoadedModels(new LinkedList<>());
-		scene.setEditedLoadedModels(new LinkedList<>());
-		scene.setActiveModels(new LinkedList<>());
 
         KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
             double width = canvas.getWidth();
@@ -95,8 +94,8 @@ public class GuiController {
 
             if (!scene.getActiveModels().isEmpty()) {
                 try {
-					for (Model model : scene.getActiveModels()) {
-						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model, (int) width, (int) height);
+					for (ModifiedModel model : scene.getActiveModels()) {
+						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(), (int) width, (int) height, Color.WHITE);
 					}
                 } catch (Exception e) {
 					showExceptionNotification(e);
@@ -125,9 +124,8 @@ public class GuiController {
 		String fileName = file.getName();
 
 		try {
-			Model loadedModel = ObjReader.read(Files.readString(filePath), false);
-			scene.getEditedLoadedModels().add(loadedModel);
-			scene.getInitialLoadedModels().add(loadedModel.getCopy());
+			ModifiedModel loadedModel = new ModifiedModel(ObjReader.read(Files.readString(filePath), false));
+			scene.getModels().add(loadedModel);
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -150,9 +148,9 @@ public class GuiController {
 
 	@FXML
 	public void selectModel() {
-		List<Model> selectedModels = new LinkedList<>();
+		List<ModifiedModel> selectedModels = new LinkedList<>();
 		for (Integer index : listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()) {
-			selectedModels.add(scene.getEditedLoadedModels().get(index));
+			selectedModels.add(scene.getModels().get(index));
 		}
 		scene.setActiveModels(selectedModels);
 		canvas.requestFocus();
@@ -164,8 +162,7 @@ public class GuiController {
 
 		int decrement = 0;
 		for (int index : modelIndexesToRemove) {
-			scene.getEditedLoadedModels().remove(index - decrement);
-			scene.getInitialLoadedModels().remove(index - decrement++);
+			scene.getModels().remove(index - decrement++);
 		}
 		canvas.requestFocus();
 	}
@@ -173,7 +170,7 @@ public class GuiController {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
 		} else {
-			saveModel(scene.getInitialLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+			saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
 		}
 		canvas.requestFocus();
 	}
@@ -182,7 +179,7 @@ public class GuiController {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
 		} else {
-			saveModel(scene.getEditedLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+			saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
 		}
 		canvas.requestFocus();
 	}
