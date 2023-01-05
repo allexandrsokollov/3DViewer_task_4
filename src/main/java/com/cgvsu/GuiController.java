@@ -164,6 +164,8 @@ public class GuiController {
 		for (int index : modelIndexesToRemove) {
 			scene.getModels().remove(index - decrement++);
 		}
+
+		scene.getActiveModels().removeIf(model -> ! scene.getModels().contains(model));
 		canvas.requestFocus();
 	}
 	public void saveInitialModel() {
