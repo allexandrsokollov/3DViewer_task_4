@@ -42,7 +42,13 @@ public class Model {
 
 	public void makeTransformation(Matrix4 modelMatrix) {
 		modelMatrix.transpose();
-		vertices.replaceAll(vertex -> GraphicConveyor.multiplyMatrix4ByVector3(modelMatrix, vertex));
+		vertices.replaceAll(vertex -> {
+			try {
+				return GraphicConveyor.multiplyMatrix4ByVector3(modelMatrix, vertex);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		});
 	}
 
 	public List<Vector3f> getVertices() {

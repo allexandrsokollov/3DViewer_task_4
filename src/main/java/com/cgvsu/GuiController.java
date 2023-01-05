@@ -336,7 +336,7 @@ public class GuiController {
 
 	private void moveCameraPosition(Vector3f translationVector) {
 		try {
-			camera.movePosition(translationVector);
+			camera.moveCamera(translationVector);
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -350,6 +350,27 @@ public class GuiController {
 	}
 
 	public void applyTransformation() {
-		System.out.println("button pressed");
+		final float xT = spinnerMoveX.getValue().floatValue();
+		final float yT = spinnerMoveY.getValue().floatValue();
+		final float zT = spinnerMoveZ.getValue().floatValue();
+		final Vector3f vT = new Vector3f(xT, yT, zT);
+
+		final float xR = spinnerRotateX.getValue().floatValue();
+		final float yR = spinnerRotateY.getValue().floatValue();
+		final float zR = spinnerRotateZ.getValue().floatValue();
+		final Vector3f vR = new Vector3f(xR, yR, zR);
+
+		final float xS = spinnerScaleX.getValue().floatValue();
+		final float yS = spinnerScaleY.getValue().floatValue();
+		final float zS = spinnerScaleZ.getValue().floatValue();
+		final Vector3f vS = new Vector3f(xS, yS, zS);
+		try {
+			Matrix4 modelMatrix = getModelMatrix(vT, vR, vS);
+			currentModel.makeTransformation(modelMatrix);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+
 	}
 }
