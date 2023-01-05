@@ -6,6 +6,7 @@ import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector3f;
 import javafx.scene.canvas.GraphicsContext;
 import com.cgvsu.model.Model;
+import javafx.scene.paint.Color;
 
 import javax.vecmath.Point2f;
 
@@ -27,6 +28,8 @@ public class RenderEngine {
         modelViewProjectionMatrix.multiply(viewMatrix);
         modelViewProjectionMatrix.multiply(projectionMatrix);
         modelViewProjectionMatrix.transpose();//Вопрос
+
+        graphicsContext.setStroke(Color.WHITE);
 
         final int nPolygons = mesh.getPolygons().size();
         for (int polygonInd = 0; polygonInd < nPolygons; ++polygonInd) {
