@@ -2,6 +2,7 @@ package com.cgvsu;
 
 import com.cgvsu.math.Matrix4;
 import com.cgvsu.model.Model;
+import com.cgvsu.model.ModifiedModel;
 import com.cgvsu.objHandlers.ObjReader;
 import com.cgvsu.objHandlers.ObjWriter;
 import com.cgvsu.render_engine.Camera;
@@ -20,6 +21,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -63,7 +66,9 @@ public class GuiController {
 	public Spinner<Double> spinnerRotateZ;
 	@FXML
 	public Button buttonApplyTransformation;
-    @FXML
+	@FXML
+	public Pane controlPane;
+	@FXML
     AnchorPane anchorPane;
     @FXML
     private Canvas canvas;
@@ -82,9 +87,6 @@ public class GuiController {
 		timeline.setCycleCount(Animation.INDEFINITE);
 
 		scene = new Scene();
-		scene.setInitialLoadedModels(new LinkedList<>());
-		scene.setEditedLoadedModels(new LinkedList<>());
-		scene.setActiveModels(new LinkedList<>());
 
         KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
             double width = canvas.getWidth();
@@ -95,8 +97,8 @@ public class GuiController {
 
             if (!scene.getActiveModels().isEmpty()) {
                 try {
-					for (Model model : scene.getActiveModels()) {
-						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model, (int) width, (int) height);
+					for (ModifiedModel model : scene.getActiveModels()) {
+						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(), (int) width, (int) height, Color.WHITE);
 					}
                 } catch (Exception e) {
 					showExceptionNotification(e);
@@ -125,9 +127,8 @@ public class GuiController {
 		String fileName = file.getName();
 
 		try {
-			Model loadedModel = ObjReader.read(Files.readString(filePath), false);
-			scene.getEditedLoadedModels().add(loadedModel);
-			scene.getInitialLoadedModels().add(loadedModel.getCopy());
+			ModifiedModel loadedModel = new ModifiedModel(ObjReader.read(Files.readString(filePath), false));
+			scene.getModels().add(loadedModel);
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -150,37 +151,50 @@ public class GuiController {
 
 	@FXML
 	public void selectModel() {
-		List<Model> selectedModels = new LinkedList<>();
+		List<ModifiedModel> selectedModels = new LinkedList<>();
 		for (Integer index : listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()) {
-			selectedModels.add(scene.getEditedLoadedModels().get(index));
+			selectedModels.add(scene.getModels().get(index));
 		}
 		scene.setActiveModels(selectedModels);
+		canvas.requestFocus();
 	}
 
 	public void deleteModelFromViewList() {
+		List<String> deletedModelNames = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 		List<Integer> modelIndexesToRemove = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices());
+		listOfLoadedModelsNames.setPrefHeight(listOfLoadedModelsNames.getHeight() - 28 * modelIndexesToRemove.size());
 		listOfLoadedModelsNames.getItems().removeAll(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 
 		int decrement = 0;
 		for (int index : modelIndexesToRemove) {
-			scene.getEditedLoadedModels().remove(index - decrement);
-			scene.getInitialLoadedModels().remove(index - decrement++);
+			scene.getModels().remove(index - decrement++);
 		}
+
+		scene.getActiveModels().removeIf(model -> ! scene.getModels().contains(model));
+		scene.getModelNames().removeIf(deletedModelNames::contains);
+		canvas.requestFocus();
 	}
 	public void saveInitialModel() {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
 		} else {
-			saveModel(scene.getInitialLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+			saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
 		}
+		canvas.requestFocus();
 	}
 
 	public void saveEditedModel() {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
 		} else {
-			saveModel(scene.getEditedLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+			try {
+				saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel()
+						.getSelectedIndex()).getTransformedModel());
+			} catch (Exception e) {
+				showExceptionNotification(e);
+			}
 		}
+		canvas.requestFocus();
 	}
 
 	private void saveModel(Model modelToSave) {
@@ -196,86 +210,6 @@ public class GuiController {
 
 		}
 		showMessageNotification("File saved at:\n" + file.getAbsolutePath());
-	}
-
-	public void moveXCoordinate(KeyEvent keyEvent) {
-		moveModel(new Vector3f(spinnerMoveX.getValue().floatValue(), 0, 0), keyEvent);
-	}
-
-	public void moveYCoordinate(KeyEvent keyEvent) {
-		moveModel(new Vector3f(0, spinnerMoveY.getValue().floatValue(), 0), keyEvent);
-	}
-
-	public void moveZCoordinate(KeyEvent keyEvent) {
-		moveModel(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()), keyEvent);
-	}
-
-	private void moveModel(Vector3f shiftVector, KeyEvent event) {
-		if (event.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(shiftVector,
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-				for (Model secectedModel : scene.getActiveModels()) {
-					secectedModel.makeTransformation(modelMatrix);
-				}
-			} catch (Exception e) {
-				showExceptionNotification(e);
-			}
-		}
-		canvas.requestFocus();
-	}
-
-	public void scaleZ(KeyEvent keyEvent) {
-		scaleModel(new Vector3f(1, 1, spinnerScaleZ.getValue().floatValue()), keyEvent);
-	}
-
-	public void scaleY(KeyEvent keyEvent) {
-		scaleModel(new Vector3f(1, spinnerScaleY.getValue().floatValue(), 1), keyEvent);
-	}
-
-	public void scaleX(KeyEvent keyEvent) {
-		scaleModel(new Vector3f(spinnerScaleX.getValue().floatValue(), 1, 1), keyEvent);
-	}
-
-	private void scaleModel(Vector3f scaleVector, KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), scaleVector);
-				for (Model secectedModel : scene.getActiveModels()) {
-					secectedModel.makeTransformation(modelMatrix);
-				}
-			} catch (Exception e) {
-				showExceptionNotification(e);
-			}
-		}
-		canvas.requestFocus();
-	}
-
-	public void rotateZ(KeyEvent keyEvent) {
-		rotateModel(new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()), keyEvent);
-	}
-
-	public void rotateY(KeyEvent keyEvent) {
-		rotateModel(new Vector3f(0, spinnerRotateY.getValue().floatValue(), 0), keyEvent);
-	}
-
-	public void rotateX(KeyEvent keyEvent) {
-		rotateModel(new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0), keyEvent);
-	}
-
-	private void rotateModel(Vector3f rotateVector, KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						rotateVector, new Vector3f(1, 1, 1));
-				for (Model secectedModel : scene.getActiveModels()) {
-					secectedModel.makeTransformation(modelMatrix);
-				}
-			} catch (Exception e) {
-				showExceptionNotification(e);
-			}
-		}
 		canvas.requestFocus();
 	}
 
@@ -309,30 +243,12 @@ public class GuiController {
 		moveCameraPosition(new Vector3f(0, -TRANSLATION, 0));
 	}
 
-	public void  rotateCamera(MouseEvent event) {
-
-	}
-
 	private void moveCameraPosition(Vector3f translationVector) {
 		try {
 			camera.moveCamera(translationVector);
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
-	}
-
-	private void showExceptionNotification(Exception e) {
-		Notifications.create()
-				.text(e.getMessage())
-				.position(Pos.CENTER)
-				.showError();
-	}
-
-	private void showMessageNotification(String message) {
-		Notifications.create()
-				.text(message)
-				.position(Pos.CENTER)
-				.showError();
 	}
 
 	public void applyTransformation() {
@@ -356,10 +272,9 @@ public class GuiController {
 				activeModel.makeTransformation(modelMatrix);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			showExceptionNotification(e);
 		}
-
-
+		canvas.requestFocus();
 	}
 
 	private void initFXMLComponents() {
@@ -380,5 +295,20 @@ public class GuiController {
 
 		modelsMenu = new Menu();
 		listOfLoadedModelsNames.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		listOfLoadedModelsNames.setPrefHeight(0);
+	}
+
+	private void showExceptionNotification(Exception e) {
+		Notifications.create()
+				.text(e.getMessage())
+				.position(Pos.CENTER)
+				.showError();
+	}
+
+	private void showMessageNotification(String message) {
+		Notifications.create()
+				.text(message)
+				.position(Pos.CENTER)
+				.showError();
 	}
 }

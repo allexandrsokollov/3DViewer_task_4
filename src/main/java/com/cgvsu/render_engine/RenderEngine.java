@@ -19,7 +19,8 @@ public class RenderEngine {
             final Camera camera,
             final Model mesh,
             final int width,
-            final int height) throws Exception {
+            final int height,
+			Color modelColor) throws Exception {
         Matrix4 modelMatrix = getModelMatrix(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(1,1,1));
         Matrix4 viewMatrix = camera.getViewMatrix();
         Matrix4 projectionMatrix = camera.getProjectionMatrix();
@@ -29,7 +30,7 @@ public class RenderEngine {
         modelViewProjectionMatrix.multiply(projectionMatrix);
         modelViewProjectionMatrix.transpose();//Вопрос
 
-        graphicsContext.setStroke(Color.WHITE);
+        graphicsContext.setStroke(modelColor);
 
         final int nPolygons = mesh.getPolygons().size();
         for (int polygonInd = 0; polygonInd < nPolygons; ++polygonInd) {
