@@ -183,7 +183,12 @@ public class GuiController {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
 		} else {
-			saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+			try {
+				saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel()
+						.getSelectedIndex()).getTransformedModel());
+			} catch (Exception e) {
+				showExceptionNotification(e);
+			}
 		}
 		canvas.requestFocus();
 	}
