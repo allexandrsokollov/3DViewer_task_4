@@ -72,6 +72,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
+							<finalName>
+								3DViewer
+							</finalName>
 							<archive>
 								<manifest>
 									<mainClass>
@@ -118,12 +121,6 @@
                     </execution>
                 </executions>
             </plugin>
-			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>4.0.0-M4</version>
-			</plugin>
 		</plugins>
     </build>
 </project>
