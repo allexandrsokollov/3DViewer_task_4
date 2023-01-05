@@ -157,6 +157,7 @@ public class GuiController {
 	}
 
 	public void deleteModelFromViewList() {
+		List<String> deletedModelNames = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 		List<Integer> modelIndexesToRemove = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices());
 		listOfLoadedModelsNames.getItems().removeAll(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 
@@ -166,6 +167,7 @@ public class GuiController {
 		}
 
 		scene.getActiveModels().removeIf(model -> ! scene.getModels().contains(model));
+		scene.getModelNames().removeIf(deletedModelNames::contains);
 		canvas.requestFocus();
 	}
 	public void saveInitialModel() {
