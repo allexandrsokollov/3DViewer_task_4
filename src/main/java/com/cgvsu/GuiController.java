@@ -352,7 +352,9 @@ public class GuiController {
 		final Vector3f vS = new Vector3f(xS, yS, zS);
 		try {
 			Matrix4 modelMatrix = getModelMatrix(vT, vR, vS);
-			currentModel.makeTransformation(modelMatrix);
+			for (Model activeModel : scene.getActiveModels()) {
+				activeModel.makeTransformation(modelMatrix);
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
