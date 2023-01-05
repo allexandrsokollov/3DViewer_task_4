@@ -32,6 +32,13 @@ public class Model {
 		polygons = new ArrayList<>();
 	}
 
+	public Model(Model model) {
+		vertices = model.getVertices();
+		textureVertices = model.textureVertices;
+		normals = model.getNormals();
+		polygons = model.getPolygons();
+	}
+
 	public Model getCopy() throws Exception {
 		return new Model(
 				this.vertices,
