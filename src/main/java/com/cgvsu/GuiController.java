@@ -21,6 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -65,7 +66,9 @@ public class GuiController {
 	public Spinner<Double> spinnerRotateZ;
 	@FXML
 	public Button buttonApplyTransformation;
-    @FXML
+	@FXML
+	public Pane controlPane;
+	@FXML
     AnchorPane anchorPane;
     @FXML
     private Canvas canvas;
@@ -159,6 +162,7 @@ public class GuiController {
 	public void deleteModelFromViewList() {
 		List<String> deletedModelNames = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 		List<Integer> modelIndexesToRemove = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices());
+		listOfLoadedModelsNames.setPrefHeight(listOfLoadedModelsNames.getHeight() - 28 * modelIndexesToRemove.size());
 		listOfLoadedModelsNames.getItems().removeAll(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 
 		int decrement = 0;
@@ -209,87 +213,6 @@ public class GuiController {
 		canvas.requestFocus();
 	}
 
-	public void moveXCoordinate(KeyEvent keyEvent) {
-		moveModel(new Vector3f(spinnerMoveX.getValue().floatValue(), 0, 0), keyEvent);
-	}
-
-	public void moveYCoordinate(KeyEvent keyEvent) {
-		moveModel(new Vector3f(0, spinnerMoveY.getValue().floatValue(), 0), keyEvent);
-	}
-
-	public void moveZCoordinate(KeyEvent keyEvent) {
-		moveModel(new Vector3f(0, 0, spinnerMoveZ.getValue().floatValue()), keyEvent);
-	}
-
-	private void moveModel(Vector3f shiftVector, KeyEvent event) {
-		if (event.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(shiftVector,
-						new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-				for (Model secectedModel : scene.getActiveModels()) {
-					secectedModel.makeTransformation(modelMatrix);
-				}
-			} catch (Exception e) {
-				showExceptionNotification(e);
-			}
-		}
-		canvas.requestFocus();
-	}
-
-	public void scaleZ(KeyEvent keyEvent) {
-		scaleModel(new Vector3f(1, 1, spinnerScaleZ.getValue().floatValue()), keyEvent);
-	}
-
-	public void scaleY(KeyEvent keyEvent) {
-		scaleModel(new Vector3f(1, spinnerScaleY.getValue().floatValue(), 1), keyEvent);
-	}
-
-	public void scaleX(KeyEvent keyEvent) {
-		scaleModel(new Vector3f(spinnerScaleX.getValue().floatValue(), 1, 1), keyEvent);
-	}
-
-	private void scaleModel(Vector3f scaleVector, KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						new Vector3f(0, 0, 0), scaleVector);
-				for (Model secectedModel : scene.getActiveModels()) {
-					secectedModel.makeTransformation(modelMatrix);
-				}
-			} catch (Exception e) {
-				showExceptionNotification(e);
-			}
-		}
-		canvas.requestFocus();
-	}
-
-	public void rotateZ(KeyEvent keyEvent) {
-		rotateModel(new Vector3f(0, 0, spinnerRotateZ.getValue().floatValue()), keyEvent);
-	}
-
-	public void rotateY(KeyEvent keyEvent) {
-		rotateModel(new Vector3f(0, spinnerRotateY.getValue().floatValue(), 0), keyEvent);
-	}
-
-	public void rotateX(KeyEvent keyEvent) {
-		rotateModel(new Vector3f(spinnerRotateX.getValue().floatValue(), 0, 0), keyEvent);
-	}
-
-	private void rotateModel(Vector3f rotateVector, KeyEvent keyEvent) {
-		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			try {
-				Matrix4 modelMatrix = getModelMatrix(new Vector3f(0, 0, 0),
-						rotateVector, new Vector3f(1, 1, 1));
-				for (Model secectedModel : scene.getActiveModels()) {
-					secectedModel.makeTransformation(modelMatrix);
-				}
-			} catch (Exception e) {
-				showExceptionNotification(e);
-			}
-		}
-		canvas.requestFocus();
-	}
-
 	@FXML
     public void handleCameraForward() {
 		moveCameraPosition(new Vector3f(0, 0, -TRANSLATION));
@@ -318,10 +241,6 @@ public class GuiController {
     @FXML
     public void handleCameraDown() {
 		moveCameraPosition(new Vector3f(0, -TRANSLATION, 0));
-	}
-
-	public void  rotateCamera(MouseEvent event) {
-
 	}
 
 	private void moveCameraPosition(Vector3f translationVector) {
@@ -376,6 +295,7 @@ public class GuiController {
 
 		modelsMenu = new Menu();
 		listOfLoadedModelsNames.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		listOfLoadedModelsNames.setPrefHeight(0);
 	}
 
 	private void showExceptionNotification(Exception e) {

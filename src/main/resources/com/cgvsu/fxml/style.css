@@ -50,9 +50,14 @@
     -fx-background-color: #2B2E34;
 }
 .menu-bar .label {
+    -fx-min-width: 20;
     -fx-text-fill: #cacdd3;
     -fx-font-size: 14;
     -fx-background-color: #2B2E34;
+}
+
+.menu-bar #menuCamera {
+    -fx-min-width: 100;
 }
 
 .menu-bar {
@@ -67,6 +72,7 @@
 }
 
 .context-menu .list-view {
+    -fx-min-height: 150;
     -fx-text-fill: #cacdd3;
     -fx-font-size: 14;
     -fx-background-color: #2B2E34;
