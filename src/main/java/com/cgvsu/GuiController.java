@@ -155,6 +155,7 @@ public class GuiController {
 			selectedModels.add(scene.getEditedLoadedModels().get(index));
 		}
 		scene.setActiveModels(selectedModels);
+		canvas.requestFocus();
 	}
 
 	public void deleteModelFromViewList() {
@@ -166,6 +167,7 @@ public class GuiController {
 			scene.getEditedLoadedModels().remove(index - decrement);
 			scene.getInitialLoadedModels().remove(index - decrement++);
 		}
+		canvas.requestFocus();
 	}
 	public void saveInitialModel() {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
@@ -173,6 +175,7 @@ public class GuiController {
 		} else {
 			saveModel(scene.getInitialLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
 		}
+		canvas.requestFocus();
 	}
 
 	public void saveEditedModel() {
@@ -181,6 +184,7 @@ public class GuiController {
 		} else {
 			saveModel(scene.getEditedLoadedModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
 		}
+		canvas.requestFocus();
 	}
 
 	private void saveModel(Model modelToSave) {
@@ -196,6 +200,7 @@ public class GuiController {
 
 		}
 		showMessageNotification("File saved at:\n" + file.getAbsolutePath());
+		canvas.requestFocus();
 	}
 
 	public void moveXCoordinate(KeyEvent keyEvent) {
@@ -321,20 +326,6 @@ public class GuiController {
 		}
 	}
 
-	private void showExceptionNotification(Exception e) {
-		Notifications.create()
-				.text(e.getMessage())
-				.position(Pos.CENTER)
-				.showError();
-	}
-
-	private void showMessageNotification(String message) {
-		Notifications.create()
-				.text(message)
-				.position(Pos.CENTER)
-				.showError();
-	}
-
 	public void applyTransformation() {
 		final float xT = spinnerMoveX.getValue().floatValue();
 		final float yT = spinnerMoveY.getValue().floatValue();
@@ -356,10 +347,9 @@ public class GuiController {
 				activeModel.makeTransformation(modelMatrix);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			showExceptionNotification(e);
 		}
-
-
+		canvas.requestFocus();
 	}
 
 	private void initFXMLComponents() {
@@ -380,5 +370,19 @@ public class GuiController {
 
 		modelsMenu = new Menu();
 		listOfLoadedModelsNames.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	}
+
+	private void showExceptionNotification(Exception e) {
+		Notifications.create()
+				.text(e.getMessage())
+				.position(Pos.CENTER)
+				.showError();
+	}
+
+	private void showMessageNotification(String message) {
+		Notifications.create()
+				.text(message)
+				.position(Pos.CENTER)
+				.showError();
 	}
 }
