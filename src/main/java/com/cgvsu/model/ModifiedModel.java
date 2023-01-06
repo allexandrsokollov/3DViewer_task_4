@@ -58,7 +58,7 @@ public class ModifiedModel extends Model {
         List<Vector3f> nV = List.copyOf(super.getNormals());
         List<Vector3f> vM = getModifiedVertexes();
         Model transformedModel = new Model(vM, tV, nV, p);
-        transformedModel.recalculateNormals();
+        //transformedModel.recalculateNormals();
         return transformedModel;
     }
 

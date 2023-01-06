@@ -9,8 +9,8 @@
     -fx-start-margin: 0;
 }
 
-.fontStyle #menuFile {
-    -fx-min-width: 40;
+.fontStyle #menuFile .label:hover {
+    -fx-min-width: 20;
 }
 
 .fontStyle #menuFile:hover,
