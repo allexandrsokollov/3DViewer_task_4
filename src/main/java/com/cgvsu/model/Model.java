@@ -21,8 +21,8 @@ public class Model {
 		this.polygons = polygons;
 		this.normals = new ArrayList<>();
 		//todo триангулировать текстурные координаты
-		//recalculateNormals();
-		//triangulate();
+		recalculateNormals();
+		triangulate();
 	}
 
 	public Model() {
@@ -160,10 +160,10 @@ public class Model {
 	}
 
 	public void recalculateNormals() throws Exception {
-//		normals.clear();
-//		for (int i = 0; i < vertices.size(); i++) {
-//			normals.add(calculateNormalByVertexInModel(i));
-//		}
+		normals.clear();
+		for (int i = 0; i < vertices.size(); i++) {
+			normals.add(calculateNormalByVertexInModel(i));
+		}
 	}
 
 	protected  Vector3f calculateNormalInPolygon(final Polygon polygon){

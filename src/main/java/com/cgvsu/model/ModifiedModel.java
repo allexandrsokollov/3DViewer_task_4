@@ -62,7 +62,7 @@ public class ModifiedModel extends Model {
         return transformedModel;
     }
 
-    public Model toMesh() {
+    public Model getMesh() {
         try {
             return new Model(super.getVertices(), super.getTextureVertices(), super.getNormals(), super.getPolygons());
         } catch (Exception e) {
