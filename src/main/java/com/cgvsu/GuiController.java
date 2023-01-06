@@ -1,6 +1,5 @@
 package com.cgvsu;
 
-import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.model.Model;
 import com.cgvsu.model.ModifiedModel;
@@ -18,7 +17,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -33,8 +32,6 @@ import java.nio.file.Path;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.cgvsu.render_engine.GraphicConveyor.getModelMatrix;
 
 public class GuiController {
 
@@ -73,6 +70,9 @@ public class GuiController {
     @FXML
     private Canvas canvas;
 	private Scene scene;
+
+	private Vector2f dragCoordinates = new Vector2f(0,0);
+	private Vector2f dropCoordinates = new Vector2f(0,0);
 
     private Camera camera = new Camera(
             new Vector3f(0, 0, 100),
@@ -260,30 +260,36 @@ public class GuiController {
 	}
 
 	public void applyTransformation() {
-		final float xT = spinnerMoveX.getValue().floatValue();
-		final float yT = spinnerMoveY.getValue().floatValue();
-		final float zT = spinnerMoveZ.getValue().floatValue();
-		final Vector3f vT = new Vector3f(xT, yT, zT);
-
-		final float xR = spinnerRotateX.getValue().floatValue();
-		final float yR = spinnerRotateY.getValue().floatValue();
-		final float zR = spinnerRotateZ.getValue().floatValue();
-		final Vector3f vR = new Vector3f(xR, yR, zR);
-
-		final float xS = spinnerScaleX.getValue().floatValue();
-		final float yS = spinnerScaleY.getValue().floatValue();
-		final float zS = spinnerScaleZ.getValue().floatValue();
-		final Vector3f vS = new Vector3f(xS, yS, zS);
 		try {
-			Matrix4 modelMatrix = getModelMatrix(vT, vR, vS);
-			for (ModifiedModel activeModel : scene.getActiveModels()) {
-				activeModel.setRotateV(vR);
-				activeModel.setScaleV(vS);
-				activeModel.setTranslateV(vT);
+			final float xT = spinnerMoveX.getValue().floatValue();
+			final float yT = spinnerMoveY.getValue().floatValue();
+			final float zT = spinnerMoveZ.getValue().floatValue();
+			final Vector3f vT = new Vector3f(xT, yT, zT);
+
+			final float xR = spinnerRotateX.getValue().floatValue();
+			final float yR = spinnerRotateY.getValue().floatValue();
+			final float zR = spinnerRotateZ.getValue().floatValue();
+			final Vector3f vR = new Vector3f(xR, yR, zR);
+
+			final float xS = spinnerScaleX.getValue().floatValue();
+			final float yS = spinnerScaleY.getValue().floatValue();
+			final float zS = spinnerScaleZ.getValue().floatValue();
+			final Vector3f vS = new Vector3f(xS, yS, zS);
+
+			try {
+				for (ModifiedModel activeModel : scene.getActiveModels()) {
+					activeModel.setRotateV(vR);
+					activeModel.setScaleV(vS);
+					activeModel.setTranslateV(vT);
+				}
+			} catch (Exception e) {
+				showExceptionNotification(e);
 			}
-		} catch (Exception e) {
-			showExceptionNotification(e);
+
+		} catch (NullPointerException e) {
+			showExceptionNotification("One of fields is empty");
 		}
+
 		canvas.requestFocus();
 	}
 
@@ -314,6 +320,13 @@ public class GuiController {
 				.showError();
 	}
 
+	private void showExceptionNotification(String e) {
+		Notifications.create()
+				.text(e)
+				.position(Pos.CENTER)
+				.showError();
+	}
+
 	private void showMessageNotification(String message) {
 		Notifications.create()
 				.text(message)
@@ -323,6 +336,17 @@ public class GuiController {
 
 	public void takeFocusCanvas() {
 		canvas.requestFocus();
-		System.out.println("canvas took focus");
+	}
+
+	public void canvasDragDroppedGetValue(MouseEvent dragEvent) {
+		dragCoordinates.setX((float) dragEvent.getX());
+		dragCoordinates.setY((float) dragEvent.getY());
+		System.out.println("dropped  " + dragEvent.getX() + "  " + dragEvent.getY());
+	}
+
+	public void canvasDragEnterGetValue(MouseEvent dragEvent) {
+		dropCoordinates.setX((float) dragEvent.getX());
+		dropCoordinates.setY((float) dragEvent.getY());
+		System.out.println("dragged  " + dragEvent.getX() + "  " + dragEvent.getY());
 	}
 }
