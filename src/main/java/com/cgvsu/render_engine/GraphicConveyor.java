@@ -6,7 +6,6 @@ import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector3f;
 
 import javax.vecmath.Point2f;
-import java.util.Arrays;
 
 public class GraphicConveyor {
 
@@ -19,7 +18,7 @@ public class GraphicConveyor {
         return matrixScale;
     }
 
-    private static Matrix4 getRotationMatrix(Vector3f angle) throws Exception {
+    public static Matrix4 getRotationMatrix(Vector3f angle) throws Exception {
         if (angle.getX() > 360 || angle.getY() > 360 || angle.getZ() > 360) {
             throw new Exception("The absolute value angle should be less than 360!");
         }
@@ -107,7 +106,11 @@ public class GraphicConveyor {
     }
 
     public static Matrix4 lookAt(Vector3f eye, Vector3f target) throws Exception {
-        return lookAt(eye, target, new Vector3f(0F, 1.0F, 0F));
+        Vector3f up = new Vector3f(0F, 1.0F, 0F);
+        /*Vector3f cameraDirection = Vector3f.getSubtracted(eye, target);
+        Vector3f cameraRight = Vector3f.getNormalizedVector(Vector3f.getVectorProduct(up, cameraDirection));
+        Vector3f cameraUp = Vector3f.getVectorProduct(cameraDirection, cameraRight);*/
+        return lookAt(eye, target, up);
     }
 
     public static Matrix4 lookAt(Vector3f eye, Vector3f target, Vector3f up) throws Exception {
@@ -140,7 +143,7 @@ public class GraphicConveyor {
         float tangentMinusOnDegree = (float) (1.0F / (Math.tan(fov * 0.5F)));
         result.getMatrix()[0][0] = tangentMinusOnDegree / aspectRatio;
         result.getMatrix()[1][1] = tangentMinusOnDegree;
-        result.getMatrix()[2][2] = 2* (farPlane + nearPlane) / (farPlane - nearPlane);
+        result.getMatrix()[2][2] = 2 * (farPlane + nearPlane) / (farPlane - nearPlane);
         result.getMatrix()[2][3] = 1.0F;
         result.getMatrix()[3][2] = 2 * (nearPlane * farPlane) / (nearPlane - farPlane);
         return result;
