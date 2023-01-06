@@ -21,7 +21,7 @@ public class Model {
 		this.polygons = polygons;
 		this.normals = new ArrayList<>();
 		//todo триангулировать текстурные координаты
-		recalculateNormals();
+		//recalculateNormals();
 		triangulate();
 	}
 

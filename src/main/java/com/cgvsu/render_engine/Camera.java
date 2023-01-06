@@ -60,10 +60,9 @@ public class Camera {
         this.target.add(translation);
     }
 
-    public void rotateCamera(final Vector2f angleOfRotate) throws Exception {
+    public void rotateCamera(final Matrix4 mR) throws Exception {
         Vector3f vZ = Vector3f.getSubtracted(target, position);
-        //vZ.normalize();
-        Matrix4 mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), angleOfRotate.getX(),0));
+        //Matrix4 mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), angleOfRotate.getX(),0));
         vZ = GraphicConveyor.multiplyMatrix4ByVector3(mR, vZ);
         target = Vector3f.getAdded(position, vZ);
 
