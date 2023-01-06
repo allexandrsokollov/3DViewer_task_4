@@ -71,11 +71,11 @@ public class GuiController {
 	private final Vector2f dragCoordinates = new Vector2f(0,0);
 	private final Vector2f dropCoordinates = new Vector2f(0,0);
 
-    private Camera camera = new Camera(
+    private final Camera camera = new Camera(
             new Vector3f(0, 0, 100),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
-	private CameraController cameraController = new CameraController(camera, TRANSLATION);
+	private final CameraController cameraController = new CameraController(camera, TRANSLATION);
 
 	@FXML
     private void initialize() {
@@ -86,32 +86,24 @@ public class GuiController {
 
 		scene = new Scene();
 
-		int keyFrameDelay = 15;
-        KeyFrame frame = new KeyFrame(Duration.millis(keyFrameDelay), event -> {
-			long timeStart = System.currentTimeMillis();
-            double width = canvas.getWidth();
-            double height = canvas.getHeight();
+		KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
+			double width = canvas.getWidth();
+			double height = canvas.getHeight();
 
-            canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
-            camera.setAspectRatio((float) (width / height));
+			canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
+			camera.setAspectRatio((float) (width / height));
 
-            if (!scene.getActiveModels().isEmpty()) {
-                try {
+			if (!scene.getActiveModels().isEmpty()) {
+				try {
 					for (ModifiedModel model : scene.getActiveModels()) {
 						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(),
 								(int) width, (int) height, Color.WHITE);
 					}
-                } catch (Exception e) {
+				} catch (Exception e) {
 					showExceptionNotification(e);
-                }
-            }
-			long timeEnd = System.currentTimeMillis();
-			long timeOfPrevRender = timeEnd - timeStart;
-
-//			if (timeOfPrevRender > keyFrameDelay) {
-//				keyFrameDelay =  keyFrameDelay * 1.25;
-//			}
-        });
+				}
+			}
+		});
 
         timeline.getKeyFrames().add(frame);
         timeline.play();
