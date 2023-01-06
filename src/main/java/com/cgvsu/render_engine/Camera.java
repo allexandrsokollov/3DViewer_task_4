@@ -61,48 +61,12 @@ public class Camera {
     }
 
     public void rotateCamera(final Vector2f angleOfRotate) throws Exception {
-        double radiantA = Math.toRadians(angleOfRotate.getX());
-        double radiantB = Math.toRadians(angleOfRotate.getY());
+        Vector3f vZ = Vector3f.getSubtracted(target, position);
+        //vZ.normalize();
+        Matrix4 mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), angleOfRotate.getX(),0));
+        vZ = GraphicConveyor.multiplyMatrix4ByVector3(mR, vZ);
+        target = Vector3f.getAdded(position, vZ);
 
-        float cosA = (float) Math.cos(radiantA);
-        float cosB = (float) Math.cos(radiantB);
-        float sinA = (float) Math.sin(radiantA);
-        float sinB = (float) Math.sin(radiantB);
-
-        Matrix4 matrixRotate = Matrix4.getIdentityMatrix();
-
-        /*Matrix4 matrixA = new Matrix4();
-        matrixA.setIdentity();
-        matrixA.getMatrix()[0][0] = cosA;
-        matrixA.getMatrix()[1][1] = cosA;
-        matrixA.getMatrix()[1][0] = sinA;
-        matrixA.getMatrix()[0][1] = -sinA;
-
-        Matrix4 matrixB = new Matrix4();
-        matrixB.setIdentity();
-        matrixB.getMatrix()[0][0] = cosB;
-        matrixB.getMatrix()[1][1] = cosB;
-        matrixB.getMatrix()[1][0] = sinB;
-        matrixB.getMatrix()[0][1] = -sinB;
-
-        matrixRotate.multiply(matrixB);
-        matrixRotate.multiply(matrixA);*/
-
-        float x = cosA * cosB;
-        float y = sinB;
-        float z = cosB * sinA;
-
-        Vector3f rotate = new Vector3f(x, y, z);
-
-        //matrixRotate.transpose();
-        /*position.setX((float) (Math.cos(radiantA) * Math.cos(radiantB)));
-        position.setY((float) Math.sin(radiantB));
-        position.setZ((float) (Math.sin(radiantA) * Math.cos(radiantB)));*/
-        //Vector3f tmp = Vector3f.getSubtracted(target, position);
-        //tmp = Matrix3.getMultiplied(matrixRotate, tmp);
-        //target = Vector3f.getAdded(position, tmp);
-        //target = GraphicConveyor.multiplyMatrix4ByVector3(matrixRotate, target);
-        target = rotate;
     }
 
     Matrix4 getViewMatrix() throws Exception {

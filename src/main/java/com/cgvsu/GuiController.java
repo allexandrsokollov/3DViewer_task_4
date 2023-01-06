@@ -41,6 +41,7 @@ import static com.cgvsu.render_engine.GraphicConveyor.getModelMatrix;
 public class GuiController {
 
     final private float TRANSLATION = 0.8F;
+
 	@FXML
 	public Menu modelsMenu;
 	@FXML
@@ -236,8 +237,7 @@ public class GuiController {
 
     @FXML
     public void handleCameraUp() throws Exception {
-		//moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
-		camera.rotateCamera(new Vector2f(5, 0));
+		moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
 	}
 
     @FXML
