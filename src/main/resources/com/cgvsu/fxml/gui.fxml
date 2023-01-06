@@ -30,10 +30,6 @@
 					<KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 				</accelerator>
 			</MenuItem>
-         <styleClass>
-            <String fx:value="menu" />
-            <String fx:value="menu" />
-         </styleClass>
         </Menu>
         <Menu id="menuCamera" mnemonicParsing="false" text="Camera Options">
             <MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">

@@ -17,9 +17,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -295,7 +292,6 @@ public class GuiController {
 
 		modelsMenu = new Menu();
 		listOfLoadedModelsNames.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		listOfLoadedModelsNames.setPrefHeight(0);
 	}
 
 	private void showExceptionNotification(Exception e) {

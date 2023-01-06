@@ -1,6 +1,5 @@
 package com.cgvsu.render_engine;
 
-import com.cgvsu.model.Model;
 import com.cgvsu.model.ModifiedModel;
 
 import java.util.LinkedList;

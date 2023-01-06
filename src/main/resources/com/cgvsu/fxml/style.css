@@ -9,6 +9,10 @@
     -fx-start-margin: 0;
 }
 
+.fontStyle #menuFile {
+    -fx-min-width: 40;
+}
+
 .fontStyle #menuFile:hover,
 .fontStyle #menuCamera:hover {
     -fx-background-color: #3F4145;

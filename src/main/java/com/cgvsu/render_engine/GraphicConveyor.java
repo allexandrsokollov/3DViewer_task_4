@@ -1,12 +1,9 @@
 package com.cgvsu.render_engine;
 
-
-
 import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector3f;
 
 import javax.vecmath.Point2f;
-import java.util.Arrays;
 
 public class GraphicConveyor {
 
@@ -99,8 +96,6 @@ public class GraphicConveyor {
         modelMatrix.multiply(translationMatrix);
         modelMatrix.multiply(rotationMatrix);
         modelMatrix.multiply(scaleMatrix);
-
-
 
 
         return modelMatrix;
