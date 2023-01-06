@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -85,7 +86,9 @@ public class GuiController {
 
 		scene = new Scene();
 
-        KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
+		int keyFrameDelay = 15;
+        KeyFrame frame = new KeyFrame(Duration.millis(keyFrameDelay), event -> {
+			long timeStart = System.currentTimeMillis();
             double width = canvas.getWidth();
             double height = canvas.getHeight();
 
@@ -95,12 +98,19 @@ public class GuiController {
             if (!scene.getActiveModels().isEmpty()) {
                 try {
 					for (ModifiedModel model : scene.getActiveModels()) {
-						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(), (int) width, (int) height, Color.WHITE);
+						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(),
+								(int) width, (int) height, Color.WHITE);
 					}
                 } catch (Exception e) {
 					showExceptionNotification(e);
                 }
             }
+			long timeEnd = System.currentTimeMillis();
+			long timeOfPrevRender = timeEnd - timeStart;
+
+//			if (timeOfPrevRender > keyFrameDelay) {
+//				keyFrameDelay =  keyFrameDelay * 1.25;
+//			}
         });
 
         timeline.getKeyFrames().add(frame);
@@ -204,7 +214,6 @@ public class GuiController {
 			ObjWriter.writeToFile(modelToSave, file);
 		} catch (IOException e) {
 			showExceptionNotification(e);
-
 		}
 		showMessageNotification("File saved at:\n" + file.getAbsolutePath());
 		canvas.requestFocus();
@@ -306,5 +315,10 @@ public class GuiController {
 				.text(message)
 				.position(Pos.CENTER)
 				.showError();
+	}
+
+	public void takeFocusCanvas() {
+		canvas.requestFocus();
+		System.out.println("canvas took focus");
 	}
 }
