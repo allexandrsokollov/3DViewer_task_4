@@ -38,14 +38,40 @@
     -fx-background-color: #3F4145;
 }
 
+.radio-button {
+    -fx-font-size: 14;
+    -fx-text-fill: #cacdd3;
+}
+
+.radio-button:focused {
+    -fx-font-size: 14;
+    -fx-text-fill: #cacdd3;
+}
+
+.colorPicker {
+    -fx-background-color: #4B5467;
+    -fx-font-size: 14;
+    -fx-text-fill: #cacdd3;
+
+}
+
+.colorPicker .label .text {
+    visibility: false;
+
+}
+
 .button {
     -fx-background-color: #4B5467;
     -fx-font-size: 14;
     -fx-text-fill: #cacdd3;
 }
 
+.button:hover {
+    -fx-background-color: #3f4757;
+}
+
 .menu-bar .menu-bar {
-    -fx-background-color: #2B2E34;
+    -fx-background-color: #3e4554;
 }
 .menu-bar .menu {
     -fx-background-color: #2B2E34;

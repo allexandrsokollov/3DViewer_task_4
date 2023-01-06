@@ -63,6 +63,16 @@ public class GuiController {
 	@FXML
 	public Button buttonApplyTransformation;
 	@FXML
+	public RadioButton radioButtonMesh;
+	@FXML
+	public RadioButton radioButtonTexture;
+	@FXML
+	public RadioButton radioButtonShades;
+	@FXML
+	public RadioButton radioButtonSolidColor;
+	@FXML
+	public ColorPicker modelColor;
+	@FXML
     AnchorPane anchorPane;
     @FXML
     private Canvas canvas;
