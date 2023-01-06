@@ -8,6 +8,7 @@ import com.cgvsu.objHandlers.ObjWriter;
 import com.cgvsu.render_engine.Camera;
 import com.cgvsu.math.Vector3f;
 
+import com.cgvsu.render_engine.CameraController;
 import com.cgvsu.render_engine.RenderEngine;
 import com.cgvsu.render_engine.Scene;
 import javafx.animation.Animation;
@@ -78,6 +79,7 @@ public class GuiController {
             new Vector3f(0, 0, 100),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
+	private CameraController cameraController = new CameraController(camera, TRANSLATION);
 
 	@FXML
     private void initialize() {
@@ -223,32 +225,62 @@ public class GuiController {
 
 	@FXML
     public void handleCameraForward() {
-		moveCameraPosition(new Vector3f(0, 0, -TRANSLATION));
+		try {
+			cameraController.handleCameraForward();
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+		//moveCameraPosition(new Vector3f(0, 0, -TRANSLATION));
 	}
 
     @FXML
     public void handleCameraBackward() {
-		moveCameraPosition(new Vector3f(0, 0, TRANSLATION));
+		//moveCameraPosition(new Vector3f(0, 0, TRANSLATION));
+		try {
+			cameraController.handleCameraBackward();
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
 	}
 
     @FXML
     public void handleCameraLeft() {
-		moveCameraPosition(new Vector3f(TRANSLATION, 0, 0));
+		//moveCameraPosition(new Vector3f(TRANSLATION, 0, 0));
+		try {
+			cameraController.handleCameraLeft();
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
 	}
 
     @FXML
     public void handleCameraRight() {
-		moveCameraPosition(new Vector3f(-TRANSLATION, 0, 0));
+		//moveCameraPosition(new Vector3f(-TRANSLATION, 0, 0));
+		try {
+			cameraController.handleCameraRight();
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
 	}
 
     @FXML
-    public void handleCameraUp() throws Exception {
-		moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
+    public void handleCameraUp() {
+		//moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
+		try {
+			cameraController.handleCameraUp();
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
 	}
 
     @FXML
     public void handleCameraDown() {
-		moveCameraPosition(new Vector3f(0, -TRANSLATION, 0));
+		//moveCameraPosition(new Vector3f(0, -TRANSLATION, 0));
+		try {
+			cameraController.handleCameraDown();
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
 	}
 
 	private void moveCameraPosition(Vector3f translationVector) {
@@ -342,11 +374,31 @@ public class GuiController {
 		dragCoordinates.setX((float) dragEvent.getX());
 		dragCoordinates.setY((float) dragEvent.getY());
 		System.out.println("dropped  " + dragEvent.getX() + "  " + dragEvent.getY());
+		rotateCamera();
 	}
 
 	public void canvasDragEnterGetValue(MouseEvent dragEvent) {
 		dropCoordinates.setX((float) dragEvent.getX());
 		dropCoordinates.setY((float) dragEvent.getY());
 		System.out.println("dragged  " + dragEvent.getX() + "  " + dragEvent.getY());
+	}
+
+	public void rotateCamera() {
+		float diffX = dropCoordinates.getX() - dragCoordinates.getX();
+		float diffY = dropCoordinates.getY() - dragCoordinates.getY();
+
+		float xAngle = (float) ((diffX / canvas.getWidth()) * -15);
+		float yAngle = (float) ((diffY / canvas.getHeight()) * 15);
+
+		if (Math.abs(yAngle) >= 90) {
+			yAngle = 89.9F;
+		}
+
+		try {
+			cameraController.rotateCamera(new Vector2f(xAngle, yAngle));
+		} catch (Exception e) {
+			showExceptionNotification(e);
+		}
+
 	}
 }
