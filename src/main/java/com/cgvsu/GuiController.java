@@ -1,6 +1,7 @@
 package com.cgvsu;
 
 import com.cgvsu.math.Matrix4;
+import com.cgvsu.math.Vector2f;
 import com.cgvsu.model.Model;
 import com.cgvsu.model.ModifiedModel;
 import com.cgvsu.objHandlers.ObjReader;
@@ -39,7 +40,7 @@ import static com.cgvsu.render_engine.GraphicConveyor.getModelMatrix;
 
 public class GuiController {
 
-    final private float TRANSLATION = 0.5F;
+    final private float TRANSLATION = 0.8F;
 	@FXML
 	public Menu modelsMenu;
 	@FXML
@@ -234,8 +235,9 @@ public class GuiController {
 	}
 
     @FXML
-    public void handleCameraUp() {
-		moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
+    public void handleCameraUp() throws Exception {
+		//moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
+		camera.rotateCamera(new Vector2f(5, 0));
 	}
 
     @FXML
@@ -268,8 +270,10 @@ public class GuiController {
 		final Vector3f vS = new Vector3f(xS, yS, zS);
 		try {
 			Matrix4 modelMatrix = getModelMatrix(vT, vR, vS);
-			for (Model activeModel : scene.getActiveModels()) {
-				activeModel.makeTransformation(modelMatrix);
+			for (ModifiedModel activeModel : scene.getActiveModels()) {
+				activeModel.setRotateV(vR);
+				activeModel.setScaleV(vS);
+				activeModel.setTranslateV(vT);
 			}
 		} catch (Exception e) {
 			showExceptionNotification(e);
