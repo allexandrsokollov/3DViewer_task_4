@@ -76,12 +76,12 @@
 }
 
 .context-menu .list-view {
-    -fx-min-height: 150;
     -fx-text-fill: #cacdd3;
     -fx-font-size: 14;
     -fx-background-color: #2B2E34;
 }
 .list-view {
+    -fx-min-height: 40;
     -fx-background-color: #2B2E34;
 }
 

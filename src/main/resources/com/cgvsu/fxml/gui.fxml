@@ -73,9 +73,9 @@
     </MenuBar>
 
     <Canvas fx:id="canvas" height="723.0" layoutX="186.0" onMouseClicked="#takeFocusCanvas" onMousePressed="#canvasDragEnterGetValue" onMouseReleased="#canvasDragDroppedGetValue" width="967.0" AnchorPane.topAnchor="0.0" />
-   <ListView fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutY="30.0" onMouseClicked="#selectModel" prefHeight="354.0" prefWidth="180.0" stylesheets="@style.css">
+   <ListView fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutY="30.0" onMouseClicked="#selectModel" prefWidth="180.0" stylesheets="@style.css" AnchorPane.bottomAnchor="387.0" AnchorPane.topAnchor="30.0">
       <contextMenu>
-         <ContextMenu autoFix="false" styleClass="contextMenu">
+         <ContextMenu autoFix="false">
            <items>
              <MenuItem id="ListViewContextDelete" fx:id="listViewContextDelete" mnemonicParsing="false" onAction="#deleteModelFromViewList" text="Delete" />
            </items>
@@ -86,91 +86,102 @@
 				 <MenuItem id="ListViewContextDelete" mnemonicParsing="false" onAction="#saveEditedModel" text="Save edited Model" />
 			 </items>
          </ContextMenu>
-      </contextMenu></ListView>
-   <Pane id="controlPane" layoutY="385.0" prefHeight="385.0" prefWidth="180.0" style="-fx-border-radius: 15; -fx-background-color: #2B2E34;">
-      <children>
-         <Label layoutY="5.0" styleClass="fontStyle" stylesheets="@style.css" text="X Shift" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Spinner fx:id="spinnerMoveX" editable="true" focusTraversable="false" layoutX="90.0" layoutY="7.0" prefHeight="26.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Label layoutY="35.0" styleClass="fontStyle" stylesheets="@style.css" text="Y Shift" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Spinner fx:id="spinnerMoveY" editable="true" focusTraversable="false" layoutX="90.0" layoutY="37.0" prefHeight="26.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Label layoutY="65.0" styleClass="fontStyle" stylesheets="@style.css" text="Z Shift" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Spinner fx:id="spinnerMoveZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="67.0" prefHeight="26.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Label layoutY="125.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale X" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Label layoutY="155.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Y" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Label layoutY="185.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Z" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Spinner fx:id="spinnerScaleX" editable="true" focusTraversable="false" layoutX="90.0" layoutY="127.0" prefHeight="25.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Spinner fx:id="spinnerScaleY" editable="true" focusTraversable="false" layoutX="90.0" layoutY="157.0" prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Spinner fx:id="spinnerScaleZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="187.0" prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Label layoutY="245.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate X" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Label layoutY="275.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Y" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Label layoutY="305.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Z" textFill="#cacdd3">
-            <font>
-               <Font name="Arial Bold" size="14.0" />
-            </font>
-            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-         </Label>
-         <Spinner fx:id="spinnerRotateX" editable="true" focusTraversable="false" layoutX="90.0" layoutY="247.0" prefHeight="25.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Spinner fx:id="spinnerRotateY" editable="true" focusTraversable="false" layoutX="90.0" layoutY="277.0" prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Spinner fx:id="spinnerRotateZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="307.0" prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css" />
-         <Button fx:id="buttonApplyTransformation" layoutX="5.0" layoutY="346.0" mnemonicParsing="false" onAction="#applyTransformation" prefHeight="30.0" prefWidth="169.0" stylesheets="@style.css" text="Apply Transformation" />
-      </children>
-   </Pane>
+      </contextMenu>
+   </ListView>
+	<Pane id="controlPane" layoutY="385.0" prefHeight="385.0" prefWidth="180.0"
+		  style="-fx-border-radius: 15; -fx-background-color: #2B2E34;" AnchorPane.bottomAnchor="0.0">
+		<Label layoutY="5.0" styleClass="fontStyle" stylesheets="@style.css" text="X Shift" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Spinner fx:id="spinnerMoveX" editable="true" focusTraversable="false" layoutX="90.0" layoutY="7.0"
+				 prefHeight="26.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Label layoutY="35.0" styleClass="fontStyle" stylesheets="@style.css" text="Y Shift" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Spinner fx:id="spinnerMoveY" editable="true" focusTraversable="false" layoutX="90.0" layoutY="37.0"
+				 prefHeight="26.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Label layoutY="65.0" styleClass="fontStyle" stylesheets="@style.css" text="Z Shift" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Spinner fx:id="spinnerMoveZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="67.0"
+				 prefHeight="26.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Label layoutY="125.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale X" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Label layoutY="155.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Y" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Label layoutY="185.0" styleClass="fontStyle" stylesheets="@style.css" text="Scale Z" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Spinner fx:id="spinnerScaleX" editable="true" focusTraversable="false" layoutX="90.0" layoutY="127.0"
+				 prefHeight="25.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Spinner fx:id="spinnerScaleY" editable="true" focusTraversable="false" layoutX="90.0" layoutY="157.0"
+				 prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Spinner fx:id="spinnerScaleZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="187.0"
+				 prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Label layoutY="245.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate X" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Label layoutY="275.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Y" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Label layoutY="305.0" styleClass="fontStyle" stylesheets="@style.css" text="Rotate Z" textFill="#cacdd3">
+			<font>
+				<Font name="Arial Bold" size="14.0"/>
+			</font>
+			<padding>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</padding>
+		</Label>
+		<Spinner fx:id="spinnerRotateX" editable="true" focusTraversable="false" layoutX="90.0" layoutY="247.0"
+				 prefHeight="25.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Spinner fx:id="spinnerRotateY" editable="true" focusTraversable="false" layoutX="90.0" layoutY="277.0"
+				 prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Spinner fx:id="spinnerRotateZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="307.0"
+				 prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css"/>
+		<Button fx:id="buttonApplyTransformation" layoutX="5.0" layoutY="346.0" mnemonicParsing="false"
+				onAction="#applyTransformation" prefHeight="30.0" prefWidth="169.0" stylesheets="@style.css"
+				text="Apply Transformation"/>
+	</Pane>
 </AnchorPane>
