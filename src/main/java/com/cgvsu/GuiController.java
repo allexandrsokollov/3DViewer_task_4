@@ -19,7 +19,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -31,7 +30,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class GuiController {
 
@@ -64,15 +62,13 @@ public class GuiController {
 	@FXML
 	public Button buttonApplyTransformation;
 	@FXML
-	public Pane controlPane;
-	@FXML
     AnchorPane anchorPane;
     @FXML
     private Canvas canvas;
 	private Scene scene;
 
-	private Vector2f dragCoordinates = new Vector2f(0,0);
-	private Vector2f dropCoordinates = new Vector2f(0,0);
+	private final Vector2f dragCoordinates = new Vector2f(0,0);
+	private final Vector2f dropCoordinates = new Vector2f(0,0);
 
     private Camera camera = new Camera(
             new Vector3f(0, 0, 100),
@@ -160,7 +156,7 @@ public class GuiController {
 
 	@FXML
 	public void selectModel() {
-		List<ModifiedModel> selectedModels = new LinkedList<>();
+		var selectedModels = new LinkedList<ModifiedModel>();
 		for (Integer index : listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()) {
 			selectedModels.add(scene.getModels().get(index));
 		}
@@ -169,18 +165,10 @@ public class GuiController {
 	}
 
 	public void deleteModelFromViewList() {
-		List<String> deletedModelNames = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
-		List<Integer> modelIndexesToRemove = new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices());
-		listOfLoadedModelsNames.setPrefHeight(listOfLoadedModelsNames.getHeight() - 28 * modelIndexesToRemove.size());
+		scene.deleteSelectedModels(new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()),
+				new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedItems()));
+
 		listOfLoadedModelsNames.getItems().removeAll(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
-
-		int decrement = 0;
-		for (int index : modelIndexesToRemove) {
-			scene.getModels().remove(index - decrement++);
-		}
-
-		scene.getActiveModels().removeIf(model -> ! scene.getModels().contains(model));
-		scene.getModelNames().removeIf(deletedModelNames::contains);
 		canvas.requestFocus();
 	}
 	public void saveInitialModel() {
@@ -287,7 +275,7 @@ public class GuiController {
 			}
 
 		} catch (NullPointerException e) {
-			showExceptionNotification("One of fields is empty");
+			showMessageNotification("One of fields is empty");
 		}
 
 		canvas.requestFocus();
@@ -316,13 +304,6 @@ public class GuiController {
 	private void showExceptionNotification(Exception e) {
 		Notifications.create()
 				.text(e.getMessage())
-				.position(Pos.CENTER)
-				.showError();
-	}
-
-	private void showExceptionNotification(String e) {
-		Notifications.create()
-				.text(e)
 				.position(Pos.CENTER)
 				.showError();
 	}
