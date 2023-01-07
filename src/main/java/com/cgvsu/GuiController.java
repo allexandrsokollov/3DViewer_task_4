@@ -339,7 +339,7 @@ public class GuiController {
 		Notifications.create()
 				.text(message)
 				.position(Pos.CENTER)
-				.showError();
+				.showInformation();
 	}
 
 	public void takeFocusCanvas() {
