@@ -116,6 +116,10 @@ public class Vector4f {
 
     @Override
     public String toString() {
+        String x = Float.toString(this.x);
+        String y = Float.toString(this.y);
+        String z = Float.toString(this.z);
+        String w = Float.toString(this.w);
         return '{' + x + ',' + y + ',' + z + ',' + w + "}";
     }
 
