@@ -54,6 +54,17 @@ public class CameraController {
     }
 
     public void rotateCamera(final Vector2f angleOfRotate) throws Exception {
+        if (angleOfRotate.getY() >= 90) {
+            angleOfRotate.setY(89.9F);
+        } else if (angleOfRotate.getY() <= -90) {
+            angleOfRotate.setY(-89.9F);
+        }
+        if (angleOfRotate.getX() >= 90) {
+            angleOfRotate.setX(89.9F);
+        } else if (angleOfRotate.getX() <= -90) {
+            angleOfRotate.setX(-89.9F);
+        }
+
         Matrix4 mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), angleOfRotate.getX(),0));
         camera.rotateCamera(mR);
         forwardV = GraphicConveyor.multiplyMatrix4ByVector3(mR, forwardV);
