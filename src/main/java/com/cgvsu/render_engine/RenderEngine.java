@@ -25,7 +25,7 @@ public class RenderEngine {
 
     static {
         try {
-            img = read(new File("NeutralWrapped.jpg"));
+            img = read(new File("I:\\Programming\\Repository\\3DViewer_task_4\\objModels\\AlexWithTexture\\NeutralWrapped.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,9 +77,9 @@ public class RenderEngine {
                 resultPoints.add(resultPoint);
             }
 
-            float k1 = shade(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getNormalIndices().get(0)), camera);
-            float k2 = shade(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getNormalIndices().get(1)), camera);
-            float k3 = shade(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getNormalIndices().get(2)), camera);
+            float k1 = shade(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(0)), camera);
+            float k2 = shade(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(1)), camera);
+            float k3 = shade(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(2)), camera);
 
             applyTextureToPolygon(graphicsContext,
                     image,
@@ -95,6 +95,18 @@ public class RenderEngine {
                     k3,
                     resultPoints,
                     zBuffer);
+
+            /*applyTextureToPolygon(graphicsContext,
+                    image,
+                    img,
+                    mesh.getVertices().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(0)),
+                    mesh.getVertices().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(1)),
+                    mesh.getVertices().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(2)),
+                    mesh.getTextureVertices().get(mesh.getPolygons().get(polygonInd).getTextureVertexIndices().get(0)),
+                    mesh.getTextureVertices().get(mesh.getPolygons().get(polygonInd).getTextureVertexIndices().get(1)),
+                    mesh.getTextureVertices().get(mesh.getPolygons().get(polygonInd).getTextureVertexIndices().get(2)),
+                    resultPoints,
+                    zBuffer);*/
 
             /*rasterizePolygon(graphicsContext,
                     img,
@@ -166,8 +178,8 @@ public class RenderEngine {
                     float depth = b1 * v1.getZ() + b2 * v2.getZ() + b3 * v3.getZ();
                     int zIndex = y * img.getWidth() + x;
                     if (zBuffer[zIndex] < depth) {
-                        int color = texture.getRGB((int) ((xt * ((float) texture.getWidth()))), (int) (yt * (float) (texture.getHeight())));
-                        //int color = getPixelColor(shadeCoef, xt, yt, texture);
+                        //int color = texture.getRGB((int) ((xt * ((float) texture.getWidth()))), (int) (yt * (float) (texture.getHeight())));
+                        int color = getPixelColor(shadeCoef, xt, yt, texture);
                         graphicsContext.getPixelWriter().setArgb(x, y, color);
                         zBuffer[zIndex] = depth;
                     }

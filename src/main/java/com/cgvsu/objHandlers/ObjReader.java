@@ -57,8 +57,17 @@ public class ObjReader {
 			}
 		}
 		resultModel.checkConsistency();
+
+		System.out.println("Вершины до триангуляции: " + resultModel.getVertices().size());
+		System.out.println("Нормали до триангуляции: " + resultModel.getNormals().size());
+
 		resultModel.triangulate();
-		//resultModel.recalculateNormals();
+
+		System.out.println("Вершины после триангуляции: " + resultModel.getVertices().size());
+
+		resultModel.recalculateNormals();
+
+		System.out.println("Нормали после пересчёта: " + resultModel.getNormals().size());
 
 		return resultModel;
 	}
