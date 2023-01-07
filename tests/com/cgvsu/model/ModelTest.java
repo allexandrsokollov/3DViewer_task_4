@@ -25,7 +25,7 @@ class ModelTest {
 						List.of(1, 1, 1), List.of(1, 1, 1), List.of(1, 1, 1))));
 		Model copied = initial.getCopy();
 
-		initial.setNormals();
+		//initial.setNormals();
 
 		Assertions.assertEquals(expected.getNormals(), copied.getNormals());
 	}

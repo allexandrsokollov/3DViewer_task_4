@@ -28,10 +28,10 @@ public class ModifiedModel extends Model {
     }
 
     public ModifiedModel(Model model, Vector3f translateV, Vector3f rotateV, Vector3f scaleV){
-        super(model);
-        this.translateV = translateV;
-       this.rotateV =  rotateV;
-       this.scaleV = scaleV;
+		super(model);
+		this.translateV = translateV;
+        this.rotateV =  rotateV;
+        this.scaleV = scaleV;
     }
 
     public Matrix4 getModelMatrix() throws Exception {
@@ -57,9 +57,7 @@ public class ModifiedModel extends Model {
         List<Polygon> p = List.copyOf(super.getPolygons());
         List<Vector3f> nV = List.copyOf(super.getNormals());
         List<Vector3f> vM = getModifiedVertexes();
-        Model transformedModel = new Model(vM, tV, nV, p);
-        //transformedModel.recalculateNormals();
-        return transformedModel;
+        return new Model(vM, tV, nV, p);
     }
 
     public Model getMesh() {
