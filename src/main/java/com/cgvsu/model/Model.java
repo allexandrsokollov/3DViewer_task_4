@@ -72,7 +72,7 @@ public class Model {
 	public void setPolygons(final List<Polygon> polygons) throws Exception {
 		this.polygons = polygons;
 		recalculateNormals();
-		triangulate();
+		//triangulate();
 	}
 
 	public boolean checkConsistency() {

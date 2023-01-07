@@ -364,14 +364,6 @@ public class GuiController {
 		float xAngle = (float) ((diffX / canvas.getWidth()) * 1);
 		float yAngle = (float) ((diffY / canvas.getHeight()) * -1);
 
-		if (Math.abs(yAngle) >= 90) {
-			yAngle = 89.9F;
-		}
-
-		if (Math.abs(xAngle) >= 90) {
-			xAngle = 89.9F;
-		}
-
 		try {
 			cameraController.rotateCamera(new Vector2f(xAngle, yAngle));
 		} catch (Exception e) {
