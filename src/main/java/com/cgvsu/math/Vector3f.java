@@ -2,7 +2,6 @@ package com.cgvsu.math;
 
 public class Vector3f {
 
-
     public static final float EPS = 1e-7f;
     private float x, y, z;
 
@@ -154,7 +153,7 @@ public class Vector3f {
 
     public void divide(final float n) throws Exception{
         if (n - 0 < EPS) {
-            throw new Exception("На 0 делить нельзя");
+            throw new Exception("You tried to divide by zero");
         }
 
         this.x = this.x / n;

@@ -1,9 +1,7 @@
 package com.cgvsu.model;
-import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
 import com.cgvsu.objHandlers.ReaderExceptions;
-import com.cgvsu.render_engine.GraphicConveyor;
 
 import java.util.*;
 
@@ -15,14 +13,11 @@ public class Model {
 	private List<Vector3f> normals;
 	private List<Polygon> polygons;
 
-	public Model(final List<Vector3f> vertices, final List<Vector2f> textureVertices, final List<Vector3f> normals, final List<Polygon> polygons) throws Exception {
+	public Model(final List<Vector3f> vertices, final List<Vector2f> textureVertices, final List<Vector3f> normals, final List<Polygon> polygons) {
 		this.vertices = vertices;
 		this.textureVertices = textureVertices;
 		this.polygons = polygons;
-		this.normals = new ArrayList<>();
-		//todo триангулировать текстурные координаты
-		//recalculateNormals();
-		triangulate();
+		this.normals = normals;
 	}
 
 	public Model() {
@@ -46,18 +41,6 @@ public class Model {
 				this.normals,
 				this.polygons);
 	}
-
-	public void makeTransformation(Matrix4 modelMatrix) {
-		modelMatrix.transpose();
-		vertices.replaceAll(vertex -> {
-			try {
-				return GraphicConveyor.multiplyMatrix4ByVector3(modelMatrix, vertex);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
-	}
-
 	public List<Vector3f> getVertices() {
 		return vertices;
 	}
@@ -82,8 +65,8 @@ public class Model {
 		this.textureVertices = vertices;
 	}
 
-	public void setNormals() throws Exception {
-		recalculateNormals();
+	public void setNormals(List<Vector3f> normals) {
+		this.normals = normals;
 	}
 
 	public void setPolygons(final List<Polygon> polygons) throws Exception {

@@ -18,6 +18,16 @@ public class Scene {
 		modelNames = new LinkedList<>();
 	}
 
+	public void deleteSelectedModels(List<Integer> indexesToDelete, List<String> namesToDelete) {
+		int decrement = 0;
+		for (int index : indexesToDelete) {
+			getModels().remove(index - decrement++);
+		}
+
+		getActiveModels().removeIf(model -> ! getModels().contains(model));
+		getModelNames().removeIf(namesToDelete::contains);
+	}
+
 	public List<ModifiedModel> getModels() {
 		return models;
 	}

@@ -39,7 +39,7 @@ public class Vector4f {
 
     public static Vector4f getDividedVector(final Vector4f v1, final float n) throws Exception {
         if(n - 0 < EPS) {
-            throw new Exception("На 0 делить нельзя");
+            throw new Exception("You tried to divide by zero");
         }
         final float x = v1.getX() / n;
         final float y = v1.getY() / n;
@@ -165,7 +165,7 @@ public class Vector4f {
 
     public void divide(final float n) throws Exception {
         if(n - 0 < EPS) {
-            throw new Exception("На 0 делить нельзя");
+            throw new Exception("You tried to divide by zero");
         }
 
         this.x = this.x / n;

@@ -1,13 +1,17 @@
 package com.cgvsu.render_engine;
 
-import com.cgvsu.math.Matrix3;
 import com.cgvsu.math.Matrix4;
-import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
 
 
-
 public class Camera {
+
+	private Vector3f position;
+	private Vector3f target;
+	private final float fov;
+	private float aspectRatio;
+	private final float nearPlane;
+	private final float farPlane;
 
     public Camera(
             final Vector3f position,
@@ -44,15 +48,12 @@ public class Camera {
         return target;
     }
 
-    public void moveCamera(final Vector3f translation) throws Exception {
-        /*Matrix4 modelMatrix = GraphicConveyor.getModelMatrix(translation, new Vector3f(0,0,0), new Vector3f(1,1,1));
-        modelMatrix.transpose();*/
-
-       movePosition(translation);
-       moveTarget(translation);
+    public void moveCamera(final Vector3f translation) {
+		movePosition(translation);
+        moveTarget(translation);
     }
 
-    public void movePosition(final Vector3f translation) throws Exception {
+    public void movePosition(final Vector3f translation) {
         this.position.add(translation);
     }
 
@@ -62,7 +63,6 @@ public class Camera {
 
     public void rotateCamera(final Matrix4 mR) throws Exception {
         Vector3f vZ = Vector3f.getSubtracted(target, position);
-        //Matrix4 mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), angleOfRotate.getX(),0));
         vZ = GraphicConveyor.multiplyMatrix4ByVector3(mR, vZ);
         target = Vector3f.getAdded(position, vZ);
 
@@ -75,11 +75,4 @@ public class Camera {
     Matrix4 getProjectionMatrix() {
         return GraphicConveyor.perspective(fov, aspectRatio, nearPlane, farPlane);
     }
-
-    private Vector3f position;
-    private Vector3f target;
-    private float fov;
-    private float aspectRatio;
-    private float nearPlane;
-    private float farPlane;
 }
