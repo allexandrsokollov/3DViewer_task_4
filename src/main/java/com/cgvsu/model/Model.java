@@ -19,8 +19,7 @@ public class Model {
 		this.vertices = vertices;
 		this.textureVertices = textureVertices;
 		this.polygons = polygons;
-		this.normals = new ArrayList<>();
-		//todo триангулировать текстурные координаты
+		this.normals = normals;
 		//recalculateNormals();
 		triangulate();
 	}
@@ -83,12 +82,12 @@ public class Model {
 	}
 
 	public void setNormals() throws Exception {
-		recalculateNormals();
+		//recalculateNormals();
 	}
 
 	public void setPolygons(final List<Polygon> polygons) throws Exception {
 		this.polygons = polygons;
-		recalculateNormals();
+		//recalculateNormals();
 		triangulate();
 	}
 
@@ -144,6 +143,7 @@ public class Model {
 
 	private List<Polygon> triangulatePolygon(Polygon polygon){
 		List<Integer> vertexIndices = polygon.getVertexIndices();
+		List<Integer> textureVertexIndices = polygon.getTextureVertexIndices();
 		List<Polygon> triangulatedPolygons = new ArrayList<>();
 		if (vertexIndices.size() > 3) {
 			for (int i = 2; i < vertexIndices.size(); i++) {
@@ -151,6 +151,9 @@ public class Model {
 				triangle.getVertexIndices().add(vertexIndices.get(0));
 				triangle.getVertexIndices().add(vertexIndices.get(i - 1));
 				triangle.getVertexIndices().add(vertexIndices.get(i));
+				triangle.getTextureVertexIndices().add(textureVertexIndices.get(0));
+				triangle.getTextureVertexIndices().add(textureVertexIndices.get(i - 1));
+				triangle.getTextureVertexIndices().add(textureVertexIndices.get(i));
 				triangulatedPolygons.add(triangle);
 			}
 		} else {

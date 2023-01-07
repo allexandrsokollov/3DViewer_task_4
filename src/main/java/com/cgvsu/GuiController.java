@@ -76,7 +76,7 @@ public class GuiController {
 	private Vector2f dropCoordinates = new Vector2f(0,0);
 
     private Camera camera = new Camera(
-            new Vector3f(0, 0, 100),
+            new Vector3f(0, 0, 500),
             new Vector3f(0, 0, 0),
             1.0F, 1, 0.01F, 100);
 	private CameraController cameraController = new CameraController(camera, TRANSLATION);
