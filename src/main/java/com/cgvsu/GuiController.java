@@ -78,8 +78,9 @@ public class GuiController {
     private Canvas canvas;
 	private Scene scene;
 
-	private final Vector2f dragCoordinates = new Vector2f(0,0);
-	private final Vector2f dropCoordinates = new Vector2f(0,0);
+	private boolean isRotationActive;
+	private final Vector2f currentMouseCoordinates = new Vector2f(0, 0);
+	private final Vector2f centerCoordinates = new Vector2f(0 , 0);
 
     private final Camera camera = new Camera(
             new Vector3f(0, 0, 100),
@@ -103,6 +104,10 @@ public class GuiController {
 			canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
 			camera.setAspectRatio((float) (width / height));
 
+			if (isRotationActive) {
+				rotateCamera();
+			}
+
 			if (!scene.getActiveModels().isEmpty()) {
 				try {
 					for (ModifiedModel model : scene.getActiveModels()) {
@@ -117,6 +122,8 @@ public class GuiController {
 
         timeline.getKeyFrames().add(frame);
         timeline.play();
+
+		canvas.getOnMouseMoved();
 		canvas.requestFocus();
     }
 
@@ -179,7 +186,7 @@ public class GuiController {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
 		} else {
-			saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()));
+			saveModel(scene.getModels().get(listOfLoadedModelsNames.getSelectionModel().getSelectedIndex()).getMesh());
 		}
 		canvas.requestFocus();
 	}
@@ -220,12 +227,10 @@ public class GuiController {
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
-		//moveCameraPosition(new Vector3f(0, 0, -TRANSLATION));
 	}
 
     @FXML
     public void handleCameraBackward() {
-		//moveCameraPosition(new Vector3f(0, 0, TRANSLATION));
 		try {
 			cameraController.handleCameraBackward();
 		} catch (Exception e) {
@@ -235,7 +240,6 @@ public class GuiController {
 
     @FXML
     public void handleCameraLeft() {
-		//moveCameraPosition(new Vector3f(TRANSLATION, 0, 0));
 		try {
 			cameraController.handleCameraLeft();
 		} catch (Exception e) {
@@ -245,7 +249,6 @@ public class GuiController {
 
     @FXML
     public void handleCameraRight() {
-		//moveCameraPosition(new Vector3f(-TRANSLATION, 0, 0));
 		try {
 			cameraController.handleCameraRight();
 		} catch (Exception e) {
@@ -255,7 +258,6 @@ public class GuiController {
 
     @FXML
     public void handleCameraUp() {
-		//moveCameraPosition(new Vector3f(0, TRANSLATION, 0));
 		try {
 			cameraController.handleCameraUp();
 		} catch (Exception e) {
@@ -265,17 +267,8 @@ public class GuiController {
 
     @FXML
     public void handleCameraDown() {
-		//moveCameraPosition(new Vector3f(0, -TRANSLATION, 0));
 		try {
 			cameraController.handleCameraDown();
-		} catch (Exception e) {
-			showExceptionNotification(e);
-		}
-	}
-
-	private void moveCameraPosition(Vector3f translationVector) {
-		try {
-			camera.moveCamera(translationVector);
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -353,28 +346,30 @@ public class GuiController {
 		canvas.requestFocus();
 	}
 
-	public void canvasDragDroppedGetValue(MouseEvent dragEvent) {
-		dragCoordinates.setX((float) dragEvent.getX());
-		dragCoordinates.setY((float) dragEvent.getY());
-		System.out.println("dropped  " + dragEvent.getX() + "  " + dragEvent.getY());
-		rotateCamera();
+	public void canvasDragDroppedGetValue() {
+		isRotationActive = false;
 	}
 
-	public void canvasDragEnterGetValue(MouseEvent dragEvent) {
-		dropCoordinates.setX((float) dragEvent.getX());
-		dropCoordinates.setY((float) dragEvent.getY());
-		System.out.println("dragged  " + dragEvent.getX() + "  " + dragEvent.getY());
+	public void canvasDragEnterGetValue() {
+		isRotationActive = true;
 	}
 
 	public void rotateCamera() {
-		float diffX = dropCoordinates.getX() - dragCoordinates.getX();
-		float diffY = dropCoordinates.getY() - dragCoordinates.getY();
+		centerCoordinates.setX((float) (canvas.getWidth() / 2));
+		centerCoordinates.setY((float) (canvas.getHeight() / 2));
 
-		float xAngle = (float) ((diffX / canvas.getWidth()) * -15);
-		float yAngle = (float) ((diffY / canvas.getHeight()) * 15);
+		float diffX = currentMouseCoordinates.getX() - centerCoordinates.getX();
+		float diffY = currentMouseCoordinates.getY() - centerCoordinates.getY();
+
+		float xAngle = (float) ((diffX / canvas.getWidth()) * 1);
+		float yAngle = (float) ((diffY / canvas.getHeight()) * -1);
 
 		if (Math.abs(yAngle) >= 90) {
 			yAngle = 89.9F;
+		}
+
+		if (Math.abs(xAngle) >= 90) {
+			xAngle = 89.9F;
 		}
 
 		try {
@@ -382,6 +377,10 @@ public class GuiController {
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
+	}
 
+	public void currentMouseCoordinates(MouseEvent mouseDragEvent) {
+		currentMouseCoordinates.setX( (float) mouseDragEvent.getX());
+		currentMouseCoordinates.setY( (float) mouseDragEvent.getY());
 	}
 }

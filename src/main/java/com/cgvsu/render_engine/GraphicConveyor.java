@@ -103,9 +103,6 @@ public class GraphicConveyor {
 
     public static Matrix4 lookAt(Vector3f eye, Vector3f target) throws Exception {
         Vector3f up = new Vector3f(0F, 1.0F, 0F);
-        /*Vector3f cameraDirection = Vector3f.getSubtracted(eye, target);
-        Vector3f cameraRight = Vector3f.getNormalizedVector(Vector3f.getVectorProduct(up, cameraDirection));
-        Vector3f cameraUp = Vector3f.getVectorProduct(cameraDirection, cameraRight);*/
         return lookAt(eye, target, up);
     }
 
@@ -113,8 +110,6 @@ public class GraphicConveyor {
         Vector3f resultZ = Vector3f.getSubtracted(target, eye);
         Vector3f resultX = Vector3f.getVectorProduct(up, resultZ);
         Vector3f resultY = Vector3f.getVectorProduct(resultZ, resultX);
-
-
 
         resultX.normalize();
         resultY.normalize();

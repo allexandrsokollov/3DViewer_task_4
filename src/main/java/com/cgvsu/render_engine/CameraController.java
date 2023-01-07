@@ -3,7 +3,6 @@ package com.cgvsu.render_engine;
 import com.cgvsu.math.Matrix4;
 import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
-import javafx.fxml.FXML;
 
 public class CameraController {
 
@@ -11,16 +10,14 @@ public class CameraController {
     private Vector3f backwardV;
     private Vector3f leftV;
     private Vector3f rightV;
-    private Vector3f upV;
-    private Vector3f downV;
-    private float translation;
+    private final Vector3f upV;
+    private final Vector3f downV;
 
-    private Camera camera;
+	private final Camera camera;
 
 
     public CameraController(Camera camera, float translation) {
-        this.translation = translation;
-        this.camera = camera;
+		this.camera = camera;
         forwardV = new Vector3f(0, 0, -translation);
         backwardV = new Vector3f(0, 0, translation);
         leftV = new Vector3f(translation, 0, 0);
