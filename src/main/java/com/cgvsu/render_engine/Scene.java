@@ -23,6 +23,11 @@ public class Scene {
 		modelNames = new LinkedList<>();
 	}
 
+	public void deleteCamera(int index, String name) {
+		getCameraNames().remove(name);
+		getCameraControllers().remove(index);
+	}
+
 	public void deleteSelectedModels(List<Integer> indexesToDelete, List<String> namesToDelete) {
 		int decrement = 0;
 		for (int index : indexesToDelete) {

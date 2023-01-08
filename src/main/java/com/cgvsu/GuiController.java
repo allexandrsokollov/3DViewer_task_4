@@ -445,8 +445,9 @@ public class GuiController {
 		if (scene.getCameraControllers().size() <= 1) {
 			showMessageNotification("You can not delete last camera!");
 		} else {
-			scene.getCameraNames().remove(cameraNamesList.getSelectionModel().getSelectedItem());
-			scene.getCameraControllers().remove(cameraNamesList.getSelectionModel().getSelectedIndex());
+			scene.deleteCamera(
+					cameraNamesList.getSelectionModel().getSelectedIndex(),
+					cameraNamesList.getSelectionModel().getSelectedItem());
 			cameraNamesList.getItems().remove(cameraNamesList.getSelectionModel().getSelectedIndex());
 		}
 	}
