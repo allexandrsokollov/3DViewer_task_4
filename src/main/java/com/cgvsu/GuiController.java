@@ -111,7 +111,7 @@ public class GuiController {
 				try {
 					for (ModifiedModel model : scene.getActiveModels()) {
 						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(),
-								(int) width, (int) height, Color.WHITE);
+								(int) width, (int) height, Color.WHITE, null, new boolean[] {true, true, true, false});
 					}
 				} catch (Exception e) {
 					showExceptionNotification(e);
@@ -375,14 +375,6 @@ public class GuiController {
 
 		float xAngle = (float) ((diffX / canvas.getWidth()) * 1);
 		float yAngle = (float) ((diffY / canvas.getHeight()) * -1);
-
-		if (Math.abs(yAngle) >= 90) {
-			yAngle = 89.9F;
-		}
-
-		if (Math.abs(xAngle) >= 90) {
-			xAngle = 89.9F;
-		}
 
 		try {
 			cameraController.rotateCamera(new Vector2f(xAngle, yAngle));

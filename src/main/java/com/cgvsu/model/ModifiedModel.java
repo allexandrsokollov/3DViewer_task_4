@@ -13,21 +13,21 @@ public class ModifiedModel extends Model {
     private Vector3f scaleV;
     private Vector3f translateV;
 
-    public ModifiedModel(Model model) {
+    public ModifiedModel(Model model) throws Exception {
         super(model);
         translateV = new Vector3f(0, 0, 0);
         rotateV = new Vector3f(0, 0, 0);
         scaleV = new Vector3f(1, 1, 1);
     }
 
-    public ModifiedModel(ModifiedModel model) {
+    public ModifiedModel(ModifiedModel model) throws Exception {
         super(model);
         translateV = model.getTranslateV();
         rotateV = model.getRotateV();
         scaleV = model.getScaleV();
     }
 
-    public ModifiedModel(Model model, Vector3f translateV, Vector3f rotateV, Vector3f scaleV){
+    public ModifiedModel(Model model, Vector3f translateV, Vector3f rotateV, Vector3f scaleV) throws Exception {
 		super(model);
 		this.translateV = translateV;
         this.rotateV =  rotateV;
@@ -57,7 +57,9 @@ public class ModifiedModel extends Model {
         List<Polygon> p = List.copyOf(super.getPolygons());
         List<Vector3f> nV = List.copyOf(super.getNormals());
         List<Vector3f> vM = getModifiedVertexes();
-        return new Model(vM, tV, nV, p);
+        Model transformedModel = new Model(vM, tV, nV, p);
+        transformedModel.recalculateNormals();
+        return transformedModel;
     }
 
     public Model getMesh() {

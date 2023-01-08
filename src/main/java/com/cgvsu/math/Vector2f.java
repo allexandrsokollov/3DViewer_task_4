@@ -83,6 +83,8 @@ public class Vector2f {
 
     @Override
     public String toString() {
+        String x = Float.toString(this.x);
+        String y = Float.toString(this.y);
         return '{' + x + ',' + y + "}";
     }
 
