@@ -15,13 +15,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import static javax.imageio.ImageIO.read;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -35,8 +35,6 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 
 public class GuiController {
-
-    final private float TRANSLATION = 0.8F;
 
 	@FXML
 	public Menu modelsMenu;
@@ -75,6 +73,8 @@ public class GuiController {
 	@FXML
 	public ColorPicker modelColor;
 	@FXML
+	public ListView<String> cameraNamesList;
+	@FXML
     AnchorPane anchorPane;
     @FXML
     private Canvas canvas;
@@ -82,12 +82,7 @@ public class GuiController {
 	private boolean isRotationActive;
 	private final Vector2f currentMouseCoordinates = new Vector2f(0, 0);
 	private final Vector2f centerCoordinates = new Vector2f(0 , 0);
-
-    private final Camera camera = new Camera(
-            new Vector3f(0, 0, 100),
-            new Vector3f(0, 0, 0),
-            1.0F, 1, 0.01F, 100);
-	private final CameraController cameraController = new CameraController(camera, TRANSLATION);
+	private final float TRANSLATION = 0.8F;
 
 	@FXML
     private void initialize() {
@@ -98,12 +93,21 @@ public class GuiController {
 
 		scene = new Scene();
 
+		scene.getCameraControllers().add(new CameraController(new Camera(
+				new Vector3f(0, 0, 100),
+				new Vector3f(0, 0, 0),
+				1.0F, 1, 0.01F, 100), TRANSLATION));
+		scene.setCurrentCameraController(scene.getCameraControllers().get(0));
+
+		cameraNamesList.getItems().add("Camera №" + cameraNamesList.getItems().size());
+
 		KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
 			double width = canvas.getWidth();
 			double height = canvas.getHeight();
 
 			canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
-			camera.setAspectRatio((float) (width / height));
+			scene.getCurrentCameraController().getCamera().setAspectRatio((float) (width / height));
+
 
 			if (isRotationActive) {
 				rotateCamera();
@@ -112,9 +116,9 @@ public class GuiController {
 			if (!scene.getActiveModels().isEmpty()) {
 				try {
 					for (ModifiedModel model : scene.getActiveModels()) {
-						System.out.println(model.getTexture());
-						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(),
-								(int) width, (int) height, modelColor.getValue(), model.getTexture(), getRenderWayData());
+						RenderEngine.render(canvas.getGraphicsContext2D(), scene.getCurrentCameraController().getCamera(),
+								model.getTransformedModel(), (int) width, (int) height,
+								modelColor.getValue(), model.getTexture(), getRenderWayData());
 					}
 				} catch (Exception e) {
 					showExceptionNotification(e);
@@ -234,7 +238,7 @@ public class GuiController {
 	@FXML
     public void handleCameraForward() {
 		try {
-			cameraController.handleCameraForward();
+			scene.getCurrentCameraController().handleCameraForward();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -243,7 +247,7 @@ public class GuiController {
     @FXML
     public void handleCameraBackward() {
 		try {
-			cameraController.handleCameraBackward();
+			scene.getCurrentCameraController().handleCameraBackward();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -252,7 +256,7 @@ public class GuiController {
     @FXML
     public void handleCameraLeft() {
 		try {
-			cameraController.handleCameraLeft();
+			scene.getCurrentCameraController().handleCameraLeft();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -261,7 +265,7 @@ public class GuiController {
     @FXML
     public void handleCameraRight() {
 		try {
-			cameraController.handleCameraRight();
+			scene.getCurrentCameraController().handleCameraRight();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -270,7 +274,7 @@ public class GuiController {
     @FXML
     public void handleCameraUp() {
 		try {
-			cameraController.handleCameraUp();
+			scene.getCurrentCameraController().handleCameraUp();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -279,7 +283,7 @@ public class GuiController {
     @FXML
     public void handleCameraDown() {
 		try {
-			cameraController.handleCameraDown();
+			scene.getCurrentCameraController().handleCameraDown();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -380,7 +384,7 @@ public class GuiController {
 		float yAngle = (float) ((diffY / canvas.getHeight()) * -1);
 
 		try {
-			cameraController.rotateCamera(new Vector2f(xAngle, yAngle));
+			scene.getCurrentCameraController().rotateCamera(new Vector2f(xAngle, yAngle));
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -409,5 +413,22 @@ public class GuiController {
 				showExceptionNotification(e);
 			}
 		}
+	}
+
+	@FXML
+	public void addCamera() {
+		scene.getCameraControllers().add(new CameraController(new Camera(
+				new Vector3f(0, 0, 100),
+				new Vector3f(0, 0, 0),
+				1.0F, 1, 0.01F, 100), TRANSLATION));
+
+		cameraNamesList.getItems().add("Camera №" + cameraNamesList.getItems().size());
+	}
+
+	@FXML
+	public void changCurrentCamera() {
+		scene.setCurrentCameraController(
+				scene.getCameraControllers().get(
+						cameraNamesList.getSelectionModel().getSelectedIndex()));
 	}
 }

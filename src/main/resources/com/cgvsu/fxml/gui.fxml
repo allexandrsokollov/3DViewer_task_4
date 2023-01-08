@@ -77,19 +77,18 @@
             <String fx:value="menu" />
          </styleClass>
         </Menu>
-      <Menu id="menuFile" mnemonicParsing="false" text="Cameras">
-         <styleClass>
-            <String fx:value="menu" />
-            <String fx:value="menu" />
-         </styleClass>
-         <items>
-            <MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" style="font-size: 20px;" text="Load Model">
-               <accelerator>
-                  <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-               </accelerator>
-            </MenuItem>
-         </items>
-      </Menu>
+		<Menu id="menuFile" mnemonicParsing="false" text="Cameras">
+			<styleClass>
+				<String fx:value="menu" />
+				<String fx:value="menu" />
+			</styleClass>
+			<MenuItem id="menuContextItem" mnemonicParsing="false" style="font-size: 20px;">
+				<graphic>
+					<ListView fx:id="cameraNamesList" onMouseClicked="#changCurrentCamera" prefHeight="200.0" prefWidth="200.0" />
+				</graphic>
+			</MenuItem>
+			<MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#addCamera" text="Add Camera" />
+		</Menu>
     </MenuBar>
 
     <Canvas fx:id="canvas" height="723.0" layoutX="186.0" onMouseClicked="#takeFocusCanvas" onMouseDragged="#currentMouseCoordinates" onMouseMoved="#currentMouseCoordinates" onMousePressed="#canvasDragEnterGetValue" onMouseReleased="#canvasDragDroppedGetValue" width="967.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />

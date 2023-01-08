@@ -8,11 +8,14 @@ import java.util.List;
 
 public class Scene {
 
-	private List<ModifiedModel> models;
+	private final List<ModifiedModel> models;
 	private List<ModifiedModel> activeModels;
 	private final List<String> modelNames;
+	private final List<CameraController> cameraControllers;
+	private CameraController currentCameraController;
 
 	public Scene() {
+		cameraControllers = new LinkedList<>();
 		models = new LinkedList<>();
 		activeModels = new LinkedList<>();
 		modelNames = new LinkedList<>();
@@ -32,10 +35,6 @@ public class Scene {
 		return models;
 	}
 
-	public void setModels(List<ModifiedModel> models) {
-		this.models = models;
-	}
-
 	public List<ModifiedModel> getActiveModels() {
 		return activeModels;
 	}
@@ -46,5 +45,17 @@ public class Scene {
 
 	public List<String> getModelNames() {
 		return modelNames;
+	}
+
+	public List<CameraController> getCameraControllers() {
+		return cameraControllers;
+	}
+
+	public CameraController getCurrentCameraController() {
+		return currentCameraController;
+	}
+
+	public void setCurrentCameraController(CameraController currentCameraController) {
+		this.currentCameraController = currentCameraController;
 	}
 }
