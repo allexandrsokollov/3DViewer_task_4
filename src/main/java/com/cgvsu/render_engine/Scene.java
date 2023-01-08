@@ -13,8 +13,10 @@ public class Scene {
 	private final List<String> modelNames;
 	private final List<CameraController> cameraControllers;
 	private CameraController currentCameraController;
+	private final List<String> cameraNames;
 
 	public Scene() {
+		cameraNames = new LinkedList<>();
 		cameraControllers = new LinkedList<>();
 		models = new LinkedList<>();
 		activeModels = new LinkedList<>();
@@ -57,5 +59,9 @@ public class Scene {
 
 	public void setCurrentCameraController(CameraController currentCameraController) {
 		this.currentCameraController = currentCameraController;
+	}
+
+	public List<String> getCameraNames() {
+		return cameraNames;
 	}
 }

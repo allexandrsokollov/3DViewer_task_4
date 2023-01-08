@@ -99,7 +99,8 @@ public class GuiController {
 				1.0F, 1, 0.01F, 100), TRANSLATION));
 		scene.setCurrentCameraController(scene.getCameraControllers().get(0));
 
-		cameraNamesList.getItems().add("Camera №" + cameraNamesList.getItems().size());
+		cameraNamesList.getItems().add("Camera №0");
+		scene.getCameraNames().add("Camera №0");
 
 		KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
 			double width = canvas.getWidth();
@@ -422,13 +423,31 @@ public class GuiController {
 				new Vector3f(0, 0, 0),
 				1.0F, 1, 0.01F, 100), TRANSLATION));
 
-		cameraNamesList.getItems().add("Camera №" + cameraNamesList.getItems().size());
+		int counter = 0;
+		String tempName = "Camera №" + counter;
+		while (scene.getCameraNames().contains(tempName)) {
+			tempName = "Camera №";
+			tempName = tempName + counter++;
+		}
+
+		scene.getCameraNames().add(tempName);
+		cameraNamesList.getItems().add(tempName);
 	}
 
 	@FXML
-	public void changCurrentCamera() {
+	public void changeCurrentCamera() {
 		scene.setCurrentCameraController(
 				scene.getCameraControllers().get(
 						cameraNamesList.getSelectionModel().getSelectedIndex()));
+	}
+
+	public void deleteCamera() {
+		if (scene.getCameraControllers().size() <= 1) {
+			showMessageNotification("You can not delete last camera!");
+		} else {
+			scene.getCameraNames().remove(cameraNamesList.getSelectionModel().getSelectedItem());
+			scene.getCameraControllers().remove(cameraNamesList.getSelectionModel().getSelectedIndex());
+			cameraNamesList.getItems().remove(cameraNamesList.getSelectionModel().getSelectedIndex());
+		}
 	}
 }

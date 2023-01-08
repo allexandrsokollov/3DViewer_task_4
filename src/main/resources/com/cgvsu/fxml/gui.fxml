@@ -84,7 +84,14 @@
 			</styleClass>
 			<MenuItem id="menuContextItem" mnemonicParsing="false" style="font-size: 20px;">
 				<graphic>
-					<ListView fx:id="cameraNamesList" onMouseClicked="#changCurrentCamera" prefHeight="200.0" prefWidth="200.0" />
+					<ListView fx:id="cameraNamesList" onMouseClicked="#changeCurrentCamera" prefHeight="200.0" prefWidth="200.0">
+                  <contextMenu>
+                     <ContextMenu>
+                       <items>
+                         <MenuItem mnemonicParsing="false" onAction="#deleteCamera" text="Delete Camera" />
+                       </items>
+                     </ContextMenu>
+                  </contextMenu></ListView>
 				</graphic>
 			</MenuItem>
 			<MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#addCamera" text="Add Camera" />
