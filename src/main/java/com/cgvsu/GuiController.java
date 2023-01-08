@@ -14,6 +14,7 @@ import com.cgvsu.render_engine.Scene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import static javax.imageio.ImageIO.read;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -25,6 +26,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -387,5 +389,24 @@ public class GuiController {
 	public void currentMouseCoordinates(MouseEvent mouseDragEvent) {
 		currentMouseCoordinates.setX( (float) mouseDragEvent.getX());
 		currentMouseCoordinates.setY( (float) mouseDragEvent.getY());
+	}
+
+	public void loadTexture() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Texture (*.png)", "*.obj", "*.jpg"));
+		fileChooser.setTitle("Load Texture");
+
+		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+
+		if (scene.getActiveModels().size() > 1) {
+			showMessageNotification("select one model to attach texture");
+		} else {
+			try {
+				BufferedImage texture = read(file);
+				scene.getActiveModels().get(0).setTexture(texture);
+			} catch (IOException e) {
+				showExceptionNotification(e);
+			}
+		}
 	}
 }

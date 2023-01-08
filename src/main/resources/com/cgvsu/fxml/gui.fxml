@@ -92,6 +92,9 @@
 			 <items>
 				 <MenuItem id="ListViewContextDelete" mnemonicParsing="false" onAction="#saveEditedModel" text="Save edited Model" />
 			 </items>
+			 <items>
+				 <MenuItem id="loadTexture" mnemonicParsing="false" onAction="#loadTexture" text="Load Texture" />
+			 </items>
          </ContextMenu>
       </contextMenu>
    </ListView>
