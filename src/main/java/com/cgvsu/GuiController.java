@@ -77,7 +77,6 @@ public class GuiController {
     @FXML
     private Canvas canvas;
 	private Scene scene;
-
 	private boolean isRotationActive;
 	private final Vector2f currentMouseCoordinates = new Vector2f(0, 0);
 	private final Vector2f centerCoordinates = new Vector2f(0 , 0);
@@ -127,6 +126,18 @@ public class GuiController {
 		canvas.requestFocus();
     }
 
+	/**
+	 * @return four boolean values
+	 * 1. is draw mesh or not
+	 * 2. is draw shades or not
+	 * 3. is draw texture or not
+	 * 4. is draw solid color or not
+	 */
+	public boolean[] getRenderWayData() {
+		return new boolean[] {radioButtonMesh.isSelected(), radioButtonShades.isSelected(),
+				radioButtonTexture.isSelected(), radioButtonSolidColor.isSelected()};
+	}
+
     @FXML
     private void onOpenModelMenuItemClick() {
         FileChooser fileChooser = new FileChooser();
@@ -161,11 +172,6 @@ public class GuiController {
     }
 
 	@FXML
-	public void saveModel() {
-		saveEditedModel();
-	}
-
-	@FXML
 	public void selectModel() {
 		var selectedModels = new LinkedList<ModifiedModel>();
 		for (Integer index : listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()) {
@@ -175,6 +181,7 @@ public class GuiController {
 		canvas.requestFocus();
 	}
 
+	@FXML
 	public void deleteModelFromViewList() {
 		scene.deleteSelectedModels(new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()),
 				new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedItems()));
@@ -182,6 +189,7 @@ public class GuiController {
 		listOfLoadedModelsNames.getItems().removeAll(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 		canvas.requestFocus();
 	}
+	@FXML
 	public void saveInitialModel() {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
@@ -190,7 +198,7 @@ public class GuiController {
 		}
 		canvas.requestFocus();
 	}
-
+	@FXML
 	public void saveEditedModel() {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
@@ -274,6 +282,7 @@ public class GuiController {
 		}
 	}
 
+	@FXML
 	public void applyTransformation() {
 		try {
 			final float xT = spinnerMoveX.getValue().floatValue();
@@ -342,14 +351,17 @@ public class GuiController {
 				.showInformation();
 	}
 
+	@FXML
 	public void takeFocusCanvas() {
 		canvas.requestFocus();
 	}
 
+	@FXML
 	public void canvasDragDroppedGetValue() {
 		isRotationActive = false;
 	}
 
+	@FXML
 	public void canvasDragEnterGetValue() {
 		isRotationActive = true;
 	}
@@ -379,6 +391,7 @@ public class GuiController {
 		}
 	}
 
+	@FXML
 	public void currentMouseCoordinates(MouseEvent mouseDragEvent) {
 		currentMouseCoordinates.setX( (float) mouseDragEvent.getX());
 		currentMouseCoordinates.setY( (float) mouseDragEvent.getY());

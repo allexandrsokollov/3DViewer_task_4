@@ -26,11 +26,16 @@
                 <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
             </accelerator>
             </MenuItem>
-			<MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#saveModel" text="Save Edited Model">
+			<MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#saveEditedModel" text="Save Edited Model">
 				<accelerator>
 					<KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 				</accelerator>
 			</MenuItem>
+         <MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#saveInitialModel" text="Save initial Model">
+            <accelerator>
+               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+            </accelerator>
+         </MenuItem>
          <styleClass>
             <String fx:value="menu" />
             <String fx:value="menu" />
