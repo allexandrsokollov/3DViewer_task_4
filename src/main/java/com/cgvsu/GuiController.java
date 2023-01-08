@@ -393,7 +393,7 @@ public class GuiController {
 
 	public void loadTexture() {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Texture (*.png)", "*.obj", "*.jpg"));
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Texture (*.png)", "*.png", "*.jpg"));
 		fileChooser.setTitle("Load Texture");
 
 		File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
