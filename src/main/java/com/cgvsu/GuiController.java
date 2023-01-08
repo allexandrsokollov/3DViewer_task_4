@@ -396,7 +396,7 @@ public class GuiController {
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Texture (*.png)", "*.obj", "*.jpg"));
 		fileChooser.setTitle("Load Texture");
 
-		File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+		File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
 
 		if (scene.getActiveModels().size() > 1) {
 			showMessageNotification("select one model to attach texture");
