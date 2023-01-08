@@ -26,30 +26,30 @@ public class CameraController {
         downV = new Vector3f(0, -translation, 0);
     }
 
-    public void handleCameraForward() throws Exception {
+    public void handleCameraForward() {
         camera.moveCamera(forwardV);
     }
 
-    public void handleCameraBackward() throws Exception {
+    public void handleCameraBackward() {
         camera.moveCamera(backwardV);
     }
 
-    public void handleCameraLeft() throws Exception {
+    public void handleCameraLeft() {
         camera.moveCamera(leftV);
     }
 
 
-    public void handleCameraRight() throws Exception {
+    public void handleCameraRight() {
         camera.moveCamera(rightV);
     }
 
 
-    public void handleCameraUp() throws Exception {
+    public void handleCameraUp() {
         camera.moveCamera(upV);
     }
 
 
-    public void handleCameraDown() throws Exception {
+    public void handleCameraDown() {
         camera.moveCamera(downV);
     }
 
@@ -75,6 +75,7 @@ public class CameraController {
         camera.rotateCamera(mR);
     }
 
-
-
+	public Camera getCamera() {
+		return camera;
+	}
 }

@@ -14,17 +14,19 @@ import com.cgvsu.render_engine.Scene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import static javax.imageio.ImageIO.read;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,8 +35,6 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 
 public class GuiController {
-
-    final private float TRANSLATION = 0.8F;
 
 	@FXML
 	public Menu modelsMenu;
@@ -73,20 +73,16 @@ public class GuiController {
 	@FXML
 	public ColorPicker modelColor;
 	@FXML
+	public ListView<String> cameraNamesList;
+	@FXML
     AnchorPane anchorPane;
     @FXML
     private Canvas canvas;
 	private Scene scene;
-
 	private boolean isRotationActive;
 	private final Vector2f currentMouseCoordinates = new Vector2f(0, 0);
 	private final Vector2f centerCoordinates = new Vector2f(0 , 0);
-
-    private final Camera camera = new Camera(
-            new Vector3f(0, 0, 100),
-            new Vector3f(0, 0, 0),
-            1.0F, 1, 0.01F, 100);
-	private final CameraController cameraController = new CameraController(camera, TRANSLATION);
+	private final float TRANSLATION = 0.8F;
 
 	@FXML
     private void initialize() {
@@ -97,12 +93,22 @@ public class GuiController {
 
 		scene = new Scene();
 
+		scene.getCameraControllers().add(new CameraController(new Camera(
+				new Vector3f(0, 0, 100),
+				new Vector3f(0, 0, 0),
+				1.0F, 1, 0.01F, 100), TRANSLATION));
+		scene.setCurrentCameraController(scene.getCameraControllers().get(0));
+
+		cameraNamesList.getItems().add("Camera №0");
+		scene.getCameraNames().add("Camera №0");
+
 		KeyFrame frame = new KeyFrame(Duration.millis(15), event -> {
 			double width = canvas.getWidth();
 			double height = canvas.getHeight();
 
 			canvas.getGraphicsContext2D().clearRect(0, 0, width, height);
-			camera.setAspectRatio((float) (width / height));
+			scene.getCurrentCameraController().getCamera().setAspectRatio((float) (width / height));
+
 
 			if (isRotationActive) {
 				rotateCamera();
@@ -111,8 +117,9 @@ public class GuiController {
 			if (!scene.getActiveModels().isEmpty()) {
 				try {
 					for (ModifiedModel model : scene.getActiveModels()) {
-						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(),
-								(int) width, (int) height, Color.WHITE, null, new boolean[] {true, true, true, false});
+						RenderEngine.render(canvas.getGraphicsContext2D(), scene.getCurrentCameraController().getCamera(),
+								model.getTransformedModel(), (int) width, (int) height,
+								modelColor.getValue(), model.getTexture(), getRenderWayData());
 					}
 				} catch (Exception e) {
 					showExceptionNotification(e);
@@ -126,6 +133,18 @@ public class GuiController {
 		canvas.getOnMouseMoved();
 		canvas.requestFocus();
     }
+
+	/**
+	 * @return four boolean values
+	 * 1. is draw mesh or not
+	 * 2. is draw shades or not
+	 * 3. is draw texture or not
+	 * 4. is draw solid color or not
+	 */
+	public boolean[] getRenderWayData() {
+		return new boolean[] {radioButtonMesh.isSelected(), radioButtonShades.isSelected(),
+				radioButtonTexture.isSelected(), radioButtonSolidColor.isSelected()};
+	}
 
     @FXML
     private void onOpenModelMenuItemClick() {
@@ -161,11 +180,6 @@ public class GuiController {
     }
 
 	@FXML
-	public void saveModel() {
-		saveEditedModel();
-	}
-
-	@FXML
 	public void selectModel() {
 		var selectedModels = new LinkedList<ModifiedModel>();
 		for (Integer index : listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()) {
@@ -175,6 +189,7 @@ public class GuiController {
 		canvas.requestFocus();
 	}
 
+	@FXML
 	public void deleteModelFromViewList() {
 		scene.deleteSelectedModels(new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedIndices()),
 				new LinkedList<>(listOfLoadedModelsNames.getSelectionModel().getSelectedItems()));
@@ -182,6 +197,7 @@ public class GuiController {
 		listOfLoadedModelsNames.getItems().removeAll(listOfLoadedModelsNames.getSelectionModel().getSelectedItems());
 		canvas.requestFocus();
 	}
+	@FXML
 	public void saveInitialModel() {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
@@ -190,7 +206,7 @@ public class GuiController {
 		}
 		canvas.requestFocus();
 	}
-
+	@FXML
 	public void saveEditedModel() {
 		if (listOfLoadedModelsNames.getSelectionModel().getSelectedIndices().size() > 1) {
 			showMessageNotification("Chose one Model to Save!");
@@ -223,7 +239,7 @@ public class GuiController {
 	@FXML
     public void handleCameraForward() {
 		try {
-			cameraController.handleCameraForward();
+			scene.getCurrentCameraController().handleCameraForward();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -232,7 +248,7 @@ public class GuiController {
     @FXML
     public void handleCameraBackward() {
 		try {
-			cameraController.handleCameraBackward();
+			scene.getCurrentCameraController().handleCameraBackward();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -241,7 +257,7 @@ public class GuiController {
     @FXML
     public void handleCameraLeft() {
 		try {
-			cameraController.handleCameraLeft();
+			scene.getCurrentCameraController().handleCameraLeft();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -250,7 +266,7 @@ public class GuiController {
     @FXML
     public void handleCameraRight() {
 		try {
-			cameraController.handleCameraRight();
+			scene.getCurrentCameraController().handleCameraRight();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -259,7 +275,7 @@ public class GuiController {
     @FXML
     public void handleCameraUp() {
 		try {
-			cameraController.handleCameraUp();
+			scene.getCurrentCameraController().handleCameraUp();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
@@ -268,12 +284,13 @@ public class GuiController {
     @FXML
     public void handleCameraDown() {
 		try {
-			cameraController.handleCameraDown();
+			scene.getCurrentCameraController().handleCameraDown();
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
 	}
 
+	@FXML
 	public void applyTransformation() {
 		try {
 			final float xT = spinnerMoveX.getValue().floatValue();
@@ -339,17 +356,20 @@ public class GuiController {
 		Notifications.create()
 				.text(message)
 				.position(Pos.CENTER)
-				.showError();
+				.showInformation();
 	}
 
+	@FXML
 	public void takeFocusCanvas() {
 		canvas.requestFocus();
 	}
 
+	@FXML
 	public void canvasDragDroppedGetValue() {
 		isRotationActive = false;
 	}
 
+	@FXML
 	public void canvasDragEnterGetValue() {
 		isRotationActive = true;
 	}
@@ -365,14 +385,69 @@ public class GuiController {
 		float yAngle = (float) ((diffY / canvas.getHeight()) * -1);
 
 		try {
-			cameraController.rotateCamera(new Vector2f(xAngle, yAngle));
+			scene.getCurrentCameraController().rotateCamera(new Vector2f(xAngle, yAngle));
 		} catch (Exception e) {
 			showExceptionNotification(e);
 		}
 	}
 
+	@FXML
 	public void currentMouseCoordinates(MouseEvent mouseDragEvent) {
 		currentMouseCoordinates.setX( (float) mouseDragEvent.getX());
 		currentMouseCoordinates.setY( (float) mouseDragEvent.getY());
+	}
+
+	public void loadTexture() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Texture (*.png)", "*.png", "*.jpg"));
+		fileChooser.setTitle("Load Texture");
+
+		File file = fileChooser.showOpenDialog(canvas.getScene().getWindow());
+
+		if (scene.getActiveModels().size() > 1) {
+			showMessageNotification("select one model to attach texture");
+		} else {
+			try {
+				BufferedImage texture = read(file);
+				scene.getActiveModels().get(0).setTexture(texture);
+			} catch (IOException e) {
+				showExceptionNotification(e);
+			}
+		}
+	}
+
+	@FXML
+	public void addCamera() {
+		scene.getCameraControllers().add(new CameraController(new Camera(
+				new Vector3f(0, 0, 100),
+				new Vector3f(0, 0, 0),
+				1.0F, 1, 0.01F, 100), TRANSLATION));
+
+		int counter = 0;
+		String tempName = "Camera №" + counter;
+		while (scene.getCameraNames().contains(tempName)) {
+			tempName = "Camera №";
+			tempName = tempName + counter++;
+		}
+
+		scene.getCameraNames().add(tempName);
+		cameraNamesList.getItems().add(tempName);
+	}
+
+	@FXML
+	public void changeCurrentCamera() {
+		scene.setCurrentCameraController(
+				scene.getCameraControllers().get(
+						cameraNamesList.getSelectionModel().getSelectedIndex()));
+	}
+
+	public void deleteCamera() {
+		if (scene.getCameraControllers().size() <= 1) {
+			showMessageNotification("You can not delete last camera!");
+		} else {
+			scene.getCameraNames().remove(cameraNamesList.getSelectionModel().getSelectedItem());
+			scene.getCameraControllers().remove(cameraNamesList.getSelectionModel().getSelectedIndex());
+			cameraNamesList.getItems().remove(cameraNamesList.getSelectionModel().getSelectedIndex());
+		}
 	}
 }
