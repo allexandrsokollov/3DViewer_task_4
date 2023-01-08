@@ -3,17 +3,15 @@ package com.cgvsu.render_engine;
 import com.cgvsu.math.BarycentricCoordinates;
 import com.cgvsu.math.Vector3f;
 
-import java.util.List;
-
 public class Shadow {
     float c1;
     float c2;
     float c3;
 
-    public Shadow(List<Vector3f> normals, Vector3f target, Vector3f position){
-        this.c1 = calculateShade(normals.get(0), target, position);
-        this.c2 = calculateShade(normals.get(1), target, position);
-        this.c3 = calculateShade(normals.get(2), target, position);
+    public Shadow(Vector3f[] normals, Vector3f target, Vector3f position){
+        this.c1 = calculateShade(normals[0], target, position);
+        this.c2 = calculateShade(normals[1], target, position);
+        this.c3 = calculateShade(normals[2], target, position);
     }
 
     private float calculateShade(

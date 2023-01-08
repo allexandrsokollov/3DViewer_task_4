@@ -79,10 +79,10 @@ public class RenderEngine {
     }
 
     private static void startRender(
-            boolean haveMesh,
-			boolean haveShades,
-			boolean haveTexture,
             boolean haveSolidColor,
+            boolean haveTexture,
+            boolean haveShade,
+            boolean haveMesh,
             Color modelColor,
             javafx.scene.paint.Color meshColor,
             GraphicsContext graphicsContext,
@@ -96,13 +96,14 @@ public class RenderEngine {
             List<Point2f> points,
             float[] zBuffer){
 
-        if (haveSolidColor) {
+        if (haveTexture) {
             rasterizePolygon(
+                    false,
                     true,
-                    haveShades,
+                    haveShade,
                     modelColor,
                     graphicsContext,
-                    null,
+                    texture,
                     width,
                     height,
                     mesh,
@@ -111,13 +112,15 @@ public class RenderEngine {
                     polygonInd,
                     points,
                     zBuffer);
-        } else {
+        }
+        if (haveSolidColor){
             rasterizePolygon(
+                    true,
                     false,
-                    haveShades,
+                    haveShade,
                     modelColor,
                     graphicsContext,
-                    texture,
+                    null,
                     width,
                     height,
                     mesh,
@@ -134,7 +137,8 @@ public class RenderEngine {
 
     private static void rasterizePolygon(
             boolean haveSolidColor,
-            boolean haveShades,
+            boolean haveTexture,
+            boolean haveShade,
             Color modelColor,
             GraphicsContext graphicsContext,
             BufferedImage texture,
@@ -147,9 +151,8 @@ public class RenderEngine {
             List<Point2f> points,
             float[] zBuffer){
 
-        Vector3f v1 = mesh.getVertices().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(0));
-        Vector3f v2 = mesh.getVertices().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(1));
-        Vector3f v3 = mesh.getVertices().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(2));
+        List<Integer> vertexIndices = mesh.getPolygons().get(polygonInd).getVertexIndices();
+        Vector3f v[] = new Vector3f[] {mesh.getVertices().get(vertexIndices.get(0)), mesh.getVertices().get(vertexIndices.get(1)), mesh.getVertices().get(vertexIndices.get(2))};
 
         float x1 = points.get(0).x;
         float y1 = points.get(0).y;
@@ -160,51 +163,66 @@ public class RenderEngine {
 
         int minX = (int) Math.max(0, Math.ceil(Math.min(x1, Math.min(x2, x3))));
         int maxX = (int) Math.min(width - 1, Math.floor(Math.max(x1, Math.max(x2, x3))));
+
         int minY = (int) Math.max(0, Math.ceil(Math.min(y1, Math.min(y2, y3))));
         int maxY = (int) Math.min(height - 1, Math.floor(Math.max(y1, Math.max(y2, y3))));
-
-        List<Vector3f> polygonNormals = new ArrayList<>();
-        polygonNormals.add(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(0)));
-        polygonNormals.add(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(1)));
-        polygonNormals.add(mesh.getNormals().get(mesh.getPolygons().get(polygonInd).getVertexIndices().get(2)));
 
         for (int y = minY; y <= maxY; y++) {
             for (int x = minX; x <= maxX; x++) {
                 BarycentricCoordinates bCoordinates = new BarycentricCoordinates(x, y, x1, x2, x3, y1, y2, y3);
                 if (bCoordinates.getU() >= 0 && bCoordinates.getU() <= 1 && bCoordinates.getV() >= 0 && bCoordinates.getV() <= 1 && bCoordinates.getW() >= 0 && bCoordinates.getW() <= 1) {
-                    float depth = bCoordinates.getU() * v1.getZ() + bCoordinates.getV() * v2.getZ() + bCoordinates.getW() * v3.getZ();
+                    float depth = bCoordinates.getU() * v[0].getZ() + bCoordinates.getV() * v[1].getZ() + bCoordinates.getW() * v[2].getZ();
                     int zIndex = y * width + x;
                     if (zBuffer[zIndex] < depth) {
-                        if (haveSolidColor) {
-                            int color = modelColor.getRGB();
-                            if (haveShades) {
-                                Shadow shadow = new Shadow(polygonNormals, target, position);
-                                color = getPixelColor(shadow.calculateShadeCoefficients(bCoordinates), color);
-                            }
-                            graphicsContext.getPixelWriter().setArgb(x, y, color);
-                        }
-                        else {
-                            Vector2f vt1 = mesh.getTextureVertices().get(mesh.getPolygons().get(polygonInd).getTextureVertexIndices().get(0));
-                            Vector2f vt2 = mesh.getTextureVertices().get(mesh.getPolygons().get(polygonInd).getTextureVertexIndices().get(1));
-                            Vector2f vt3 = mesh.getTextureVertices().get(mesh.getPolygons().get(polygonInd).getTextureVertexIndices().get(2));
+                        if (haveTexture) {
+                            List<Integer> textureVertexIndices = mesh.getPolygons().get(polygonInd).getTextureVertexIndices();
+                            Vector2f[] vt = new Vector2f[] {mesh.getTextureVertices().get(textureVertexIndices.get(0)), mesh.getTextureVertices().get(textureVertexIndices.get(1)), mesh.getTextureVertices().get(textureVertexIndices.get(2))};
 
-                            float xt = bCoordinates.getU() * vt1.getX() + bCoordinates.getV() * vt2.getX() + bCoordinates.getV() * vt3.getX();
-                            float yt = 1 - (bCoordinates.getU() * vt1.getY() + bCoordinates.getV() * vt2.getY() + bCoordinates.getW() * vt3.getY());
+                            float xt = bCoordinates.getU() * vt[0].getX() + bCoordinates.getV() * vt[1].getX() + bCoordinates.getV() * vt[2].getX();
+                            float yt = 1 - (bCoordinates.getU() * vt[0].getY() + bCoordinates.getV() * vt[1].getY() + bCoordinates.getW() * vt[2].getY());
 
-                            int color;
-                            if (haveShades) {
-                                Shadow shadow = new Shadow(polygonNormals, target, position);
-                                color = getPixelColor(shadow.calculateShadeCoefficients(bCoordinates), xt, yt, texture);
-                            } else {
-                                color = getPixelColor(x, y, texture);
+                            if (haveShade){
+                                Vector3f vn[] = new Vector3f[] {mesh.getNormals().get(vertexIndices.get(0)), mesh.getNormals().get(vertexIndices.get(1)), mesh.getNormals().get(vertexIndices.get(2))};
+                                drawPixel(graphicsContext, x, y, xt, yt, bCoordinates, vn, target, position, texture);
                             }
-                            graphicsContext.getPixelWriter().setArgb(x, y, color);
+                            else {
+                                drawPixel(graphicsContext, x, y, texture);
+                            }
+                        } else {
+                            if (haveSolidColor) {
+                                int color = modelColor.getRGB();
+                                if (haveShade) {
+                                    Vector3f vn[] = new Vector3f[]{mesh.getNormals().get(vertexIndices.get(0)), mesh.getNormals().get(vertexIndices.get(1)), mesh.getNormals().get(vertexIndices.get(2))};
+                                    drawPixel(graphicsContext, x, y, bCoordinates, vn, target, position, color);
+                                } else {
+                                    drawPixel(graphicsContext, x, y, color);
+                                }
+                            }
                         }
                         zBuffer[zIndex] = depth;
                     }
                 }
             }
         }
+    }
+
+    private static void drawPixel(GraphicsContext graphicsContext, int x, int y, int color){
+        graphicsContext.getPixelWriter().setArgb(x, y, color);
+    }
+    private static void drawPixel(GraphicsContext graphicsContext, int x, int y, BarycentricCoordinates bCoordinates, Vector3f[] polygonNormals, Vector3f target, Vector3f position, int color){
+        Shadow shadow = new Shadow(polygonNormals, target, position);
+        color = getPixelColor(shadow.calculateShadeCoefficients(bCoordinates), color);
+        graphicsContext.getPixelWriter().setArgb(x, y, color);
+    }
+
+    private static void drawPixel(GraphicsContext graphicsContext, int x, int y, BufferedImage texture){
+        int color = getPixelColor(x, y, texture);
+        graphicsContext.getPixelWriter().setArgb(x, y, color);
+    }
+    private static void drawPixel(GraphicsContext graphicsContext, int x, int y, float xt, float yt, BarycentricCoordinates bCoordinates, Vector3f[] polygonNormals, Vector3f target, Vector3f position, BufferedImage texture) {
+        Shadow shadow = new Shadow(polygonNormals, target, position);
+        int color = getPixelColor(shadow.calculateShadeCoefficients(bCoordinates), xt, yt, texture);
+        graphicsContext.getPixelWriter().setArgb(x, y, color);
     }
 
     private static void drawMesh(
