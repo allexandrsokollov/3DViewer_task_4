@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="795.0" prefWidth="1147.0" style="-fx-background-color: #13151A;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
-    <MenuBar id="menuCameraOptions" prefHeight="30.0" prefWidth="180.0" styleClass="fontStyle" stylesheets="@style.css">
+    <MenuBar id="menuCameraOptions" prefHeight="30.0" prefWidth="270.0" styleClass="fontStyle" stylesheets="@style.css">
         <Menu id="menuFile" mnemonicParsing="false" text="File">
             <MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" style="font-size: 20px;" text="Load Model">
             <accelerator>
@@ -41,7 +41,7 @@
             <String fx:value="menu" />
          </styleClass>
         </Menu>
-        <Menu id="menuCamera" mnemonicParsing="false" text="Camera Options">
+        <Menu id="menuCamera" mnemonicParsing="false" text="Move Camera">
             <MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#handleCameraForward" text="Forward">
                 <accelerator>
                     <KeyCodeCombination alt="UP" code="UP" control="UP" meta="UP" shift="UP" shortcut="UP" />
@@ -77,9 +77,22 @@
             <String fx:value="menu" />
          </styleClass>
         </Menu>
+      <Menu id="menuFile" mnemonicParsing="false" text="Cameras">
+         <styleClass>
+            <String fx:value="menu" />
+            <String fx:value="menu" />
+         </styleClass>
+         <items>
+            <MenuItem id="menuContextItem" mnemonicParsing="false" onAction="#onOpenModelMenuItemClick" style="font-size: 20px;" text="Load Model">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </MenuItem>
+         </items>
+      </Menu>
     </MenuBar>
 
-    <Canvas fx:id="canvas" height="723.0" layoutX="186.0" onMouseClicked="#takeFocusCanvas" onMouseDragged="#currentMouseCoordinates" onMouseMoved="#currentMouseCoordinates" onMousePressed="#canvasDragEnterGetValue" onMouseReleased="#canvasDragDroppedGetValue" width="967.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <Canvas fx:id="canvas" height="723.0" layoutX="186.0" onMouseClicked="#takeFocusCanvas" onMouseDragged="#currentMouseCoordinates" onMouseMoved="#currentMouseCoordinates" onMousePressed="#canvasDragEnterGetValue" onMouseReleased="#canvasDragDroppedGetValue" width="967.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
    <ListView fx:id="listOfLoadedModelsNames" focusTraversable="false" layoutY="30.0" onMouseClicked="#selectModel" prefWidth="180.0" stylesheets="@style.css" AnchorPane.bottomAnchor="387.0" AnchorPane.topAnchor="30.0">
       <contextMenu>
          <ContextMenu autoFix="false">
@@ -182,27 +195,27 @@
 		<Spinner fx:id="spinnerRotateZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="307.0" prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css" />
 		<Button fx:id="buttonApplyTransformation" layoutX="5.0" layoutY="347.0" mnemonicParsing="false" onAction="#applyTransformation" prefHeight="30.0" prefWidth="169.0" stylesheets="@style.css" text="Apply Transformation" />
 	</Pane>
-	<Pane layoutX="190.0" layoutY="632.0" prefHeight="30.0" styleClass="upperPanel" stylesheets="@style.css" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-		<RadioButton fx:id="radioButtonMesh" layoutX="5.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Mesh">
+	<Pane layoutX="190.0" layoutY="632.0" prefHeight="30.0" styleClass="upperPanel" stylesheets="@style.css" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<RadioButton fx:id="radioButtonMesh" layoutX="5.0" layoutY="4.0" mnemonicParsing="false" stylesheets="@style.css" text="Mesh">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<RadioButton fx:id="radioButtonTexture" layoutX="165.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Texture">
+		<RadioButton fx:id="radioButtonTexture" layoutX="165.0" layoutY="4.0" mnemonicParsing="false" stylesheets="@style.css" text="Texture">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<RadioButton fx:id="radioButtonShades" layoutX="80.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Shades">
+		<RadioButton fx:id="radioButtonShades" layoutX="80.0" layoutY="4.0" mnemonicParsing="false" stylesheets="@style.css" text="Shades">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<RadioButton fx:id="radioButtonSolidColor" layoutX="255.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Solid color">
+		<RadioButton fx:id="radioButtonSolidColor" layoutX="255.0" layoutY="4.0" mnemonicParsing="false" stylesheets="@style.css" text="Solid color">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<ColorPicker fx:id="modelColor" layoutX="364.0" layoutY="4.0" prefHeight="22.0" prefWidth="45.0" styleClass="colorPicker" stylesheets="@style.css" />
+		<ColorPicker fx:id="modelColor" layoutX="364.0" layoutY="3.0" prefHeight="22.0" prefWidth="45.0" styleClass="colorPicker" stylesheets="@style.css" />
 	</Pane>
 </AnchorPane>

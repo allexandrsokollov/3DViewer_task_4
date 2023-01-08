@@ -24,6 +24,14 @@
     -fx-background-color: #3F4145;
 }
 
+.fontStyle #menuCamera{
+    -fx-min-width: 119;
+}
+
+.fontStyle #menuFile {
+    -fx-min-width: 50;
+}
+
 .fontStyle #menuFile:hover #menuContextItem,
 .fontStyle #menuCamera:hover #menuContextItem,
 .fontStyle #menuFile:hover #menuContextItem .label,
@@ -83,10 +91,6 @@
     -fx-text-fill: #cacdd3;
     -fx-font-size: 14;
     -fx-background-color: #2B2E34;
-}
-
-.menu-bar #menuCamera {
-    -fx-min-width: 100;
 }
 
 .menu-bar {
