@@ -49,8 +49,8 @@
 }
 
 .colorPicker {
-    -fx-background-color: #4B5467;
-    -fx-font-size: 14;
+    -fx-background-color: #2B2E34;
+    -fx-font-size: 8;
     -fx-text-fill: #cacdd3;
 
 }
@@ -168,5 +168,9 @@
 }
 
 .spinner {
+    -fx-background-color: #2B2E34;
+}
+
+.upperPanel {
     -fx-background-color: #2B2E34;
 }

@@ -182,27 +182,27 @@
 		<Spinner fx:id="spinnerRotateZ" editable="true" focusTraversable="false" layoutX="90.0" layoutY="307.0" prefHeight="20.0" prefWidth="80.0" stylesheets="@style.css" />
 		<Button fx:id="buttonApplyTransformation" layoutX="5.0" layoutY="347.0" mnemonicParsing="false" onAction="#applyTransformation" prefHeight="30.0" prefWidth="169.0" stylesheets="@style.css" text="Apply Transformation" />
 	</Pane>
-	<Pane layoutX="190.0" layoutY="632.0" prefHeight="155.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0">
-		<RadioButton fx:id="radioButtonMesh" layoutX="5.0" layoutY="30.0" mnemonicParsing="false" stylesheets="@style.css" text="Mesh">
+	<Pane layoutX="190.0" layoutY="632.0" prefHeight="30.0" styleClass="upperPanel" stylesheets="@style.css" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<RadioButton fx:id="radioButtonMesh" layoutX="5.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Mesh">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<RadioButton fx:id="radioButtonTexture" layoutX="5.0" layoutY="90.0" mnemonicParsing="false" stylesheets="@style.css" text="Texture">
+		<RadioButton fx:id="radioButtonTexture" layoutX="165.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Texture">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<RadioButton fx:id="radioButtonShades" layoutX="5.0" layoutY="60.0" mnemonicParsing="false" stylesheets="@style.css" text="Shades">
+		<RadioButton fx:id="radioButtonShades" layoutX="80.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Shades">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<RadioButton fx:id="radioButtonSolidColor" layoutX="55.0" layoutY="122.0" mnemonicParsing="false" stylesheets="@style.css" text="Solid color">
+		<RadioButton fx:id="radioButtonSolidColor" layoutX="255.0" layoutY="5.0" mnemonicParsing="false" stylesheets="@style.css" text="Solid color">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</RadioButton>
-		<ColorPicker fx:id="modelColor" layoutX="5.0" layoutY="117.0" prefHeight="30.0" prefWidth="45.0" styleClass="colorPicker" stylesheets="@style.css" />
+		<ColorPicker fx:id="modelColor" layoutX="364.0" layoutY="4.0" prefHeight="22.0" prefWidth="45.0" styleClass="colorPicker" stylesheets="@style.css" />
 	</Pane>
 </AnchorPane>

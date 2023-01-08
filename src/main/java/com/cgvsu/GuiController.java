@@ -112,6 +112,7 @@ public class GuiController {
 			if (!scene.getActiveModels().isEmpty()) {
 				try {
 					for (ModifiedModel model : scene.getActiveModels()) {
+						System.out.println(model.getTexture());
 						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(),
 								(int) width, (int) height, modelColor.getValue(), model.getTexture(), getRenderWayData());
 					}
