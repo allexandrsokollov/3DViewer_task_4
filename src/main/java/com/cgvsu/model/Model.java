@@ -13,11 +13,12 @@ public class Model {
 	private List<Vector3f> normals;
 	private List<Polygon> polygons;
 
-	public Model(final List<Vector3f> vertices, final List<Vector2f> textureVertices, final List<Vector3f> normals, final List<Polygon> polygons) {
+	public Model(final List<Vector3f> vertices, final List<Vector2f> textureVertices, final List<Vector3f> normals, final List<Polygon> polygons) throws Exception {
 		this.vertices = vertices;
 		this.textureVertices = textureVertices;
 		this.polygons = polygons;
 		this.normals = normals;
+		recalculateNormals();
 	}
 
 	public Model() {
@@ -27,11 +28,12 @@ public class Model {
 		polygons = new ArrayList<>();
 	}
 
-	public Model(Model model) {
+	public Model(Model model) throws Exception {
 		vertices = model.getVertices();
 		textureVertices = model.textureVertices;
 		normals = model.getNormals();
 		polygons = model.getPolygons();
+		recalculateNormals();
 	}
 
 	public Model getCopy() throws Exception {
@@ -65,14 +67,15 @@ public class Model {
 		this.textureVertices = vertices;
 	}
 
-	public void setNormals(List<Vector3f> normals) {
+	public void setNormals(List<Vector3f> normals) throws Exception {
 		this.normals = normals;
+		recalculateNormals();
 	}
 
 	public void setPolygons(final List<Polygon> polygons) throws Exception {
 		this.polygons = polygons;
 		recalculateNormals();
-		//triangulate();
+		triangulate();
 	}
 
 	public boolean checkConsistency() {
@@ -127,6 +130,7 @@ public class Model {
 
 	private List<Polygon> triangulatePolygon(Polygon polygon){
 		List<Integer> vertexIndices = polygon.getVertexIndices();
+		List<Integer> textureVertexIndices = polygon.getTextureVertexIndices();
 		List<Polygon> triangulatedPolygons = new ArrayList<>();
 		if (vertexIndices.size() > 3) {
 			for (int i = 2; i < vertexIndices.size(); i++) {
@@ -134,6 +138,9 @@ public class Model {
 				triangle.getVertexIndices().add(vertexIndices.get(0));
 				triangle.getVertexIndices().add(vertexIndices.get(i - 1));
 				triangle.getVertexIndices().add(vertexIndices.get(i));
+				triangle.getTextureVertexIndices().add(textureVertexIndices.get(0));
+				triangle.getTextureVertexIndices().add(textureVertexIndices.get(i - 1));
+				triangle.getTextureVertexIndices().add(textureVertexIndices.get(i));
 				triangulatedPolygons.add(triangle);
 			}
 		} else {
@@ -142,44 +149,40 @@ public class Model {
 		return triangulatedPolygons;
 	}
 
-	public void recalculateNormals() throws Exception {
-		normals.clear();
-		for (int i = 0; i < vertices.size(); i++) {
-			normals.add(calculateNormalByVertexInModel(i));
-		}
-	}
-
-	protected  Vector3f calculateNormalInPolygon(final Polygon polygon){
+	protected  void calculateNormalInPolygon(final Polygon polygon, Map<Integer, List<Vector3f>> allNormals){
 		List<Integer> vertexIndices = polygon.getVertexIndices();
-		int verticesCount = vertexIndices.size();
 
-		Vector3f vector1 = getAdded(vertices.get(vertexIndices.get(0)), vertices.get(vertexIndices.get(1)));
-		Vector3f vector2 = getAdded(vertices.get(vertexIndices.get(0)), vertices.get(vertexIndices.get(verticesCount - 1)));
+		Vector3f vector1 = getSubtracted(vertices.get(vertexIndices.get(0)), vertices.get(vertexIndices.get(1)));
+		Vector3f vector2 = getSubtracted(vertices.get(vertexIndices.get(0)), vertices.get(vertexIndices.get(2)));
 
-		return getVectorProduct(vector1, vector2);
+		allNormals.get(vertexIndices.get(0)).add(Vector3f.getVectorProduct(vector1, vector2));
+		allNormals.get(vertexIndices.get(1)).add(Vector3f.getVectorProduct(vector1, vector2));
+		allNormals.get(vertexIndices.get(2)).add(Vector3f.getVectorProduct(vector1, vector2));
 	}
 
-	protected Vector3f calculateNormalByVertexInModel(final int vertexIndex) throws Exception {
-		ArrayList<Vector3f> vector = new ArrayList<>();
-		for (Polygon polygon : polygons) {
-			if (polygon.getVertexIndices().contains(vertexIndex)) {
-				vector.add(calculateNormalInPolygon(polygon));
+	public void recalculateNormals() throws Exception{
+		Map<Integer, List<Vector3f>> allNormals = new HashMap<>(vertices.size());
+		for (int i = 0; i < vertices.size(); i++){
+			allNormals.put(i, new ArrayList<>());
+		}
+
+		for (Polygon polygon : polygons){
+			calculateNormalInPolygon(polygon, allNormals);
+		}
+
+		Vector3f tmp;
+
+		List<Vector3f> recalculatedNormals = new ArrayList<>();
+		for (int i = 0; i < vertices.size(); i++) {
+			tmp = new Vector3f(0, 0, 0);
+			for (Vector3f normal : allNormals.get(i)) {
+				tmp.add(normal);
 			}
+
+			tmp.divide(allNormals.get(i).size());
+			tmp.normalize();
+			recalculatedNormals.add(tmp);
 		}
-
-		float x = vector.get(0).getX();
-		float y = vector.get(0).getY();
-		float z = vector.get(0).getZ();
-
-		for (int i = 1; i < vector.size(); i++) {
-			x += vector.get(i).getX();
-			y += vector.get(i).getY();
-			z += vector.get(i).getZ();
-		}
-
-		Vector3f normal = new Vector3f(x, y, z);
-		normal.divide(vector.size());
-
-		return normal;
+		normals = recalculatedNormals;
 	}
 }

@@ -57,7 +57,7 @@ public class ObjReader {
 			}
 		}
 		resultModel.checkConsistency();
-		//resultModel.triangulate();
+		resultModel.triangulate();
 		resultModel.recalculateNormals();
 
 		return resultModel;
