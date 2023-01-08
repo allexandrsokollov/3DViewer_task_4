@@ -65,12 +65,14 @@ public class CameraController {
             angleOfRotate.setX(-89.9F);
         }
 
-        Matrix4 mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), angleOfRotate.getX(),0));
-        camera.rotateCamera(mR);
+        Matrix4 mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), 0,0));
+
         forwardV = GraphicConveyor.multiplyMatrix4ByVector3(mR, forwardV);
         backwardV = GraphicConveyor.multiplyMatrix4ByVector3(mR, backwardV);
         leftV = GraphicConveyor.multiplyMatrix4ByVector3(mR, leftV);
         rightV = GraphicConveyor.multiplyMatrix4ByVector3(mR, rightV);
+        mR = GraphicConveyor.getRotationMatrix(new Vector3f(angleOfRotate.getY(), angleOfRotate.getX(),0));
+        camera.rotateCamera(mR);
     }
 
 
