@@ -28,7 +28,8 @@ public class RenderEngine {
             final int width,
             final int height,
 			final javafx.scene.paint.Color modelColor,
-            final BufferedImage texture) throws Exception {
+            final BufferedImage texture,
+            final boolean[] renderingStatements) throws Exception {
         Matrix4 modelMatrix = getModelMatrix(new Vector3f(0,0,0), new Vector3f(0,0,0), new Vector3f(1,1,1));
         Matrix4 viewMatrix = camera.getViewMatrix();
         Matrix4 projectionMatrix = camera.getProjectionMatrix();
@@ -58,9 +59,10 @@ public class RenderEngine {
                 resultPoints.add(resultPoint);
             }
 
-            setRenderingMode(true,
-                    true,
-                    false,
+            startRender(renderingStatements[0],
+                    renderingStatements[1],
+                    renderingStatements[2],
+                    renderingStatements[3],
                     convertColorToAWT(modelColor),
                     meshColor,
                     graphicsContext,
@@ -76,8 +78,9 @@ public class RenderEngine {
         }
     }
 
-    private static void setRenderingMode(
+    private static void startRender(
             boolean haveSolidColor,
+            boolean haveTexture,
             boolean haveShades,
             boolean haveMesh,
             Color modelColor,
