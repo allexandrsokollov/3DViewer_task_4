@@ -111,7 +111,7 @@ public class GuiController {
 				try {
 					for (ModifiedModel model : scene.getActiveModels()) {
 						RenderEngine.render(canvas.getGraphicsContext2D(), camera, model.getTransformedModel(),
-								(int) width, (int) height, Color.WHITE, model.getTexture(), new boolean[] {false, true, false, true});
+								(int) width, (int) height, Color.WHITE, model.getTexture(), getRenderWayData());
 					}
 				} catch (Exception e) {
 					showExceptionNotification(e);
