@@ -175,14 +175,14 @@ public class RenderEngine {
                     int zIndex = y * width + x;
                     if (zBuffer[zIndex] < depth) {
                         if (haveTexture) {
-                            List<Integer> textureVertexIndices = mesh.getPolygons().get(polygonInd).getTextureVertexIndices();
-                            Vector2f[] vt = new Vector2f[] {mesh.getTextureVertices().get(textureVertexIndices.get(0)), mesh.getTextureVertices().get(textureVertexIndices.get(1)), mesh.getTextureVertices().get(textureVertexIndices.get(2))};
-
-                            float xt = bCoordinates.getU() * vt[0].getX() + bCoordinates.getV() * vt[1].getX() + bCoordinates.getV() * vt[2].getX();
-                            float yt = 1 - (bCoordinates.getU() * vt[0].getY() + bCoordinates.getV() * vt[1].getY() + bCoordinates.getW() * vt[2].getY());
-
                             if (haveShade){
                                 Vector3f vn[] = new Vector3f[] {mesh.getNormals().get(vertexIndices.get(0)), mesh.getNormals().get(vertexIndices.get(1)), mesh.getNormals().get(vertexIndices.get(2))};
+                                List<Integer> textureVertexIndices = mesh.getPolygons().get(polygonInd).getTextureVertexIndices();
+                                Vector2f[] vt = new Vector2f[] {mesh.getTextureVertices().get(textureVertexIndices.get(0)), mesh.getTextureVertices().get(textureVertexIndices.get(1)), mesh.getTextureVertices().get(textureVertexIndices.get(2))};
+
+                                float xt = bCoordinates.getU() * vt[0].getX() + bCoordinates.getV() * vt[1].getX() + bCoordinates.getV() * vt[2].getX();
+                                float yt = 1 - (bCoordinates.getU() * vt[0].getY() + bCoordinates.getV() * vt[1].getY() + bCoordinates.getW() * vt[2].getY());
+
                                 drawPixel(graphicsContext, x, y, xt, yt, bCoordinates, vn, target, position, texture);
                             }
                             else {
