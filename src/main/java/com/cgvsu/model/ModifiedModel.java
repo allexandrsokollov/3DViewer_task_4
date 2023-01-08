@@ -5,6 +5,7 @@ import com.cgvsu.math.Vector2f;
 import com.cgvsu.math.Vector3f;
 import com.cgvsu.render_engine.GraphicConveyor;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class ModifiedModel extends Model {
     private Vector3f rotateV;
     private Vector3f scaleV;
     private Vector3f translateV;
+	private BufferedImage texture = null;
 
     public ModifiedModel(Model model) throws Exception {
         super(model);
@@ -93,4 +95,12 @@ public class ModifiedModel extends Model {
     public void setTranslateV(Vector3f translateV) {
         this.translateV = translateV;
     }
+
+	public BufferedImage getTexture() {
+		return texture;
+	}
+
+	public void setTexture(BufferedImage texture) {
+		this.texture = texture;
+	}
 }

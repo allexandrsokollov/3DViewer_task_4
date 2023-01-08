@@ -79,10 +79,10 @@ public class RenderEngine {
     }
 
     private static void startRender(
-            boolean haveSolidColor,
-            boolean haveTexture,
-            boolean haveShades,
             boolean haveMesh,
+			boolean haveShades,
+			boolean haveTexture,
+            boolean haveSolidColor,
             Color modelColor,
             javafx.scene.paint.Color meshColor,
             GraphicsContext graphicsContext,
